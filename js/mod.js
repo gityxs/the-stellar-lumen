@@ -19,7 +19,7 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0.0.2</h3><br>
+	<h3>v0.0.0.2 // Sunday , 14th May</h3><br>
 		- Added Stellar tree node a text as ST.<br>
 		- Fixed 'Improved CPU Clock Speed' buyable background color when you couldn't buy it.<br>
 		- Fixed Notation setting begin broken and added 'Prism SQ' notation.<br>
