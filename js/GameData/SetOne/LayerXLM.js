@@ -52,6 +52,7 @@ addLayer("XLM", {
     bitcoinToPoints() {
       let base = player.XLM.bitcoin;
       let effect1 = new Decimal(base)
+      effect1 = effect1.add(1)
       let effect2 = new Decimal.pow(effect1, 0.075)
       let effect3 = new Decimal.pow(effect2, 0.05)
       let effect4 = new Decimal.add(effect3, 1)
