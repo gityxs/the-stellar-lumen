@@ -6,7 +6,7 @@
 .XLM.treeNode {
   border-radius: 15px;
   border: 0px;
-  background-image: url('../image-folder/Stellar.png')
+  font-family: url('../font-folder/CreatoDisplay-Light.otf')
 }
 
 .XLM.can {
