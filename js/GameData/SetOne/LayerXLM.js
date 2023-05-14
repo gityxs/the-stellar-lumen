@@ -23,6 +23,7 @@ addLayer("XLM", {
         mult = new Decimal(1)
         mult = mult.mul(buyableEffect("XLM", 13))
         mult = mult.mul(buyableEffect("XLM", 14))
+        mult = mult.mul(buyableEffect("XLM", 15))
         mult = mult.mul(tmp.XLM.bitcoinToStellar)
         return mult
     },
@@ -33,6 +34,7 @@ addLayer("XLM", {
       base = new Decimal(0)
       base = base.add(buyableEffect("XLM", 12))
       base = base.mul(buyableEffect("XLM", 14))
+      base = base.mul(buyableEffect("XLM", 15))
       return base
     },
     
@@ -43,19 +45,8 @@ addLayer("XLM", {
     
     bitcoinToStellar() {
       let base = player.XLM.bitcoin;
-      let effect1 = new Decimal.div(base, 20)
-      let effect2 = new Decimal.pow(effect1, 0.8)
+      let effect2 = new Decimal.pow(base, 0.2)
       let effect3 = new Decimal.add(effect2, 1)
-      return effect3;
-    },
-    
-    bitcoinToPoints() {
-      let base = player.XLM.bitcoin;
-      let effect1 = new Decimal(base)
-      effect1 = effect1.add(1)
-      let effect2 = new Decimal.pow(effect1, 0.075)
-      let effect3 = new Decimal.pow(effect2, 0.05)
-      let effect4 = new Decimal.add(effect3, 1)
       return effect3;
     },
     
@@ -74,14 +65,16 @@ addLayer("XLM", {
     
     bitcoinGain() {
       let base = player.points
-      let gain1 = new Decimal.div(base, 1e9)
-      let gain2 = new Decimal.pow(gain1, 0.5)
+      let gain1 = new Decimal.div(base, 1e6)
+      let gain2 = new Decimal.pow(gain1, 0.05)
+      gain2 = gain2.mul(buyableEffect("XLM", 15))
       return gain2
     },
     
     calculateTickspeed() {
-      let base = buyableEffect("XLM", 14)
-      return base
+      let Base = new Decimal(1)
+      Base = Base.mul(buyableEffect("XLM", 14))
+      return Base
     },
 
     update(diff) {
@@ -123,22 +116,24 @@ addLayer("XLM", {
               }
             },
             unlocked() {
-              return player.points.gte(1e9)
+              return player.points.gte(700000)
             }
         },
     },
     buyables: {
         11: {
           cost(x) {
-            let pow = new Decimal(2).mul(player.XLM.buyables[11].gte(50) ? 1.5 : 1).mul(player.XLM.buyables[11].gte(125) ? 1.5 : 1)
-            let base = new Decimal(1).mul(Decimal.pow(pow, x.pow(1)))
-            return base;
+            let PowerI = new Decimal(1.75)
+            let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+            PowerI = PowerI.pow(PowerII)
+            PowerI = PowerI.pow(PowerIII)
+            let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+            return Calculation;
           },
           display() {
-            let state = []
-            if (player.XLM.buyables[11].gte(50)) state.push("Super-Scaled")
-            if (player.XLM.buyables[11].gte(125)) state.push("Ultra-Scaled")
-            return `  <b style="font-size:24px">${state} Neural Network Base</b>
+            return `<b style="font-size:24px">Neural Network Base</b>
                     <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Point Generation</h2>
                       <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
                     <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Stellar</h1>`
@@ -173,8 +168,8 @@ addLayer("XLM", {
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
           },
           effect(x) {
-            let eff = new Decimal(1).mul(Decimal.pow(2, x.pow(1)))
-            return eff
+            let Effect = new Decimal(1).mul(Decimal.pow(2, x.pow(1)))
+            return Effect;
           },
           unlocked() {
             return true;
@@ -183,18 +178,20 @@ addLayer("XLM", {
         
         12: {
           cost(x) {
-            let pow = new Decimal(3).mul(player.XLM.buyables[12].gte(50) ? 1.5 : 1).mul(player.XLM.buyables[12].gte(125) ? 1.5 : 1)
-            let base = new Decimal(10).mul(Decimal.pow(pow, x.pow(1)))
-            return base;
+            let PowerI = new Decimal(1.25)
+            let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+            PowerI = PowerI.pow(PowerII)
+            PowerI = PowerI.pow(PowerIII)
+            let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+            return Calculation;
           },
           display() {
-            let state = []
-            if (player.XLM.buyables[12].gte(50)) state.push("Super-Scaled")
-            if (player.XLM.buyables[12].gte(125)) state.push("Ultra-Scaled")
-            return `  <b style="font-size:24px">${state} Ethereum Miner Tier I</b>
-                            <h2>+${format(tmp[this.layer].buyables[this.id].effect)} Ethereum Generation / sec</h2>
-                              <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
-                            <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Stellar</h1>`
+            return `<b style="font-size:24px">1KHz RAM</b>
+                    <h2>+${format(tmp[this.layer].buyables[this.id].effect)} Ethereum Generation</h2>
+                      <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
+                    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Stellar</h1>`
           },
           canAfford() {
             return player[this.layer].points.gte(this.cost())
@@ -226,52 +223,55 @@ addLayer("XLM", {
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
           },
           effect(x) {
-            let eff = new Decimal(0).add(Decimal.pow(1.24, x.pow(1))).sub(1)
-            return eff
+            let Effect = new Decimal(0).add(Decimal.pow(1.25, x.pow(1))).sub(1)
+            return Effect;
           },
           unlocked() {
-            return true;
+            return player.points.gte(25);
           }
         },
         
+        
         13: {
           cost(x) {
-            let pow = new Decimal(1.5).mul(player.XLM.buyables[13].gte(50) ? 1.5 : 1).mul(player.XLM.buyables[13].gte(125) ? 1.5 : 1)
-            let base = new Decimal(5).mul(Decimal.pow(pow, x.pow(1)))
-            return base;
+            let PowerI = new Decimal(3)
+            let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+            PowerI = PowerI.pow(PowerII)
+            PowerI = PowerI.pow(PowerIII)
+            let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+            return Calculation;
           },
           display() {
-            let state = []
-            if (player.XLM.buyables[13].gte(50)) state.push("Super-Scaled")
-            if (player.XLM.buyables[13].gte(125)) state.push("Ultra-Scaled")
-            return `  <b style="font-size:24px">${state} Improved CPU Clock Speed</b>
-                            <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Stellar Gain</h2>
-                              <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
-                            <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Ethereum</h1>`
+            return `<b style="font-size:24px">CPU Improvement</b>
+                    <h2>x${format(tmp[this.layer].buyables[this.id].effect)} more Stellar</h2>
+                      <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
+                    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Ethereum</h1>`
           },
           canAfford() {
             return player[this.layer].ethereum.gte(this.cost())
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(0,186,233,1) 0%, rgba(92,0,161,1) 100%)",
+              "background": "radial-gradient(circle, rgba(0,72,218,1) 0%, rgba(6,0,87,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
               "border": "0px",
               "margin": "5px",
               "text-shadow": "0px 0px 5px #000000",
-              "color" : "#ffffff"
+              "color": "#ffffff"
             }
             return {
-             "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
               "margin": "5px",
               "text-shadow": "0px 0px 10px #000000",
-              "color" : "#ffffff"
+              "color": "#ffffff"
             }
           },
           buy() {
@@ -279,52 +279,55 @@ addLayer("XLM", {
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
           },
           effect(x) {
-            let eff = new Decimal(0).add(Decimal.pow(1.15, x.pow(1)))
-            return eff
+            let Effect = new Decimal(0).add(Decimal.pow(1.1, x.pow(1)))
+            return Effect;
           },
           unlocked() {
-            return player.XLM.ethereum.gte(0.01)
+            return player[this.layer].buyables[12].gte(2);
           }
         },
         
+        
         14: {
           cost(x) {
-            let pow = new Decimal(2).mul(player.XLM.buyables[14].gte(50) ? 1.5 : 1).mul(player.XLM.buyables[14].gte(125) ? 1.5 : 1)
-            let base = new Decimal(1).mul(Decimal.pow(pow, x.pow(1)))
-            return base;
+            let PowerI = new Decimal(2.25)
+            let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+            PowerI = PowerI.pow(PowerII)
+            PowerI = PowerI.pow(PowerIII)
+            let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+            return Calculation;
           },
           display() {
-            let state = []
-            if (player.XLM.buyables[14].gte(50)) state.push("Super-Scaled")
-            if (player.XLM.buyables[14].gte(125)) state.push("Ultra-Scaled")
-            return `  <b style="font-size:24px">${state} Time Manipulation</b>
-                            <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Tickspeed</h2>
-                              <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
-                            <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+            return `<b style="font-size:24px">Time Manipulation</b>
+                    <h2>x${format(tmp[this.layer].buyables[this.id].effect)} faster Tickspeed</h2>
+                      <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
+                    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
           },
           canAfford() {
             return player[this.layer].bitcoin.gte(this.cost())
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(233,0,122,1) 0%, rgba(161,0,0,1) 100%)",
+              "background": "radial-gradient(circle, rgba(255,217,4,1) 0%, rgba(165,126,10,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
               "border": "0px",
               "margin": "5px",
               "text-shadow": "0px 0px 5px #000000",
-              "color" : "#ffffff"
+              "color": "#ffffff"
             }
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "height": " 130x",
+              "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
               "margin": "5px",
               "text-shadow": "0px 0px 10px #000000",
-              "color" : "#ffffff"
+              "color": "#ffffff"
             }
           },
           buy() {
@@ -332,11 +335,66 @@ addLayer("XLM", {
             setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
           },
           effect(x) {
-            let eff = new Decimal(0).add(Decimal.pow(2, x.pow(1)))
-            return eff
+            let Effect = new Decimal(0).add(Decimal.pow(1.75, x.pow(1)))
+            return Effect;
           },
           unlocked() {
-            return player.XLM.bitcoin.gte(0.01)
+            return player[this.layer].buyables[13].gte(15);
+          }
+        },
+        
+        15: {
+          cost(x) {
+            let PowerI = new Decimal(1.95)
+            let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+            PowerI = PowerI.pow(PowerII)
+            PowerI = PowerI.pow(PowerIII)
+            let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
+            return Calculation;
+          },
+          display() {
+            return `<b style="font-size:24px">Video Driver</b>
+                    <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Stellar-Bitcoin gain</h2>
+                      <h2>Amount: ${format(player[this.layer].buyables[this.id], 0)}</h2><br>
+                    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+          },
+          canAfford() {
+            return player[this.layer].bitcoin.gte(this.cost())
+          },
+          style() {
+            if (tmp[this.layer].buyables[this.id].canAfford) return {
+              "background": "radial-gradient(circle, rgba(255,217,4,1) 0%, rgba(165,126,10,1) 100%)",
+              "width": "430px",
+              "height": "130px",
+              "border-radius": "10px",
+              "border": "0px",
+              "margin": "5px",
+              "text-shadow": "0px 0px 5px #000000",
+              "color": "#ffffff"
+            }
+            return {
+              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "width": "430px",
+              "height": " 130px",
+              "border-radius": "10px",
+              "border": "0px",
+              "margin": "5px",
+              "text-shadow": "0px 0px 10px #000000",
+              "color": "#ffffff"
+            }
+          },
+          buy() {
+            player[this.layer].bitcoin = player[this.layer].bitcoin.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+          },
+          effect(x) {
+            let Effect = new Decimal(1).mul(Decimal.pow(1.05, x.pow(1)))
+            return Effect;
+          },
+          unlocked() {
+            return player[this.layer].buyables[14].gte(8);
           }
         },
     },
@@ -356,7 +414,7 @@ addLayer("XLM", {
                    else return ``
                  }],
                     ["raw-html", () => {
-                   if (player.XLM.bitcoin.gte(0.001)) { return `You have <b style="color: #dbb127;font-size: 24px; text-shadow: 0px 0px 10px">${format(player.XLM.bitcoin)}</b> Bitcoins, that boost Stellar Gain by  <b style="color: #dbb127;font-size: 24px; text-shadow: 0px 0px 10px">${format(tmp.XLM.bitcoinToStellar)}x</b> and Point Generation by  <b style="color: #dbb127;font-size: 24px; text-shadow: 0px 0px 10px">^${format(tmp.XLM.bitcoinToPoints)}</b> `
+                   if (player.XLM.bitcoin.gte(0.001)) { return `You have <b style="color: #dbb127;font-size: 24px; text-shadow: 0px 0px 10px">${format(player.XLM.bitcoin)}</b> Bitcoins, that boost Stellar Gain by  <b style="color: #dbb127;font-size: 24px; text-shadow: 0px 0px 10px">${format(tmp.XLM.bitcoinToStellar)}x</b>`
                    }
                    else return ``
                                 }],
@@ -374,7 +432,9 @@ addLayer("XLM", {
                      <b style='font-size:13px; color:#6e6d6d'>You generate <b style="color: #565578;font-size: 16px; text-shadow: 0px 0px 10px">${format(tmp.XLM.GenerateEthereum)}</b> Ethereum / sec</b><br>
                     <b style='font-size:13px; color:#6e6d6d'>FOR DEBUG: Reset for <b style="color: #786b55;font-size: 16px; text-shadow: 0px 0px 10px">${format(tmp.XLM.bitcoinGain)}</b> Bitcoin</b><br>
                     <br>
-                    <b style='font-size:13px; color:#6e6d6d'>You have spent <b style="color: #32a87b;font-size: 16px; text-shadow: 0px 0px 10px">${formatTimeLong(player.XLM.timeplayed)}</b> in this layer</b>`
+                    <b style='font-size:13px; color:#6e6d6d'>You have spent <b style="color: #32a87b;font-size: 16px; text-shadow: 0px 0px 10px">${formatTimeLong(player.XLM.timeplayed)}</b> in this layer</b><br>
+                    <br>
+                    `
                                 }],
                 "blank",
                 "blank",
@@ -382,7 +442,8 @@ addLayer("XLM", {
                 ["row", [["buyable", 11]]],
                 ["row", [["buyable", 12]]],
                 ["row", [["buyable", 13]]],
-                ["row", [["buyable", 14]]]
+                ["row", [["buyable", 14]]],
+                ["row", [["buyable", 15]]]
             ]
         },
     },
