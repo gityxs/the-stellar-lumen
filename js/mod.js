@@ -19,9 +19,16 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+  <h3>v0.0.0.3 // Tuesday-Wednesday , 16th-17th May</h3><br>
+    - Added Tether as 2nd Reset layer currency.<br>
+    - Added 3 Tether buyables.<br>
+    - Changed formula of Bitcoin gain to be ^0.1 instead of ^0.05.<br>
+    - More stat breakdowns and debugs.
+    <br>
+    <br>
   <h3>v0.0.0.21 // Sunday , 14th May</h3><br>
-    - Fixed Point Generation<br>
-    - Made scaling and game bit harder I guess
+    - Fixed Point Generation.<br>
+    - Made scaling and game bit harder I guess.
    <br>
    <br>
 	<h3>v0.0.0.2 // Sunday , 14th May</h3><br>
@@ -36,7 +43,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "bitcoinReset"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "bitcoinReset", "tetherReset"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
