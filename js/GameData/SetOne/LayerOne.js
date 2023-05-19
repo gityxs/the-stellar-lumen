@@ -231,8 +231,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMC.png')",
+              "background": "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(176,176,176,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -242,9 +241,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -288,8 +286,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMC.png')",
+              "background": "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(176,176,176,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -299,9 +296,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -345,8 +341,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMC.png')",
+              "background": "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(176,176,176,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -356,9 +351,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -401,8 +395,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMC.png')",
+              "background": "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(176,176,176,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -412,9 +405,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -457,8 +449,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/ETHC.png')",
+              "background": "radial-gradient(circle, rgba(0,104,179,1) 0%, rgba(0,25,70,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -468,9 +459,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/ETHCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -513,8 +503,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/ETHC.png')",
+              "background": "radial-gradient(circle, rgba(0,104,179,1) 0%, rgba(0,25,70,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -524,9 +513,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/ETHCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -569,8 +557,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/BTCC.png')",
+              "background": "radial-gradient(circle, rgba(255,199,0,1) 0%, rgba(82,64,0,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -580,9 +567,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/BTCCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -625,8 +611,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image": "url('../image-folder/BTCC.png')",
+              "background": "radial-gradient(circle, rgba(255,199,0,1) 0%, rgba(82,64,0,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -636,9 +621,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image": "url('../image-folder/BTCCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -681,8 +665,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image": "url('../image-folder/BTCC.png')",
+              "background": "radial-gradient(circle, rgba(255,199,0,1) 0%, rgba(82,64,0,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -692,9 +675,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image": "url('../image-folder/BTCCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -737,8 +719,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/TPC.png')",
+              "background": "radial-gradient(circle, rgba(255,68,68,1) 0%, rgba(62,32,32,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -748,9 +729,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -793,8 +773,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/TPC.png')",
+              "background": "radial-gradient(circle, rgba(255,68,68,1) 0%, rgba(62,32,32,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -804,9 +783,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -849,8 +827,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/TPC.png')",
+              "background": "radial-gradient(circle, rgba(255,68,68,1) 0%, rgba(62,32,32,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -860,9 +837,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -905,8 +881,7 @@ addLayer("SET", {
           },
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
-              "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image": "url('../image-folder/TPC.png')",
+              "background": "radial-gradient(circle, rgba(255,68,68,1) 0%, rgba(62,32,32,1) 100%)",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -916,9 +891,8 @@ addLayer("SET", {
               "color": "#ffffff"
             }
             return {
-              "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
               "width": "430px",
-              "background-image": "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
