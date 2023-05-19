@@ -602,6 +602,10 @@ function toPlaces(x, precision, maxAccepted) {
     return result
 }
 
+function formatNoDecimals(x, precision=0) {
+  return format(x,precision,true)
+}
+
 // Will also display very small numbers
 function formatSmall(x, precision=2) {
     return format(x, precision, true)

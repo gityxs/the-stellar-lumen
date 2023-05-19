@@ -1,4 +1,4 @@
-addLayer("XLM", {
+/*addLayer("XLM", {
     name: "Stellar", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "ST", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -13,15 +13,25 @@ addLayer("XLM", {
 		// Bitcoin Set
 		bitcoin: new Decimal(0),
 		bitcoinState: new Decimal(0),
-		bitcoinToGet: new Decimal(0),
+		bitcoinTo Get: new Decimal(0),
 		
 		// Tether Set
 		tether: new Decimal(0),
 		tetherState: new Decimal(0),
 		tetherToGet: new Decimal(0),
 		
+		// Cardano Set
+		cardano: new Decimal(0),
+		cardanoState: new Decimal(0),
+		cardanoToGet: new Decimal(0),
+		
+		// Tier Set
+		tier: new Decimal(0),
+		tierRequirement: new Decimal(1e16),
+		
 		// Tickspeed Set
 		tickspeed: new Decimal(1),
+		timePoints: new Decimal(0),
 		
 		// Time Played in this layer
 		timeplayed: new Decimal(0),
@@ -48,6 +58,7 @@ addLayer("XLM", {
         mult = mult.mul(buyableEffect("XLM", 18))
         mult = mult.mul(tmp.XLM.bitcoinToStellar)
         mult = mult.mul(tmp.XLM.tetherToStellar)
+        mult = mult.mul(tmp.XLM.cardanoToEverything)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -58,6 +69,7 @@ addLayer("XLM", {
       base = base.add(buyableEffect("XLM", 12))
       base = base.mul(buyableEffect("XLM", 14))
       base = base.mul(buyableEffect("XLM", 15))
+      base = base.mul(tmp.XLM.cardanoToEverything)
       return base
     },
     
@@ -93,6 +105,7 @@ addLayer("XLM", {
       let gain2 = new Decimal.pow(gain1, 0.1)
       gain2 = gain2.mul(buyableEffect("XLM", 15))
       gain2 = gain2.mul(buyableEffect("XLM", 16))
+      gain2 = gain2.mul(tmp.XLM.cardanoToEverything)
       return gain2
     },
     
@@ -123,6 +136,44 @@ addLayer("XLM", {
       let Base = player.points
       let GainI = new Decimal.div(Base, 1e9)
       let GainII = new Decimal.pow(GainI, 0.075)
+      GainII = GainII.mul(tmp.XLM.cardanoToEverything)
+      return GainII
+    },
+    
+    cardanoToEverything() {
+      let base = player.XLM.cardano;
+      let effect2 = new Decimal.pow(base, 0.7)
+      let effect3 = new Decimal.add(effect2, 2)
+      return effect3;
+    },
+    
+    cardanoReset() {
+      player.points = new Decimal(0)
+      player.XLM.points = new Decimal(0)
+      player.XLM.ethereum = new Decimal(0)
+      player.XLM.bitcoin = new Decimal(0)
+      player.XLM.bitcoinState = new Decimal(0)
+      player.XLM.tether = new Decimal(0)
+      player.XLM.tetherState = new Decimal(0)
+      
+      player.XLM.buyables[11] = new Decimal(0)
+      player.XLM.buyables[12] = new Decimal(0)
+      player.XLM.buyables[13] = new Decimal(0)
+      player.XLM.buyables[14] = new Decimal(0)
+      player.XLM.buyables[15] = new Decimal(0)
+      player.XLM.buyables[16] = new Decimal(0)
+      player.XLM.buyables[17] = new Decimal(0)
+      player.XLM.buyables[18] = new Decimal(0)
+      
+      player.XLM.cardano = player.XLM.cardano.add(player.XLM.cardanoToGet)
+      player.XLM.cardanoToGet = new Decimal(0)
+      player.XLM.cardanoState = player.XLM.cardanoState.add(1)
+    },
+    
+    cardanoGain() {
+      let Base = player.points
+      let GainI = new Decimal.div(Base, 1e15)
+      let GainII = new Decimal.pow(GainI, 0.05)
       return GainII
     },
     
@@ -142,13 +193,21 @@ addLayer("XLM", {
       return EffectII
     },
     
+    calculateTimePointgain() {
+      let Base = new Decimal(0.0177)
+      return Base
+    },
+    
     update(diff) {
       player.XLM.ethereum = player.XLM.ethereum.add(tmp.XLM.GenerateEthereum.times(diff))
       
       player.XLM.bitcoinToGet = tmp.XLM.bitcoinGain
       player.XLM.tetherToGet = tmp.XLM.tetherGain
+      player.XLM.cardanoToGet = tmp.XLM.cardanoGain
       
       player.XLM.tickspeed = tmp.XLM.calculateTickspeed
+      
+      player.XLM.timePoints = player.XLM.timePoints.add(tmp.XLM.calculateTimePointgain.times(diff))
       
       player.XLM.timeplayed = player.XLM.timeplayed.add(player.XLM.interval.times(diff))
     },
@@ -165,6 +224,7 @@ addLayer("XLM", {
             style() {
               if (tmp[this.layer].clickables[this.id].canClick) return {
                 "background": "linear-gradient(-180deg, rgba(175,109,3,1) 0%, rgba(225,176,0,1) 100%)",
+                "background-image": "url('../image-folder/HardforkCan.png')",
                 "width": "460px",
                 "height": "130px",
                 "border-radius": "10px",
@@ -175,6 +235,7 @@ addLayer("XLM", {
               }
               return {
                 "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+                "background-image": "url('../image-folder/HardforkCant.png')",
                 "width": "460px",
                 "height": " 130px",
                 "border-radius": "10px",
@@ -223,7 +284,45 @@ addLayer("XLM", {
               }
             },
             unlocked() {
-              return player.points.gte(700000) || player.XLM.tetherState.gte(1)
+              return player.points.gte(1e9) || player.XLM.tetherState.gte(1)
+            }
+        },
+        
+        13: {
+            title() { 
+            let state = player.XLM.tetherState
+            return `<b style="font-size:35px">Exchange #${state}</b><br>
+            
+            Reset your previous progress for <b style="font-size: 19px">${format(player.XLM.cardanoToGet)}</b> Cardano`},
+            canClick() { return player.XLM.cardanoToGet.gte(1) },
+            onClick() {
+                  return tmp.XLM.cardanoReset()
+                  
+            },
+            style() {
+              if (tmp[this.layer].clickables[this.id].canClick) return {
+                "background": "linear-gradient(180deg, rgba(0,135,255,1) 0%, rgba(251,251,251,1) 100%)",
+                "width": "460px",
+                "height": "130px",
+                "border-radius": "10px",
+                "border": "0px",
+                "margin": "5px",
+                "text-shadow": "0px 0px 5px #000000",
+                "color": "#ffffff"
+              }
+              return {
+                "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+                "width": "460px",
+                "height": " 130px",
+                "border-radius": "10px",
+                "border": "0px",
+                "margin": "5px",
+                "text-shadow": "0px 0px 10px #000000",
+                "color": "#ffffff"
+              }
+            },
+            unlocked() {
+              return player.points.gte(1e12) || player.XLM.cardanoState.gte(1)
             }
         },
     },
@@ -251,6 +350,7 @@ addLayer("XLM", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
+              "background-image" : "url('../image-folder/XLMCan.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -262,6 +362,7 @@ addLayer("XLM", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
+              "background-image" : "url('../image-folder/XLMCant.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -308,6 +409,7 @@ addLayer("XLM", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
+              "background-image": "url('../image-folder/XLMCan.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -319,6 +421,7 @@ addLayer("XLM", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
+              "background-image": "url('../image-folder/XLMCant.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -364,6 +467,7 @@ addLayer("XLM", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(0,72,218,1) 0%, rgba(6,0,87,1) 100%)",
+             "background-image" : "url('../image-folder/ETHCan.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -374,6 +478,7 @@ addLayer("XLM", {
             }
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
+              "background-image" : "url('../image-folder/ETHCant.png')",
               "width": "430px",
               "height": " 130px",
               "border-radius": "10px",
@@ -702,6 +807,11 @@ addLayer("XLM", {
                    }
                    else return ``
                                 }],
+                   ["raw-html", () => {
+                   if (player.XLM.cardano.gte(0.001)) { return `You have <b style="color: #0dffe7;font-size: 24px; text-shadow: 0px 0px 10px">${format(player.XLM.cardano)}</b> Cardano, that boosts everything by <b style="color: #0dffe7;font-size: 24px; text-shadow: 0px 0px 10px">${format(tmp.XLM.cardanoToEverything)}x</b>`
+                   }
+                   else return ``
+                                }],
                                 ["raw-html", () => {
                    if (player.XLM.tickspeed.gte(0.001)) { return `For every second that passes in real life, it equals as <b style="color: #ff0061;font-size: 24px; text-shadow: 0px 0px 10px">${format(player.XLM.tickspeed)} <sup>( ${hyperEformat(player.XLM.tickspeed)}x )</sup></b> times / sec in game`
                    }
@@ -719,27 +829,96 @@ addLayer("XLM", {
                     <b style='font-size:13px; color:#6e6d6d'>FOR DEBUG: Reset for <b style="color: #557869;font-size: 16px; text-shadow: 0px 0px 10px">${format(tmp.XLM.tetherGain)}</b> Tether</b><br>
                     <br>
                     <b style='font-size:13px; color:#6e6d6d'>You have spent <b style="color: #32a87b;font-size: 16px; text-shadow: 0px 0px 10px">${formatTimeLong(player.XLM.timeplayed)}</b> in this layer</b><br>
-                    <br>
-                    `
-                                }],
+                    <br>`}],
+                    ["raw-html", function () { return options.musicToggle ? `<audio controls autoplay loop hidden><source src=music/experience.mp3 type<=audio/mp3>loop=true hidden=true autostart=true</audio>`: ``}],
+                                
                 "blank",
                 "blank",
+                ["row", [["clickable", 13]]],
                 ["row", [["clickable", 12]]],
                 ["row", [["clickable", 11]]],
-                ["row", [["buyable", 11]]],
-                ["row", [["buyable", 12]]],
-                ["row", [["buyable", 13]]],
-                ["row", [["buyable", 14]]],
-                ["row", [["buyable", 15]]],
-                ["row", [["buyable", 16]]],
-                ["row", [["buyable", 17]]],
-                ["row", [["buyable", 18]]]
+                 "blank",
+                 "blank",
+                ["microtabs", "BUYABLES", { 'border-width': '0px' }],
+                
             ]
         },
+                "Lore" : {
+            unlocked() {return true},
+            content : [
+             ["raw-html", () => {
+                   return `There once was a developer called Niko... He liked to play incremental games and most of his free time he also developed few of them. 
+                   <br>
+                   <br>
+                   However, today something peculiar and unusual happened. Niko found himself in situation where he wanted to make a tree game out of cryptocurrencies. Since there was plenty of them he wasn't worried of running out of ideas for future content. Without wasting any of his precious free time, he started to work on it. Few days pass until he finishes first version with playable content. He was happy and pleased of his hard work. People also liked his game because of it's uniqueness.
+                   <br>
+                   <br>
+                   But something bothered Niko. As he stared at his screen where various numbers were changing every second, he thought to himself. "Why do I have a feeling that something like this has happened already?" Niko questioned himself again. Something really bothered him, that even he couldn't figure it out. This thought of mind was broken when Niko discovered a unusual metallic object was on his table. It, felt really familiar. Niko definitely has seen it somewhere, but where? That metallic object was really cold. Something malicious was brewing from that.`
+                                }],
+                ]},
+                
+                "Time" : {
+            unlocked() {return player.XLM.bitcoinState.gte(1) || player.XLM.tetherState.gte(1)},
+            content : [
+              ["raw-html", () => {
+                   return `You have <b style="color: #ff4e21; font-size: 24px; text-shadow: 0px 0px 10px">${format(player.XLM.timePoints)}</b> Time Points`
+                                }],
+                                
+                ]},
+    },
+        microtabs: {
+        BUYABLES: {
+            "Stellar": {
+                unlocked() { return true },
+                buttonStyle() { return { 'color': '#ffffff' } },
+                content:
+                    [
+                        ["microtabs", "Stellar", { 'border-width': '0px' }],
+                        ["row", [["buyable", 11]]],
+                        ["row", [["buyable", 12]]],
+                    ]
+                   
+            }, 
+            "Ethereum": {
+                unlocked() { return true },
+                buttonStyle() { return { 'color': '#567af0' } },
+                content:
+                    [
+                        ["microtabs", "Ethereum", { 'border-width': '0px' }],
+                        ["row", [["buyable", 13]]],
+                    ]
+                   
+            }, 
+            "Bitcoin": {
+                unlocked() { return true },
+                buttonStyle() { return { 'color': '#dbb127' } },
+                content:
+                    [
+                        ["microtabs", "Bitcoin", { 'border-width': '0px' }],
+                        ["row", [["buyable", 14]]],
+                        ["row", [["buyable", 15]]],
+ 
+                    ]
+                   
+            }, 
+             "Tether": {
+                unlocked() { return true },
+                buttonStyle() { return { 'color': '#00fbbb' } },
+                content:
+                    [
+                        ["microtabs", "Bitcoin", { 'border-width': '0px' }],
+                        ["row", [["buyable", 16]]],
+                        ["row", [["buyable", 17]]],
+                        ["row", [["buyable", 18]]]
+ 
+                    ]
+                   
+            }, 
+        }
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "X", description: "X: Reset for Stellar", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true}
-})
+})*/

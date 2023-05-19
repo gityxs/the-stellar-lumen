@@ -14,7 +14,7 @@ function getStartOptions() {
 		forceOneTab: false,
 		oldStyle: false,
 		tooltipForcing: true,
-		notation: 1
+		musicToggle: true, // Thank you Icecreamdude
 	}
 }
 let notations = ['Standard', 'Scientific', 'Mixed Scientific', 'Engineering', 'Mixed Engineering', 'Hyper-E', 'Mass Unit', 'Prism SQ']

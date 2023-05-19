@@ -137,6 +137,7 @@ var systemComponents = {
         <br>
         The Prestige Tree made by Jacorb and Aarex
 		<br><br>
+		<br> Music by Windows96 , from 'How to see through walls' album , <a v-bind:href="'https://youtu.be/eyFfubvho4M'" target="_blank" class="link">Link</a><br>
 		<div class="link" onclick="showTab('changelog-tab')">Changelog</div><br>
         <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>
         <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree Discord</a><br>
@@ -172,8 +173,11 @@ var systemComponents = {
 				<td><button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">Shift-Click to Toggle Tooltips: {{ options.forceTooltips?"ON":"OFF" }}</button></td>
 				<td><button class="opt" onclick="changeNotation()">Notation: {{ player.notation }}</button></td>
 				</tr> 
+				</tr> 
+				<td><button class="opt" onclick="toggleOpt('musicToggle'); needsCanvasUpdate = true">Toggle Music: {{ options.musicToggle?"Unmute":"Mute" }}</button></td>
+				<tr> 
         </table>`
-    },
+    }, // Thank you Icecreamdude for music player
 
     'back-button': {
         template: `

@@ -2,13 +2,17 @@
 
 <head>
   <meta charset="UTF-16">
-  <meta name="keywords" content="stellar idle game, tsl game, lunar github, Infinite Upgrades"/>
+  <meta name="keywords" content="idle game, The Stellar Lumen, space, strategy, simulation, incremental game"/>
     <meta name="description" content="A Prototype and Experimental JavaScript incremental game. Features currently 4 different currencies and 2 reset layers!"/>
     <meta name="url" content="https://lun4-r.github.io/The-Stellar-Lumen/"/>
-   <meta name="og:title" content="The Stellar Lumen" />
+   <meta name="og:title" content="The Stellar Lumen 0.0.0.4" />
    <meta name="og:type" content="website" />
-   <meta name="og:description" content="A Prototype and Experimental JavaScript incremental game. Features currently 4 different currencies and 2 reset layers!" />
+   <meta name="og:description" content="A experimental game that uses JavaScript and Break_Eternity.js. Features 2 reset layers and 4 different currencies with more to come in furure!" />
    <meta name="og:url" content="https://lun4-r.github.io/The-Stellar-Lumen/" />
+   <meta name="og:image" content="https://lun4-r.github.io/The-Stellar-Lumen/favicon.png"/>
+
+
+
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<link rel="stylesheet" type="text/css" href="css/system-style.css" />
 	<link rel="stylesheet" type="text/css" href="css/bars.css" />
@@ -21,6 +25,8 @@
 		<link rel="stylesheet" type="text/css" href="css/custom-style.css" />
 
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+	
+	<link rel="icon" type="image/x-icon" href="favicon.png">
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 	<script src="js/technical/break_eternity.js"></script>
@@ -85,7 +91,9 @@
 				<div class="header">
 				  	<a href="#default" class="title" style="position: center center">The Stellar Tree {{VERSION.withoutName}}</a>
 				</div>
-				
+				<div class="headerglow">
+				  	<glow href="#default" class="title" style="position: center center"></glow>
+				</div>
 			<button
 			v-if="((player.navTab == 'none' && (tmp[player.tab].row == 'side' || tmp[player.tab].row == 'otherside' || player[player.tab].prevTab)) || player[player.navTab]?.prevTab)"				class="other-back overlayThing" onclick="goBack(player.navTab == 'none' ? player.tab : player.navTab)">←</button>
 			<img id="optionWheel" class="overlayThing" v-if="player.tab!='options-tab'" src="options_wheel.png"
@@ -149,5 +157,4 @@
 		<div class = "bg2" v-bind:style = "tmp.backgroundStyle"></div>
 
 	</div>
-	
 </body>
