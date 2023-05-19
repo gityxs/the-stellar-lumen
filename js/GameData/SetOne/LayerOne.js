@@ -232,7 +232,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMCan.png')",
+              "background-image" : "url('../image-folder/XLMC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -244,7 +244,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCant.png')",
+              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -289,7 +289,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMCan.png')",
+              "background-image" : "url('../image-folder/XLMC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -301,7 +301,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCant.png')",
+              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -346,7 +346,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMCan.png')",
+              "background-image" : "url('../image-folder/XLMC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -358,7 +358,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCant.png')",
+              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -402,7 +402,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/XLMCan.png')",
+              "background-image" : "url('../image-folder/XLMC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -414,7 +414,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/XLMCant.png')",
+              "background-image" : "url('../image-folder/XLMCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -458,7 +458,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/ETHCan.png')",
+              "background-image" : "url('../image-folder/ETHC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -470,7 +470,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/ETHCant.png')",
+              "background-image" : "url('../image-folder/ETHCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -514,7 +514,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/ETHCan.png')",
+              "background-image" : "url('../image-folder/ETHC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -526,7 +526,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/ETHCant.png')",
+              "background-image" : "url('../image-folder/ETHCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -570,7 +570,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/BTCCan.png')",
+              "background-image" : "url('../image-folder/BTCC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -582,7 +582,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/BTCCant.png')",
+              "background-image" : "url('../image-folder/BTCCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -626,7 +626,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image": "url('../image-folder/BTCCan.png')",
+              "background-image": "url('../image-folder/BTCC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -638,7 +638,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image": "url('../image-folder/BTCCant.png')",
+              "background-image": "url('../image-folder/BTCCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -682,7 +682,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image": "url('../image-folder/BTCCan.png')",
+              "background-image": "url('../image-folder/BTCC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -694,7 +694,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image": "url('../image-folder/BTCCant.png')",
+              "background-image": "url('../image-folder/BTCCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -738,7 +738,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/TimeCan.png')",
+              "background-image" : "url('../image-folder/TPC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -750,7 +750,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/TimeCant.png')",
+              "background-image" : "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -794,7 +794,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/TimeCan.png')",
+              "background-image" : "url('../image-folder/TPC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -806,7 +806,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/TimeCant.png')",
+              "background-image" : "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -850,7 +850,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image" : "url('../image-folder/TimeCan.png')",
+              "background-image" : "url('../image-folder/TPC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -862,7 +862,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image" : "url('../image-folder/TimeCant.png')",
+              "background-image" : "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
@@ -906,7 +906,7 @@ addLayer("SET", {
           style() {
             if (tmp[this.layer].buyables[this.id].canAfford) return {
               "background": "radial-gradient(circle, rgba(197,195,195,1) 0%, rgba(58,58,58,1) 100%)",
-              "background-image": "url('../image-folder/TimeCan.png')",
+              "background-image": "url('../image-folder/TPC.png')",
               "width": "430px",
               "height": "130px",
               "border-radius": "10px",
@@ -918,7 +918,7 @@ addLayer("SET", {
             return {
               "background": "radial-gradient(circle, rgba(155,55,55,1) 0%, rgba(50,15,15,1) 100%)",
               "width": "430px",
-              "background-image": "url('../image-folder/TimeCant.png')",
+              "background-image": "url('../image-folder/TPCT.png')",
               "height": " 130px",
               "border-radius": "10px",
               "border": "0px",
