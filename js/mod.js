@@ -14,8 +14,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.4",
-	name: "New Horizons",
+	num: "0.0.0.5",
+	name: "Degradation",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -43,7 +43,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "BTCReset"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "BTCReset", "TEHReset"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -61,6 +61,9 @@ function getPointGen() {
 
 	let Production = new Decimal(1)
 	Production = Production.mul(buyableEffect("SET", 11))
+	Production = Production.mul(buyableEffect("SET", 21))
+	Production = Production.mul(buyableEffect("SET", 31))
+	Production = Production.mul(buyableEffect("SET", 91))
 	return Production
 }
 
