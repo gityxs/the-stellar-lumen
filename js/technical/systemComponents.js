@@ -175,7 +175,8 @@ var systemComponents = {
 				</tr> 
 				</tr> 
 				<td><button class="opt" onclick="toggleOpt('musicToggle'); needsCanvasUpdate = true">Toggle Music: {{ options.musicToggle?"Unmute":"Mute" }}</button></td>
-				<tr> 
+				<td><button class="opt" onclick="install_app; needsCanvasUpdate = true">Download Game</button>
+				</tr>
         </table>`
     }, // Thank you Icecreamdude for music player
 

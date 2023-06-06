@@ -17,7 +17,7 @@ function getStartOptions() {
 		musicToggle: true, // Thank you Icecreamdude
 	}
 }
-let notations = ['Standard', 'Scientific', 'Mixed Scientific', 'Engineering', 'Mixed Engineering', 'Hyper-E', 'Mass Unit', 'Prism SQ']
+let notations = ['Standard', 'Scientific', 'Mixed Scientific', 'Engineering', 'Mixed Engineering', 'Hyper-E', 'Mass Unit', 'Prism SQ', 'Hex', 'Test']
 
 
 function changeNotation() {

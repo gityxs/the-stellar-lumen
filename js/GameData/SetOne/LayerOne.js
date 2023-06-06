@@ -1,4 +1,4 @@
-addLayer("SET", {
+/*addLayer("SET", {
     name: "", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -35,12 +35,18 @@ addLayer("SET", {
 		
 		// Leveler Set
 		level: new Decimal(0),
+		levelXP: new Decimal(0),
+		levelXPgain: new Decimal(0),
+		levelXPrequirement: new Decimal(10),
 		levelTokens: new Decimal(0),
 		
 		auto:{
     StellarAuto: false,
     EthereumAuto: false,
     },
+    t:{
+    TT: false
+    }
     }},
     
     color: "#ffffff",
@@ -57,6 +63,7 @@ addLayer("SET", {
     Multiplier = Multiplier.mul(buyableEffect("SET", 12))
     Multiplier = Multiplier.mul(buyableEffect("SET", 22))
     Multiplier = Multiplier.mul(buyableEffect("SET", 32))
+    Multiplier = Multiplier.mul(buyableEffect("SET", 42))
     Multiplier = Multiplier.mul(buyableEffect("SET", 92))
     Multiplier = Multiplier.mul(tmp.SET.BTCBoost)
     Multiplier = Multiplier.mul(tmp.SET.TEHBoost)
@@ -78,6 +85,7 @@ addLayer("SET", {
     Base = Base.add(buyableEffect("SET", 13))
     Base = Base.mul(buyableEffect("SET", 23))
     Base = Base.mul(buyableEffect("SET", 33))
+    Base = Base.mul(buyableEffect("SET", 43))
     Base = Base.mul(buyableEffect("SET", 93))
     Base = Base.mul(Decimal.pow(TierBoostI, player.SET.tier))
     Base = Base.mul(tmp.SET.tickSpeedCalculation)
@@ -90,6 +98,7 @@ addLayer("SET", {
     player.SET.ETHPerSecond = new Decimal(0)
     player.SET.ETH = new Decimal(0)
     player.SET.BTC = new Decimal(0)
+    player.SET.TEH = new Decimal(0)
       
     player.SET.buyables[11] = new Decimal(0)
     player.SET.buyables[12] = new Decimal(0)
@@ -102,6 +111,10 @@ addLayer("SET", {
     player.SET.buyables[31] = new Decimal(0)
     player.SET.buyables[32] = new Decimal(0)
     player.SET.buyables[33] = new Decimal(0)
+    player.SET.buyables[41] = new Decimal(0)
+    player.SET.buyables[42] = new Decimal(0)
+    player.SET.buyables[43] = new Decimal(0)
+    player.SET.buyables[44] = new Decimal(0)
       
     player.SET.tier = player.SET.tier.add(1)
     player.SET.tierRequirement = player.SET.tierRequirement.mul(375)
@@ -111,7 +124,7 @@ addLayer("SET", {
     let Tier = player.SET.tier
     Tier = Tier.add(1)
     let Base = new Decimal(25000)
-    let ScaleI = new Decimal(7.85)
+    let ScaleI = new Decimal(7.75)
     let ScaleII = new Decimal(1)
     let ScaleIII = new Decimal(1)
     ScaleII = ScaleII.add(Decimal.div(player.SET.tier, 10))
@@ -197,6 +210,7 @@ addLayer("SET", {
     TEHBoost() {
     let Base = player.SET.TEH
     let Power = new Decimal(2)
+    Power = Power.add(buyableEffect("SET", 49))
     let Calculation = new Decimal.pow(Base, Power)
     Calculation = Calculation.add(1)
     return Calculation
@@ -226,6 +240,22 @@ addLayer("SET", {
     return Calculation
     },
     
+    levelXPgainCalculation() {
+      let Base = new Decimal(0)
+      Base = Base.add(player.SET.tier.gte(17) ? 1 : 0)
+      return Base
+    },
+    
+    levelXPrequirementScale() {
+      let Base = new Decimal(1.55)
+      let Power = player.SET.level
+      Power = Power.add(1)
+      
+      let CalculationI = new Decimal(Base, Power)
+      return CalculationI
+
+    },
+    
     autoUpgrade: () => ((tmp.SET.clickables.StellarAuto.canRun)), update(delta) {
     },
     
@@ -240,6 +270,14 @@ addLayer("SET", {
     
     player.SET.energy = player.SET.energy.add((tmp.SET.energyPerSecondCalculation).times(diff))
     
+    player.SET.levelXP = player.SET.levelXP.add((tmp.SET.levelXPgainCalculation).times(diff))
+    
+    if ((player.SET.levelXP).gte(player.SET.levelXPrequirement)) {
+      player.SET.levelXP = new Decimal(0)
+      player.SET.level = player.SET.level.add(1)
+      player.SET.levelXPrequirement = player.SET.levelXPrequirement.mul(tmp.SET.levelXPrequirementScale)
+    }
+   
     if (tmp.SET.clickables.StellarAuto.canRun) buyBuyable(this.layer, 11)
     if (tmp.SET.clickables.StellarAuto.canRun) buyBuyable(this.layer, 12)
     if (tmp.SET.clickables.StellarAuto.canRun) buyBuyable(this.layer, 13)
@@ -556,6 +594,43 @@ addLayer("SET", {
     }
     },
     },
+    TT: {
+    set: "t",
+    title: "Tier Translator",
+    display() {
+    return Boolean(player.SET[this.set][this.id]) ? "On" : "Off"
+    },
+    canClick() {
+    return true
+    },
+    onClick() {
+    player.SET[this.set][this.id] = Boolean(1 - player.SET[this.set][this.id])
+    },
+    canRun() {
+    return player.SET[this.set][this.id] && tmp.SET.clickables[this.id].canClick
+    },
+    unlocked() {
+    return player.SET.tier.gte(17)
+    },
+    style() {
+    if (this.canClick()) return {
+    "background": "linear-gradient(180deg, rgba(223,141,255,1) 0%, rgba(141,185,255,1) 100%)",
+    "color": "white",
+    "border": "0px",
+    "border-radius" : "5px",
+    "width" : "300px",
+    "height" : "25px"
+    }
+    else return {
+    "background": "linear-gradient(180deg, rgba(223,141,255,1) 0%, rgba(141,185,255,1) 100%)",
+    "color" : "white",
+    "border" : "0px", 
+    "border-radius" : "5px",
+    "width" : "300px",
+    "height" : "25px"
+    }
+    },
+    },
     },
     
     buyables: {
@@ -569,6 +644,7 @@ addLayer("SET", {
     PowerI = PowerI.pow(PowerIII)
     let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
     Calculation = Calculation.div(buyableEffect("SET", 14))
+    Calculation = Calculation.div(buyableEffect("SET", 44))
     return Calculation;
     },
     display() {
@@ -582,7 +658,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation" : "Afford-Blink 1s ease-in-out infinite",
+    "animation" : "Afford-Smooth 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -625,6 +701,7 @@ addLayer("SET", {
     PowerI = PowerI.pow(PowerIII)
     let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
     Calculation = Calculation.div(buyableEffect("SET", 14))
+    Calculation = Calculation.div(buyableEffect("SET", 44))
     return Calculation;
     },
     display() {
@@ -638,7 +715,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation" : "Afford-Blink 1s ease-in-out infinite",
+    "animation" : "Afford-Smooth 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -681,6 +758,7 @@ addLayer("SET", {
     PowerI = PowerI.pow(PowerIII)
     let Calculation = new Decimal(100).mul(Decimal.pow(PowerI, x.pow(1)))
     Calculation = Calculation.div(buyableEffect("SET", 14))
+    Calculation = Calculation.div(buyableEffect("SET", 44))
     return Calculation;
     },
     display() {
@@ -694,7 +772,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-Blink 1s ease-in-out infinite",
+    "animation": "Afford-Smooth 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -736,7 +814,7 @@ addLayer("SET", {
     PowerI = PowerI.pow(PowerII)
     PowerI = PowerI.pow(PowerIII)
     let Calculation = new Decimal(1e6).mul(Decimal.pow(PowerI, x.pow(1)))
-    Calculation = Calculation.div(buyableEffect("SET", 14))
+    Calculation = Calculation.div(buyableEffect("SET", 44))
     return Calculation;
     },
     display() {
@@ -750,7 +828,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-Blink 1s ease-in-out infinite",
+    "animation": "Afford-Smooth 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1063,7 +1141,7 @@ addLayer("SET", {
     
     32: {
     cost(x) {
-    let PowerI = new Decimal(75)
+    let PowerI = new Decimal(50)
     let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
     let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
             
@@ -1118,14 +1196,13 @@ addLayer("SET", {
     
     33: {
     cost(x) {
-    let PowerI = new Decimal(100)
+    let PowerI = new Decimal(50)
     let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
     let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
 
     PowerI = PowerI.pow(PowerII)
     PowerI = PowerI.pow(PowerIII)
     let Calculation = new Decimal(1000).mul(Decimal.pow(PowerI, x.pow(1)))
-    Calculation = Calculation.div(buyableEffect("SET", 24))
     return Calculation;
     },
     display() {
@@ -1174,7 +1251,7 @@ addLayer("SET", {
     
     34: {
     cost(x) {
-    let PowerI = new Decimal(500)
+    let PowerI = new Decimal(50)
     let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
     let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
 
@@ -1225,8 +1302,282 @@ addLayer("SET", {
     unlocked() {
     return player.SET.tier.gte(5);
     }
-    },    
-        
+    },
+    
+    41: {
+    cost(x) {
+    let PowerI = new Decimal(1.5)
+    let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+    let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+    PowerI = PowerI.pow(PowerII)
+    PowerI = PowerI.pow(PowerIII)
+    let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+    return Calculation;
+    },
+    display() {
+    return `<b style="font-size:24px">Neural Network+3 v${format(player[this.layer].buyables[this.id], 0)}</b>
+    <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Point Generation</h2><br>
+    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Tether</h1>`
+    },
+    canAfford() {
+    return player[this.layer].TEH.gte(this.cost())
+    },
+    style() {
+    if (tmp[this.layer].buyables[this.id].canAfford)
+    return {
+    "animation" : "Afford-BlinkY 1s ease-in-out infinite",
+    "width": "430px",
+    "height": "130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 5px #000000",
+    "color": "#ffffff"
+    }
+    return {
+    "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
+    "width": "430px",
+    "height": " 130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 10px #000000",
+    "color": "#ffffff"
+    }
+    },
+    buy() {
+    player[this.layer].TEH = player[this.layer].TEH.sub(this.cost())
+    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+    },
+    effect(x) {
+    let Effect = new Decimal(1).mul(Decimal.pow(3, x.pow(1)))
+    return Effect;
+    },
+    unlocked() {
+    return player.SET.tier.gte(16);
+    }
+    },
+    
+    42: {
+    cost(x) {
+    let PowerI = new Decimal(2)
+    let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+    let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+            
+    PowerI = PowerI.pow(PowerII)
+    PowerI = PowerI.pow(PowerIII)
+    let Calculation = new Decimal(5).mul(Decimal.pow(PowerI, x.pow(1)))
+    return Calculation;
+    },
+    display() {
+    return `<b style="font-size:24px">Bigger Computer+3 v${format(player[this.layer].buyables[this.id], 0)}</b>
+    <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Stellar Production</h2><br>
+    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Tether</h1>`
+    },
+    canAfford() {
+    return player[this.layer].TEH.gte(this.cost())
+    },
+    style() {
+    if (tmp[this.layer].buyables[this.id].canAfford)
+    return {
+    "animation" : "Afford-BlinkY 1s ease-in-out infinite",
+    "width": "430px",
+    "height": "130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 5px #000000",
+    "color": "#ffffff"
+    }
+    return {
+    "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
+    "width": "430px",
+    "height": " 130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 10px #000000",
+    "color": "#ffffff"
+    }
+    },
+    buy() {
+    player[this.layer].TEH = player[this.layer].TEH.sub(this.cost())
+    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+    },
+    effect(x) {
+    let Effect = new Decimal(1).mul(Decimal.pow(3, x.pow(1)))
+    return Effect;
+    },
+    unlocked() {
+    return player.SET.tier.gte(16);
+    }
+    },
+    
+    43: {
+    cost(x) {
+    let PowerI = new Decimal(3)
+    let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+    let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+
+    PowerI = PowerI.pow(PowerII)
+    PowerI = PowerI.pow(PowerIII)
+    let Calculation = new Decimal(25).mul(Decimal.pow(PowerI, x.pow(1)))
+    return Calculation;
+    },
+    display() {
+    return `<b style="font-size:24px">RAM Sticks+3 v${format(player[this.layer].buyables[this.id], 0)}</b>
+    <h2>x${format(tmp[this.layer].buyables[this.id].effect)} Ethereum</h2><br>
+    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Tether</h1>`
+    },
+    canAfford() {
+    return player[this.layer].TEH.gte(this.cost())
+    },
+    style() {
+    if (tmp[this.layer].buyables[this.id].canAfford)
+    return {
+    "animation": "Afford-BlinkY 1s ease-in-out infinite",
+    "width": "430px",
+    "height": "130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 5px #000000",   
+    "color": "#ffffff"
+    }
+    return {
+    "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
+    "width": "430px",
+    "height": " 130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",   
+    "text-shadow": "0px 0px 10px #000000",
+    "color": "#ffffff"
+    }
+    },
+    buy() {
+    player[this.layer].TEH = player[this.layer].TEH.sub(this.cost())
+    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+    },
+    effect(x) {
+    let Effect = new Decimal(1).mul(Decimal.pow(2.5, x.pow(1)))
+    return Effect;
+    },
+    unlocked() {
+    return player.SET.tier.gte(22);
+    }
+    },
+    
+    44: {
+    cost(x) {
+    let PowerI = new Decimal(5)
+    let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+    let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+
+    PowerI = PowerI.pow(PowerII)
+    PowerI = PowerI.pow(PowerIII)
+    let Calculation = new Decimal(125).mul(Decimal.pow(PowerI, x.pow(1)))
+    return Calculation;
+    },
+    display() {
+    return `<b style="font-size:24px">Cheaper Components+3 v${format(player[this.layer].buyables[this.id], 0)}</b>
+    <h2>/${format(tmp[this.layer].buyables[this.id].effect)} Stellar buyables</h2><br>
+    <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Tether</h1>`
+    },
+    canAfford() {
+    return player[this.layer].TEH.gte(this.cost())
+    },
+    style() {
+    if (tmp[this.layer].buyables[this.id].canAfford)
+    return {
+    "animation": "Afford-BlinkY 1s ease-in-out infinite",
+    "width": "430px",
+    "height": "130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 5px #000000",
+    "color": "#ffffff"
+    }
+    return {
+    "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
+    "width": "430px",
+    "height": " 130px",
+    "border-radius": "10px",
+    "border": "0px",
+    "margin": "5px",
+    "text-shadow": "0px 0px 10px #000000",
+    "color": "#ffffff"
+    }
+    },
+    buy() {
+    player[this.layer].TEH = player[this.layer].TEH.sub(this.cost())
+    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+    },
+    effect(x) {
+    let Effect = new Decimal(1).mul(Decimal.pow(25, x.pow(1)))
+    return Effect;
+    },
+    unlocked() {
+    return player.SET.tier.gte(22);
+    }
+    },
+    
+    49: {
+      cost(x) {
+        let PowerI = new Decimal(1.02)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+    
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `<b style="font-size:24px">Special Upgrade I v${format(player[this.layer].buyables[this.id], 0)}</b>
+        <h2>+ ^${format(tmp[this.layer].buyables[this.id].effect)} to Tether effect</h2><br>
+        <h1>Cost: ${format(tmp[this.layer].buyables[this.id].cost)} Tether</h1>`
+      },
+      canAfford() {
+        return player[this.layer].TEH.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "animation": "Afford-BlinkY 1s ease-in-out infinite",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background": "radial-gradient(circle, rgba(179,0,0,1) 0%, rgba(70,0,0,1) 100%)",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].TEH = player[this.layer].TEH.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let Effect = new Decimal(1).mul(Decimal.pow(1.005, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return player.SET.tier.gte(22);
+      }
+    },   
 
     91: {
     cost(x) {
@@ -1250,7 +1601,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-SmoothR 1s ease-in-out infinite",
+    "animation": "Afford-SmoothR 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1279,7 +1630,7 @@ addLayer("SET", {
     return Effect;
     },
     unlocked() {
-    return player.SET.tier.gte(2);
+    return hasMilestone("SET", "Time Points");
     }
     },
     
@@ -1305,7 +1656,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-SmoothR 1s ease-in-out infinite",
+    "animation": "Afford-SmoothR 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1334,7 +1685,7 @@ addLayer("SET", {
     return Effect;
     },
     unlocked() {
-    return player.SET.tier.gte(2);
+    return hasMilestone("SET", "Time Points");
     }
     },
     
@@ -1360,7 +1711,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-SmoothR 1s ease-in-out infinite",
+    "animation": "Afford-SmoothR 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1389,7 +1740,7 @@ addLayer("SET", {
     return Effect;
     },
     unlocked() {
-    return player.SET.tier.gte(2);
+    return hasMilestone("SET", "Boost II");
     }
     },
     
@@ -1415,7 +1766,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-SmoothR 1s ease-in-out infinite",
+    "animation": "Afford-SmoothR 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1444,7 +1795,7 @@ addLayer("SET", {
     return Effect;
     },
     unlocked() {
-    return player.SET.tier.gte(6);
+    return hasMilestone("SET", "Boost II");
     }
     },
     
@@ -1470,7 +1821,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-SmoothR 1s ease-in-out infinite",
+    "animation": "Afford-SmoothR 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1499,7 +1850,7 @@ addLayer("SET", {
     return Effect;
     },
     unlocked() {
-    return player.SET.tier.gte(6);
+    return hasMilestone("SET", "Energy");
     }
     },
     
@@ -1525,7 +1876,7 @@ addLayer("SET", {
     style() {
     if (tmp[this.layer].buyables[this.id].canAfford)
     return {
-    "animation": "Afford-SmoothR 1s ease-in-out infinite",
+    "animation": "Afford-SmoothR 4s ease-in-out infinite",
     "width": "430px",
     "height": "130px",
     "border-radius": "10px",
@@ -1554,14 +1905,18 @@ addLayer("SET", {
     return Effect;
     },
     unlocked() {
-    return player.SET.tier.gte(6);
+    return hasMilestone("SET", "Energy");
     }
     },
     },
     
     milestones: {
-    1: {
-    requirementDescription: `<b style="font-size:28px">TIER q</b>`,
+    "Ethereum" : {
+    requirementDescription() {
+    let Degradation = ('q')
+    if (tmp.SET.clickables.TT.canRun) Degradation = ('1')
+    return `<b style="font-size:28px">TIER ${Degradation}</b>`
+    },
     done() {return player.SET.tier.gte(1)},
     effectDescription: `<b style="font-size:22px">
     + 2x Stellar each Tier<br>
@@ -1578,7 +1933,7 @@ addLayer("SET", {
     }
     }
     },
-    2: {
+    "Time Points" : {
     requirementDescription: `<b style="font-size:28px">TIER 2</b>`,
     done() {return player.SET.tier.gte(2)},
     effectDescription: `<b style="font-size:22px">
@@ -1597,7 +1952,7 @@ addLayer("SET", {
     }
     },
     
-    3: {
+    "Bitcoin" : {
     requirementDescription: `<b style="font-size:28px">TIER 3</b>`,
     done() {return player.SET.tier.gte(3)},
     effectDescription: `<b style="font-size:22px">
@@ -1619,7 +1974,7 @@ addLayer("SET", {
     }
     },
     
-    4: {
+    "Boost I" : {
     requirementDescription: `<b style="font-size:28px">TIER 5</b>`,
     done() {return player.SET.tier.gte(5)},
     effectDescription: `<b style="font-size:22px">
@@ -1641,9 +1996,9 @@ addLayer("SET", {
     }
     },
     
-    5: {
-    requirementDescription: `<b style="font-size:28px">TIER 6</b>`,
-    done() {return player.SET.tier.gte(6)},
+    "Boost II" : {
+    requirementDescription: `<b style="font-size:28px">TIER 7</b>`,
+    done() {return player.SET.tier.gte(7)},
     effectDescription: `<b style="font-size:22px">
     + Additional +0.25 base to Ethereum boost per Tier<br>
     + 2 new Time Point buyables<br>
@@ -1663,12 +2018,17 @@ addLayer("SET", {
     }
     },
     
-    6: {
-    requirementDescription: `<b style="font-size:28px">TI/nR 8</b>`,
-    done() {return player.SET.tier.gte(8)},
+    "Energy" : {
+    requirementDescription() {
+    let Degradation = ('TI/nR')
+    if (tmp.SET.clickables.TT.canRun) Degradation = ('TIER')
+    return `<b style="font-size:28px">${Degradation} 9</b>`
+    },
+    done() {return player.SET.tier.gte(9)},
     effectDescription: `<b style="font-size:22px">
     + Boost Bitcoin gain and translation<br>
     + 1 new Stellar buyable<br>
+    + 3 new Time Point buyables
     + Unlock Energy</b>`,
     style() {
     return {
@@ -1685,13 +2045,18 @@ addLayer("SET", {
     }
     },
     
-    7: {
-    requirementDescription: `<b style="font-size:28px">TIER 12</b>`,
-    done() {return player.SET.tier.gte(12)},
-    effectDescription: `<b style="font-size:22px">
-    + KCOLNUUS Tether<br>
+    "Tether" : {
+    requirementDescription: `<b style="font-size:28px">TIER 13</b>`,
+    done() {return player.SET.tier.gte(13)},
+    effectDescription() { 
+    let DegradationI = ('KCOLNUUS')
+    let DegradationII = ('NIAGUM')
+    if (tmp.SET.clickables.TT.canRun) DegradationI = ('Unlock') , DegradationII = ('gain')
+    return `<b style="font-size:22px">
+    + ${DegradationI} Tether<br>
     + 1.125x more Energy per Tier<br>
-    + 4x Time Point NIAGUM</b>`,
+    + 4x Time Point ${DegradationII}</b>`
+    },
     style() {
     return {
     "background" : "#474747",
@@ -1707,13 +2072,20 @@ addLayer("SET", {
     }
     },
     
-    8: {
-    requirementDescription: `<b style="font-size:28px">TIER 16</b>`,
-    done() { return player.SET.tier.gte(16) },
-    effectDescription: `<b style="font-size:22px">
-    + Unlock CTCGAAGTTGAATTAGAGCGG<br>
-    + Additional +0.5 base TO Stellar boost REPUS Tier<br>
-    + Additional +0.25 ESABAE to Ethereum boost per REITIT</b>`,
+    "Leveler" : {
+    requirementDescription: `<b style="font-size:28px">TIER 17</b>`,
+    done() { return player.SET.tier.gte(17) },
+    effectDescription() {
+    let DegradationI = ('CTCGAAGTTGAATTAGAGCGG')
+    let DegradationII = ('REPUS')
+    let DegradationIII = ('ESABAE')
+    let DegradationIV = ('REITIT')
+    if (tmp.SET.clickables.TT.canRun) DegradationI = ('Leveler') , DegradationII = ('per') , DegradationIII = ('base') , DegradationIV = ('Tier')
+    return `<b style="font-size:22px">
+    + Unlock ${DegradationI}<br>
+    + Additional +0.5 base TO Stellar boost ${DegradationII} Tier<br>
+    + Additional +0.25 ${DegradationIII} to Ethereum boost per ${DegradationIV}</b>`
+    },
     style() {
     return {
     "background": "#474747",
@@ -1729,7 +2101,95 @@ addLayer("SET", {
     }
     },
     
-    9: {
+    "Boost III" : {
+    requirementDescription: `<b style="font-size:28px">TIER 21</b>`,
+    done() { return player.SET.tier.gte(21) },
+    effectDescription: `<b style="font-size:22px">
+    + Unlock CTCGAAGTTGAATTAGAGCGG<br>
+    + Additional +0.5 base TO Stellar boost REPUS Tier<br>
+    + Additional +0.25 ESABAE to Ethereum boost per REITIT</b>`,
+    style() {
+    return {
+    "background": "#474747",
+    "width": "auto",
+    "height": "auto",
+    "padding": "5px",
+    "border": "0px solid"
+    
+    }
+    },
+    unlocked() {
+    return (hasMilestone("SET", 7))
+    }
+    },
+    
+    "Prestige": {
+      requirementDescription: `<b style="font-size:28px">TIER 29</b>`,
+      done() { return player.SET.tier.gte(29) },
+      effectDescription: `<b style="font-size:22px">
+        + 2 new Energy upgrades<br>
+        + 1.5x Points per Tier<br>
+        + Additional +0.25 ESABAE to Ethereum boost per REITIT</b>`,
+      style() {
+        return {
+          "background": "#474747",
+          "width": "auto",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid"
+    
+        }
+      },
+      unlocked() {
+        return (hasMilestone("SET", 8))
+      }
+    },
+    
+    11: {
+      requirementDescription: `<b style="font-size:28px">TIER 37</b>`,
+      done() { return player.SET.tier.gte(37) },
+      effectDescription: `<b style="font-size:22px">
+        + Unlock CTCGAAGTTGAATTAGAGCGG<br>
+        + Additional +0.5 base TO Stellar boost REPUS Tier<br>
+        + Additional +0.25 ESABAE to Ethereum boost per REITIT</b>`,
+      style() {
+        return {
+          "background": "#474747",
+          "width": "auto",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid"
+    
+        }
+      },
+      unlocked() {
+        return (hasMilestone("SET", 9))
+      }
+    },
+    
+    12: {
+      requirementDescription: `<b style="font-size:28px">TIER 53</b>`,
+      done() { return player.SET.tier.gte(53) },
+      effectDescription: `<b style="font-size:22px">
+            + Unlock CTCGAAGTTGAATTAGAGCGG<br>
+            + Additional +0.5 base TO Stellar boost REPUS Tier<br>
+            + Additional +0.25 ESABAE to Ethereum boost per REITIT</b>`,
+      style() {
+        return {
+          "background": "#474747",
+          "width": "auto",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid"
+    
+        }
+      },
+      unlocked() {
+        return (hasMilestone("SET", 10))
+      }
+    },
+    
+    99: {
     requirementDescription: `<b style="font-size:28px">I1 o</b>`,
     done() { return player.SET.tier.gte(250) },
     effectDescription: `<b style="font-size:22px">
@@ -1860,6 +2320,11 @@ addLayer("SET", {
     "blank",
     ["row", [["clickable", 13]]],
     "blank",
+    ["row", [["buyable", 41]]],
+    ["row", [["buyable", 42]]],
+    ["row", [["buyable", 43]]],
+    ["row", [["buyable", 44]]],
+    ["row", [["buyable", 49]]],
     ],
     },
     
@@ -1942,6 +2407,31 @@ addLayer("SET", {
     ],
     },
     
+    "Leveler Tab": {
+    unlocked() { return player.SET.tier.gte(21) },
+    content:
+    [
+    "blank",
+    ["raw-html", () => {
+    return `<MA style="font-size: 28px; color: #c7c7c7">Your Leveler is at level <HI style="font-size: 32px; color: #42ecf5; text-shadow: 0px 0px 20px">${format(player.SET.level)}</HI></MA>`
+    }],
+    
+    ["raw-html", () => {
+    return `<MA style="font-size: 20px; color: #c7c7c7">You gain <HI style="font-size: 24px; color: #36c0c7; text-shadow: 0px 0px 20px">${format(tmp.SET.levelXPgainCalculation)}</HI> XP / sec</MA>`
+    }],
+    
+    ["raw-html", () => {
+    return `<MA style="font-size: 20px; color: #595959">Next level at <HI style="font-size: 24px; color: #248085; text-shadow: 0px 0px 20px">${format(player.SET.levelXP)} / ${format(player.SET.levelXPrequirement)}</HI> XP</MA>`
+    }],
+    
+    ["raw-html", () => {
+    return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #248085; text-shadow: 0px 0px 20px">${format(player.SET.levelTokens)}</HI> Level Tokens</MA>`
+    }],
+    "blank",
+    "blank",
+    ],
+    },
+    
     "???": {
     unlocked() { return player.SET.tier.gte(8) },
     content:
@@ -1966,6 +2456,16 @@ addLayer("SET", {
     }
     return ``
     }],
+    "blank",
+    ["raw-html", () => {
+    if (player.SET.tier.gte(17)) 
+    {
+    return `<MA style="font-size: 20px; color: #c7c7c7">Here I managed to fully translate text degradation. I coded you a clickable that should allow you to translate everything to normal, readable text...</MA>`
+    }
+    return ``
+    }],
+    "blank",
+    ["row", [["clickable", "TT"]]],
     ],
     },
     },
@@ -1976,3 +2476,4 @@ addLayer("SET", {
     ],
     layerShown(){return true}
 })
+*/

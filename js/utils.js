@@ -129,7 +129,7 @@ function clickGrid(layer, id) {
 // Function to determine if the player is in a challenge
 function inChallenge(layer, id) {
 	let challenge = player[layer].activeChallenge
-	if (!challenge) return false
+	if (!challenge) return player[layer].nonactiveChallenge
 	id = toNumber(id)
 	if (challenge == id) return true
 
@@ -273,7 +273,7 @@ function updateAchievements(layer) {
 		if (isPlainObject(layers[layer].achievements[id]) && !(hasAchievement(layer, id)) && layers[layer].achievements[id].done()) {
 			player[layer].achievements.push(id)
 			if (layers[layer].achievements[id].onComplete) layers[layer].achievements[id].onComplete()
-			if (tmp[layer].achievementPopups || tmp[layer].achievementPopups === undefined) doPopup("achievement", tmp[layer].achievements[id].name, "Achievement Gotten!", 3, tmp[layer].color);
+			if (tmp[layer].achievementPopups || tmp[layer].achievementPopups === undefined) doPopup("achievement", tmp[layer].achievements[id].name,/* "Achievement Gotten!"*/ tmp[layer].achievementNotif , 3, tmp[layer].color);
 		}
 	}
 }

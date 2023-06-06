@@ -1,7 +1,13 @@
-.SET.treeNode {
+.main.treeNode {
   border: 0px;
   border-radius: 5px;
 }
+
+.main.longUpg {
+  border: 0px;
+  border-radius: 5px;
+}
+
 .SET.milestone {
   border-radius: 5px;
 }
@@ -10,9 +16,30 @@
   border-radius: 5px;
 }
 
-@keyframes Afford-Blink {
-  0% { background-color: #bdbdbd; }
-  100% { background-color: #a19f9f; }
+.ach.treeNode {
+  font-size: 20px;
+  border: 0px;
+  border-radius: 5px;
+  
+  animation: Energy-Own 2s infinite;
+}
+
+.ach.achievement { 
+  margin: 1px;
+  border: 0px;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+
+@keyframes Afford-Smooth {
+  0% { background-color: rgba(175, 175, 175, 1); }
+  50% { background-color: rgba(205,205,205, 1); }
+  100% { background-color: rgba(175, 175, 175, 1); }
 }
 
 @keyframes Afford-BlinkB {

@@ -1,9 +1,11 @@
 let modInfo = {
-	name: "The XLM Tree",
-	id: "CTAG452",
+	name: "Lumen Stellar",
+	id: "CTAG453",
 	author: "Niko_ | ( Citrine )",
 	pointsName: "points",
-	modFiles: ["GameData/SetOne/LayerOne.js", 
+	modFiles: [
+	"GameData/SetOne/LayerOneRE.js", 
+	"GameData/SetOne/LayerAchievement.js", 
 	"tree.js"],
 
 	discordName: "",
@@ -14,8 +16,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.5",
-	name: "Degradation",
+	num: "0.0.0.6",
+	name: "New Server",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -43,7 +45,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "BTCReset", "TEHReset"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "t1Reset"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -60,10 +62,12 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let Production = new Decimal(1)
-	Production = Production.mul(buyableEffect("SET", 11))
-	Production = Production.mul(buyableEffect("SET", 21))
-	Production = Production.mul(buyableEffect("SET", 31))
-	Production = Production.mul(buyableEffect("SET", 91))
+	let TM1Boost = new Decimal(1.25)
+	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.2 : 1)
+	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
+	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
+	Production = Production.mul(buyableEffect("main", "Bitcoin Point Production"))
+	Production = Production.mul(player.main.tier.gte(1) ? new Decimal.pow(TM1Boost, player.main.tier) : 1)
 	return Production
 }
 
