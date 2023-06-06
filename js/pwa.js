@@ -18,7 +18,7 @@ function addPwaInstall() {
 if (location.protocol === "https:" && window.isSecureContext) {
     addEventListener("load", e => {
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("service-worker.js").then(registration => {
+            navigator.serviceWorker.register("../js/serviceworker.js").then(registration => {
                 addPwaInstall();
             })
                 .catch(err => alert(`Error while installing: ${err}`));
