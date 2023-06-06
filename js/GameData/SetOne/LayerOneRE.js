@@ -681,7 +681,7 @@ addLayer("main", {
         return Effect;
       },
       unlocked() {
-        return hasMilestone("main", "TM3") || player.main.cState2.lte(1);
+        return hasMilestone("main", "TM3")
       }
     },
     "Stellar Power Production": {
