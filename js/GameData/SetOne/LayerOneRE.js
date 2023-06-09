@@ -76,8 +76,8 @@ addLayer("main", {
       Multiplier = Multiplier.pow(tmp[this.layer].challenges["TCH2"].debuff)
     }
     
-    if (player.main.points.gte(tmp.main.StellarSoftcapIOffset)) {
-      Multiplier = Multiplier.pow(0.9)
+    if (player.main.points.gte(player.main.tier.gte(17))) {
+      Multiplier = Multiplier.pow(tmp.main.StellarSoftcapIcalc)
     }
     
     return Multiplier
@@ -105,7 +105,7 @@ addLayer("main", {
     }
     
     if (player.main.points.gte("1.78e308")) {
-      Multiplier = Multiplier.sqrt(tmp.main.StellarSoftcapIcalc)
+      Multiplier = Multiplier.pow(tmp.main.StellarSoftcapIcalc)
     }
     return PWR
   },
@@ -139,26 +139,10 @@ addLayer("main", {
     return Calculation
   },
   StellarSoftcapIcalc() {
-    let Base = new Decimal(1.05)
-    let Inc = player.main.points
-    let Div = player.main.pointS1
-    
-    Div = Div.mul(buyableEffect("main", "Stellar Softcap Offset"))
-    let CalculationI = new Decimal.div(Inc, Div)
-    let CalculationII = new Decimal.pow(CalculationI, 0.02)
-    return CalculationII
-  },
-  StellarSoftcapIOffset() {
-    let Base = player.main.pointS1
-    
-    let TM8Boost = new Decimal(1)
-    TM8Boost = TM8Boost.mul(hasMilestone("main", "TM7") ? 1e6 : 1)
-    let Boost = new Decimal(1)
-    Boost = Boost.pow(TM8Boost, player.main.tier)
-    Base = Base.mul(buyableEffect("main", "Stellar Softcap Offset"))
-    
-    Base = Base.mul(Boost)
-    return Base
+    let Tier = player.main.tier
+    Tier = Tier.div(18)
+    let Base = new Decimal(1)
+    return new Decimal.div(Base, Tier)
   },
   tierUpReq() {
     let Base = player.main.tier
@@ -2689,7 +2673,8 @@ addLayer("main", {
        }],
         ["raw-html", () => {
         if (player.main.tier.gte(16)) {
-            return `<MA style="font-size: 20px; color: #7a1818">Requirem I: After ${format(tmp.main.StellarSoftcapIOffset)} Stellar, you gain <HI style="font-size: 24px; color: #a12222; text-shadow: 0px 0px 20px">^0.9</HI> Stellar</MA>`
+            return `<MA style="font-size: 20px; color: #7a1818">Requirem I: After Tier 17, you gain <HI style="font-size: 24px; color: #a12222; text-shadow: 0px 0px 20px">^${format(tmp.main.StellarSoftcapIcalc)}</HI> Stellar</MA><br>
+            <MA style="font-size: 17px; color: #7a1818">Formula: ^1 / ( Tier / 18 )</MA>`
                }
             return ``
                 }],
