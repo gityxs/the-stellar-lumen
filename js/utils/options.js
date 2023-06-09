@@ -14,16 +14,14 @@ function getStartOptions() {
 		forceOneTab: false,
 		oldStyle: false,
 		tooltipForcing: true,
-		musicToggle: true, // Thank you Icecreamdude
 	}
 }
-let notations = ['Standard', 'Scientific', 'Mixed Scientific', 'Engineering', 'Mixed Engineering', 'Hyper-E', 'Mass Unit', 'Prism SQ', 'Hex', 'Test']
-
+let notations = ['Scientific','Engineering','Hyper-E','Standard','Letters','Cancer','Mixed Scientific','Mixed Engineering']
 
 function changeNotation() {
 	player.notation = notations[(notations.indexOf(player.notation) + 1) % notations.length]
-	needCanvasUpdate = true;
 }
+
 function toggleOpt(name) {
 	if (name == "oldStyle" && styleCooldown > 0)
 		return;
@@ -33,6 +31,7 @@ function toggleOpt(name) {
 		changeTreeQuality();
 	if (name == "oldStyle")
 		updateStyle();
+	if (name == "autosave") player.autosave = options.autosave
 }
 var styleCooldown = 0;
 function updateStyle() {

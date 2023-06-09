@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "Lumen Stellar",
-	id: "CTAG453",
+	id: "CTAG454",
 	author: "Niko_ | ( Citrine )",
 	pointsName: "points",
 	modFiles: [
@@ -45,7 +45,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "t1Reset"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -63,10 +63,12 @@ function getPointGen() {
 
 	let Production = new Decimal(1)
 	let TM1Boost = new Decimal(1.25)
-	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.2 : 1)
+	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.25 : 1)
 	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
 	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
 	Production = Production.mul(buyableEffect("main", "Bitcoin Point Production"))
+	Production = Production.mul(buyableEffect("main", "Tether Point Production"))
+	Production = Production.pow(buyableEffect("main", "Time Point Production"))
 	Production = Production.mul(player.main.tier.gte(1) ? new Decimal.pow(TM1Boost, player.main.tier) : 1)
 	return Production
 }

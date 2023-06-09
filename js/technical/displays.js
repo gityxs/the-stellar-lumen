@@ -192,4 +192,16 @@ function updateTabFormat(layer) {
 				Vue.set(temp[layer].microtabs[family][tab], 'content', constructTabFormat(layer, tab, family))
 		}
 	}
+	
+	for (family in layers[layer].mmicrotabs) {
+	  tab = player.subtabs[layer][family]
+	
+	  if (tmp[layer].mmicrotabs[family][tab]) {
+	
+	    if (tmp[layer].mmicrotabs[family][tab].embedLayer)
+	      updateTabFormat(tmp[layer].mmicrotabs[family][tab].embedLayer)
+	    else
+	      Vue.set(temp[layer].mmicrotabs[family][tab], 'content', constructTabFormat(layer, tab, family))
+	  }
+	}
 }

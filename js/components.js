@@ -445,7 +445,23 @@ function loadVue() {
 		</div>
 		`
 	})
-
+	
+	Vue.component('mmicrotabs', {
+	  props: ['layer', 'data'],
+	  computed: {
+	    currentTab() { return player.subtabs[layer][data] }
+	  },
+	  template: `
+			<div v-if="tmp[layer].mmicrotabs" :style="{'border-style': 'solid'}">
+				<div class="upgTable instant">
+					<tab-buttons :layer="layer" :data="tmp[layer].mmicrotabs[data]" :name="data" v-bind:style="tmp[layer].componentStyles['tab-buttons']"></tab-buttons>
+				</div>
+				<layer-tab v-if="tmp[layer].mmicrotabs[data][player.subtabs[layer][data]].embedLayer" :layer="tmp[layer].mmicrotabs[data][player.subtabs[layer][data]].embedLayer" :embedded="true"></layer-tab>
+	
+				<column v-else v-bind:style="tmp[layer].mmicrotabs[data][player.subtabs[layer][data]].style" :layer="layer" :data="tmp[layer].mmicrotabs[data][player.subtabs[layer][data]].content"></column>
+			</div>
+			`
+	})
 
 	// data = id of the bar
 	Vue.component('bar', {

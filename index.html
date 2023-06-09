@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-16">
   <meta name="keywords" content="idle game, The Stellar Lumen, space, strategy, simulation, incremental game"/>
-    <meta name="description" content="A Prototype and Experimental JavaScript incremental game. Features currently 4 different currencies and 2 reset layers!"/>
+    <meta name="description" content="A Prototype and Experimental JavaScript incremental game. Features currently 5 different currencies and 3 reset layers!"/>
     <meta name="url" content="https://lun4-r.github.io/The-Stellar-Lumen/"/>
-   <meta name="og:title" content="The Stellar Lumen 0.0.0.5" />
+   <meta name="og:title" content="The Stellar Lumen 0.0.0.63" />
    <meta name="og:type" content="website" />
-   <meta name="og:description" content="A experimental game that uses JavaScript and Break_Eternity.js. Features 2 reset layers and 4 different currencies with more to come in future!" />
+   <meta name="og:description" content="A experimental game that uses JavaScript and Break_Eternity.js. Features 3 reset layers and 5 different currencies with more to come in future!" />
    <meta name="og:url" content="https://lun4-r.github.io/The-Stellar-Lumen/" />
    <meta name="og:image" content="https://lun4-r.github.io/The-Stellar-Lumen/favicon.png"/>
 
@@ -42,6 +42,7 @@
 	<script src="js/game.js"></script>
 	<script src="js/utils.js"></script>
 	<script src="js/utils/easyAccess.js"></script>
+	<script src="js/utils/functions.js"></script>
 	<script src="js/technical/systemComponents.js"></script>
 	<script src="js/components.js"></script>
 	<script src="js/technical/canvas.js"></script>
@@ -51,7 +52,7 @@
 	<script src="js/utils/save.js"></script>
 	<script src="js/utils/themes.js"></script>
 	<script src="js/utils/x-notify.min.js"></script>
- <script scr="js/serviceworker.js"></script>
+ <script scr="serviceworker.js"></script>
 	<script scr="js/pwa.js"></script>
 	
 
@@ -59,6 +60,7 @@
 
 
 <body onload="load()" onmousemove="updateMouse(event)">
+  
 	<div id="app">
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 		<div v-if="false" id="loadingSection" class="fullWidth">
@@ -77,10 +79,8 @@
 			<br><br><br>
 			<span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink"
 					target="_blank">{{modInfo.discordName}}</a><br></span>
-			<a class="link" href="https://discord.gg/F3xveHV" target="_blank"
-				v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree Discord</a><br>
-			<a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">Main
-				Prestige Tree server</a><br>
+			<a class="link" href="https://discord.gg/vbKQTPRnuD" target="_blank"
+				v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The server I exist in</a><br>
 			<br><br>
 		</div>
 
@@ -103,19 +103,6 @@
 			<img id="optionWheel" class="overlayThing" v-if="player.tab!='options-tab'" src="options_wheel.png"
 				onclick="showTab('options-tab')"></img>
 			<div id="info" v-if="player.tab!='info-tab'" class="overlayThing" onclick="showTab('info-tab')"><br>i</div>
-			<div id="discord" class="overlayThing">
-				<img onclick="window.open((modInfo.discordLink ? modInfo.discordLink : 'https://discord.gg/F3xveHV'),'mywindow')"
-					src="discord.png" target="_blank"></img>
-				<ul id="discord-links">
-					<li v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink"
-							target="_blank">{{modInfo.discordName}}</a><br></li>
-					<li><a class="link" href="https://discord.gg/F3xveHV" target="_blank"
-							v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree
-							Discord</a><br></li>
-					<li><a class="link" href="http://discord.gg/wwQfgPa" target="_blank"
-							v-bind:style="{'font-size': '16px'}">Main Prestige Tree server</a></li>
-				</ul>
-			</div>
 			<overlay-head v-if="!(tmp.gameEnded && !player.keepGoing)"></overlay-head>
 			<div class="sideLayers">
 				<div v-for="(node, index) in OTHER_LAYERS['side']">

@@ -140,8 +140,7 @@ var systemComponents = {
 		<br> Music by Windows96 , from 'How to see through walls' album , <a v-bind:href="'https://youtu.be/eyFfubvho4M'" target="_blank" class="link">Link</a><br>
 		<div class="link" onclick="showTab('changelog-tab')">Changelog</div><br>
         <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>
-        <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree Discord</a><br>
-        <a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">Main Prestige Tree server</a><br>
+        <a class="link" href="https://discord.gg/vbKQTPRnuD" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">Server I exist in</a><br>
 		<br><br>
         Time Played: {{ formatTime(player.timePlayed) }}<br><br>
         <h3>Hotkeys</h3><br>
@@ -175,7 +174,7 @@ var systemComponents = {
 				</tr> 
 				</tr> 
 				<td><button class="opt" onclick="toggleOpt('musicToggle'); needsCanvasUpdate = true">Toggle Music: {{ options.musicToggle?"Unmute":"Mute" }}</button></td>
-				<td><button class="opt" onclick="install_app; needsCanvasUpdate = true">Download Game</button>
+				<td><button class="opt" onclick="install_app">Download Game</button>
 				</tr>
         </table>`
     }, // Thank you Icecreamdude for music player
