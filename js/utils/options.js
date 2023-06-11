@@ -16,7 +16,7 @@ function getStartOptions() {
 		tooltipForcing: true,
 	}
 }
-let notations = ['Scientific','Engineering','Hyper-E','Standard','Letters','Cancer','Mixed Scientific','Mixed Engineering']
+let notations = ['Scientific','Engineering','Hyper-E','Standard','Letters','Hexa','Cancer','Mixed Scientific','Mixed Engineering']
 
 function changeNotation() {
 	player.notation = notations[(notations.indexOf(player.notation) + 1) % notations.length]

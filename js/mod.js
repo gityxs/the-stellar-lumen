@@ -1,11 +1,10 @@
 let modInfo = {
 	name: "Lumen Stellar",
-	id: "CTAG454",
+	id: "CTAG455",
 	author: "Niko_ | ( Citrine )",
 	pointsName: "points",
 	modFiles: [
-	"GameData/SetOne/LayerOneRE.js", 
-	"GameData/SetOne/LayerAchievement.js", 
+	"GameData/SetOne/main.js", 
 	"tree.js"],
 
 	discordName: "",
@@ -16,8 +15,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.6",
-	name: "New Server",
+	num: "0.0.0.71",
+	name: "Another Journey",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -62,6 +61,8 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let Production = new Decimal(1)
+	
+	/*
 	let TM1Boost = new Decimal(1.25)
 	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.25 : 1)
 	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
@@ -69,7 +70,7 @@ function getPointGen() {
 	Production = Production.mul(buyableEffect("main", "Bitcoin Point Production"))
 	Production = Production.mul(buyableEffect("main", "Tether Point Production"))
 	Production = Production.pow(buyableEffect("main", "Time Point Production"))
-	Production = Production.mul(player.main.tier.gte(1) ? new Decimal.pow(TM1Boost, player.main.tier) : 1)
+	Production = Production.mul(player.main.tier.gte(1) ? new Decimal.pow(TM1Boost, player.main.tier) : 1)*/
 	return Production
 }
 

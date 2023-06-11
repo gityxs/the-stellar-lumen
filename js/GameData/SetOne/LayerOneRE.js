@@ -1,4 +1,4 @@
-addLayer("main", {
+/*addLayer("main", {
   name: "", // This is optional, only used in a few places, If absent it just uses the layer id.
   symbol: "INF", // This appears on the layer's node. Default is the id with the first letter capitalized
   position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -978,6 +978,7 @@ addLayer("main", {
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
         return Calculation;
       },
+      purchaseLimit: 100,
       display() {
         return `<b style="font-size:24px">Additional Neural Network Layer v${format(player[this.layer].buyables[this.id], 0)}</b>
         <h2>^${format(tmp[this.layer].buyables[this.id].effect)} Stellar Production</h2><br>
@@ -987,6 +988,18 @@ addLayer("main", {
         return player[this.layer].points.gte(this.cost())
       },
       style() {
+        if (tmp[this.layer].buyables[this.id]. purchased)
+          return {
+            "background-image": "url('images/STEB.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
         if (tmp[this.layer].buyables[this.id].canAfford)
           return {
             "background-image": "url('images/STEC.png')",
@@ -1390,6 +1403,7 @@ addLayer("main", {
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Ethereum"))
         return Calculation;
       },
+      purchaseLimit: 75,
       display() {
         return `<b style="font-size:24px">More Neural Network Inputs v${format(player[this.layer].buyables[this.id], 0)}</b>
         <h2>^${format(tmp[this.layer].buyables[this.id].effect)} Ethereum Manufacturing & Stellar Production</h2><br>
@@ -1685,6 +1699,7 @@ addLayer("main", {
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Bitcoin"))
         return Calculation;
       },
+      purchaseLimit: 50,
       display() {
         return `<b style="font-size:24px">More Neural Network Outputs v${format(player[this.layer].buyables[this.id], 0)}</b>
         <h2>^${format(tmp[this.layer].buyables[this.id].effect)} & Bitcoin Hardforking & Ethereum Manufacturing & Stellar Production</h2><br>
@@ -2034,6 +2049,7 @@ addLayer("main", {
         let Calculation = new Decimal(5600).mul(Decimal.pow(PowerI, x.pow(1)))
         return Calculation;
       },
+      purchaseLimit: 25,
       display() {
         return `<b style="font-size:24px">Shorter Connectors v${format(player[this.layer].buyables[this.id], 0)}</b>
     <h2>^${format(tmp[this.layer].buyables[this.id].effect)} Tether Sorting & Bitcoin Hardforking & Ethereum Manufacturing & Stellar Production</h2><br>

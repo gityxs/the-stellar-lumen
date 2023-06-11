@@ -239,6 +239,9 @@ function format(decimal, precision=3) {
 	else if (player.notation == 'Letters') {
 		return letter(decimal, precision, 'abcdefghijklmnopqrstuvwxyz')
 	}
+	else if (player.notation == 'Hexa') {
+		return letter(decimal, precision, '0123456789ABCDEF')
+	}
 	else if (player.notation == 'Cancer') {
 		return letter(decimal, precision, ['😠', '🎂', '🎄', '💀', '🍆', '🐱', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡'])
 	}
