@@ -27,7 +27,9 @@ addLayer("main", {
   {
     mult = new Decimal(1)
     mult = mult.mul(buyableEffect("main", "Stellar Production"))
+    if (player.main.tier.gte(7)) {
     mult = mult.mul(tmp.main.StellarMagnitudeBonus)
+    }
     return mult
   },
   gainExp()
