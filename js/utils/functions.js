@@ -1,3 +1,5 @@
+// I have no fucking idea what those really are but they are needed to make certain notations work
+
 function powExp(n, exp){ // dilate
 	if (n.lt(10)) return n
 	return Decimal.pow(10,n.log10().pow(exp))
@@ -25,17 +27,17 @@ function mulSlog(n, mul){
 	return tet10(slog(n).mul(mul))
 }
 
-function powSlog(n, exp){ // Vaccinate
+function powSlog(n, exp){ 
 	if (n.lt(10)) return n
 	return tet10(slog(n).pow(exp))
 }
 
-function powSlogExp(n, exp){ //Vaccidilate
+function powSlogExp(n, exp){ 
 	if (n.lt(10)) return n
 	return tet10(powExp(slog(n),exp))
 }
 
-function slog(n){ // slog10(x), .slog is bugged >=eee9e15
+function slog(n){
 	n = new Decimal(n)
 	return Decimal.add(n.layer,new Decimal(n.mag).slog())
 }

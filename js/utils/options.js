@@ -14,12 +14,19 @@ function getStartOptions() {
 		forceOneTab: false,
 		oldStyle: false,
 		tooltipForcing: true,
+		decimal: 3,
 	}
 }
-let notations = ['Scientific','Engineering','Hyper-E','Standard','Letters','Hexa','Cancer','Mixed Scientific','Mixed Engineering']
+let notations = ['Scientific','Engineering','Hyper-E','Standard','Letters','Hexa', 'Binary', 'Genetic','Cancer','Mixed Scientific','Mixed Engineering']
+
+let decimals = [3, 4, 5, 6, 7]
 
 function changeNotation() {
 	player.notation = notations[(notations.indexOf(player.notation) + 1) % notations.length]
+}
+
+function changeDecimalPlaces() {
+  player.decimal = decimals[(notations.indexOf(player.decimal) + 1) % decimals.length]
 }
 
 function toggleOpt(name) {

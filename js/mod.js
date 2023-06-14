@@ -61,7 +61,8 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let Production = new Decimal(1)
-	
+	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
+	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
 	/*
 	let TM1Boost = new Decimal(1.25)
 	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.25 : 1)

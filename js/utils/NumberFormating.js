@@ -242,6 +242,12 @@ function format(decimal, precision=3) {
 	else if (player.notation == 'Hexa') {
 		return letter(decimal, precision, '0123456789ABCDEF')
 	}
+	else if (player.notation == 'Binary') {
+		return letter(decimal, precision, '01')
+	}
+	else if (player.notation == 'Genetic') {
+	  return letter(decimal, precision, ['GCA', 'AAC', 'TGC', 'GAT', 'GAA', 'TTC', 'GGT', 'CAC', 'ATT', 'J', 'AAA', 'TTA', 'ATG', 'AAC', 'O', 'CCC', 'CAG', 'CGG', 'TCT', 'ACT', 'U', 'GTG', 'TGG', 'X', 'TAC', 'GAG'])
+	}
 	else if (player.notation == 'Cancer') {
 		return letter(decimal, precision, ['😠', '🎂', '🎄', '💀', '🍆', '🐱', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡'])
 	}
@@ -506,7 +512,7 @@ function toPlaces(x, precision, maxAccepted) {
 }
 
 // Will also display very small numbers
-function formatSmall(x, precision=2) { 
+function formatSmall(x, precision=6) { 
     return format(x, precision, true)    
 }
 
