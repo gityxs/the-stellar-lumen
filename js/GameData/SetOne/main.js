@@ -537,7 +537,7 @@ addLayer("main", {
         }
       },
       unlocked() {
-        return true
+        return hasMilestone("main", "TM8") 
       }
     },
     
@@ -1416,7 +1416,7 @@ addLayer("main", {
     },
 
     "Factory": {
-      unlocked() { player.main.tier.gte(15) || player.main.factories.gte(0.1) },
+      unlocked() { return hasMilestone("main", "TM8") },
       content: [
       ['raw-html', () => {
           return `<MA style='font-size: 24px'>You own <HI style='font-size: 30px; text-shadow: 0px 0px 20px'>${format(player.main.factories)}</HI> Factories</MA>`
