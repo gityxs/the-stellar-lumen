@@ -203,7 +203,7 @@ function letter(decimal, precision, str) { //AD NG+++
 		m = new Decimal(1)
 		power = power.add(1)
 	}
-	let skipped = Decimal.floor(Decimal.log10(power.mul(len.sub(1)).add(1)).div(Decimal.log10(len))).sub(7)
+	let skipped = Decimal.floor(Decimal.log10(power.mul(len.sub(1)).add(1)).div(Decimal.log10(len))).sub(28)
 	if (skipped.lt(4)) skipped = new Decimal(0)
 	// (power - () / (len - 1) * len) = Decimal.floor(power.sub(Decimal.pow(len,skipped).sub(1).div(len.sub(1)).mul(len)).div(Decimal.pow(len,skipped)))
 	else power = Decimal.floor(power.sub(Decimal.pow(len,skipped).sub(1).div(len.sub(1)).mul(len)).div(Decimal.pow(len,skipped)))
@@ -212,14 +212,14 @@ function letter(decimal, precision, str) { //AD NG+++
 		power = Decimal.ceil(power.div(len)).sub(1)
 	}
 	if (isNaN(skipped.sign)||isNaN(skipped.layer)||isNaN(skipped.mag)) skipped = new Decimal(0)
-	skipped = skipped.add(7)
+	skipped = skipped.add(28)
 	let lett = Decimal.mul(1e9,Decimal.log10(len))
 	let s = slog(skipped).sub(slog(lett)).div(2).floor().add(1)
 	let sl = tet10(slog(skipped).sub(slog(skipped).sub(slog(lett)).div(2).floor().mul(2))).mul(Decimal.log(10,len))
 	if (decimal.layer >= 1e9) return '{'+formatWhole(s)+'}'
 	if (decimal.gte(tet10(slog(lett).add(8)))) return format(sl)+'{'+formatWhole(s)+'}'
 	if (skipped.gte(1e9)) return "["+letter(skipped, precision, str)+"]"
-	if (skipped.gt(7)) ret += "[" + commaFormat(skipped, 0) + "]"
+	if (skipped.gt(28)) ret += "[" + commaFormat(skipped, 0) + "]"
 	if (decimal.gte("ee9")) return ret
 	if (decimal.gte(1e3)) return m.toStringWithDecimalPlaces(precision)+' '+ret
 	if (decimal.mag >= 1e3) return commaFormat(decimal, 0)
@@ -247,6 +247,22 @@ function format(decimal, precision=3) {
 	}
 	else if (player.notation == 'Genetic') {
 	  return letter(decimal, precision, ['GCA', 'AAC', 'TGC', 'GAT', 'GAA', 'TTC', 'GGT', 'CAC', 'ATT', 'J', 'AAA', 'TTA', 'ATG', 'AAC', 'O', 'CCC', 'CAG', 'CGG', 'TCT', 'ACT', 'U', 'GTG', 'TGG', 'X', 'TAC', 'GAG'])
+	}
+	else if (player.notation == 'Chemistry') {
+	  return letter(decimal, precision, [
+	" H ", " He", " Li", " Be", " B ", " C ", " N ", " O ", " F ", " Ne",
+" Na", " Mg", " Al", " Si", " P ", " S ", " Cl", " Ar", " K ", " Ca",
+" Sc", " Ti", " V ", " Cr", " Mn", " Fe", " Co", " Ni", " Cu", " Zn",
+" Ga", " Ge", " As", " Se", " Br", " Kr", " Rb", " Sr", " Y ", " Zr",
+" Nb", " Mo", " Tc", " Ru", " Rh", " Pd", " Ag", " Cd", " In", " Sn",
+" Sb", " Te", " I ", " Xe", " Cs", " Ba", " La", " Ce", " Pr", " Nd",
+" Pm", " Sm", " Eu", " Gd", " Tb", " Dy", " Ho", " Er", " Tm", " Yb",
+" Lu", " Hf", " Ta", " W ", " Re", " Os", " Ir", " Pt", " Au", " Hg",
+" Tl", " Pb", " Bi", " Po", " At", " Rn", " Fr", " Ra", " Ac", " Th",
+" Pa", " U ", " Np", " Pu", " Am", " Cm", " Bk", " Cf", " Es", " Fm",
+" Md", " No", " Lr", " Rf", " Db", " Sg", " Bh", " Hs", " Mt", " Ds",
+" Rg", " Cn", " Nh", " Fl", " Mc", " Lv", " Ts", " Og"
+])
 	}
 	else if (player.notation == 'Cancer') {
 		return letter(decimal, precision, ['😠', '🎂', '🎄', '💀', '🍆', '🐱', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡'])

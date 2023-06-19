@@ -15,7 +15,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.71",
+	num: "0.0.0.71a2",
 	name: "Another Journey",
 }
 
@@ -44,7 +44,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset", "factoryInvestment", "type1reset"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -63,6 +63,8 @@ function getPointGen() {
 	let Production = new Decimal(1)
 	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
 	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
+	Production = Production.mul(tmp.main.AccelerantBonus)
+	Production = Production.mul(tmp.main.OreoPointBoost)
 	/*
 	let TM1Boost = new Decimal(1.25)
 	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.25 : 1)

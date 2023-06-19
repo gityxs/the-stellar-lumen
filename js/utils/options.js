@@ -17,7 +17,9 @@ function getStartOptions() {
 		decimal: 3,
 	}
 }
-let notations = ['Scientific','Engineering','Hyper-E','Standard','Letters','Hexa', 'Binary', 'Genetic','Cancer','Mixed Scientific','Mixed Engineering']
+let notations = ['Standard' , 'Scientific' , 'Mixed Scientific', 'Engineering' , "Mixed Engineering" , "Hyper-E" , "Letters" , "Hexa" , "Binary" , "Genetic" , "Chemistry" , "Cancer"]
+
+
 
 let decimals = [3, 4, 5, 6, 7]
 
