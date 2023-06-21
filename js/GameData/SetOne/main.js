@@ -42,11 +42,12 @@ addLayer("main", {
     mult = mult.mul(buyableEffect("main", "Ethereum Booster"))
     if (player.main.tier.gte(7)) {
       mult = mult.mul(tmp.main.StellarMagnitudeBonus)
-      mult = mult.mul(tmp.main.OreoStellarBoost)
+      
     }
     if (player.main.TCH1S.gte(1)) {
       mult = mult.pow(tmp[this.layer].challenges["Looming"].debuff)
     }
+    mult = mult.mul(tmp.main.OreoStellarBoost)
     mult = mult.mul(challengeEff("main", "Looming"))
     return mult
   },
@@ -144,39 +145,16 @@ addLayer("main", {
     
     let Tier = player.main.factories
     let Layer = new Decimal(1)
+    let Calculation = new Decimal(15)
+    let Increase = new Decimal.mul(Tier, 3)
+    
+    Calculation = Calculation.add(Increase)
 
-    let PowerI = new Decimal.div(player.main.factories, 20).add(1)
-    let PowerII = new Decimal.div(player.main.factories, 40).add(1)
-    let PowerIII = new Decimal.div(player.main.factories, 80).add(1)
-    let PowerIV = new Decimal.div(player.main.factories, 160).add(1)
-    let PowerV = new Decimal.div(player.main.factories, 320).add(1)
-    let PowerVI = new Decimal.div(player.main.factories, 640).add(1)
-    let PowerVII = new Decimal.div(player.main.factories, 1280).add(1)
-    let PowerVIII = new Decimal.div(player.main.factories, 2560).add(1)
-
-    let ScaleI = new Decimal.pow(1.1, Tier)
-    let CostI = new Decimal.mul(ScaleI, Tier)
-
-    let ScaleII = new Decimal.pow(1.1, Tier)
-    let CostII = new Decimal.mul(ScaleII, Tier)
-
-    let Calculation = new Decimal.mul(CostI, CostII)
-    Calculation = Calculation.pow(Layer)
-    Calculation = Calculation.pow(PowerI)
-    Calculation = Calculation.pow(PowerII)
-    Calculation = Calculation.pow(PowerIII)
-    Calculation = Calculation.pow(PowerIV)
-    Calculation = Calculation.pow(PowerV)
-    Calculation = Calculation.pow(PowerVI)
-    Calculation = Calculation.pow(PowerVII)
-    Calculation = Calculation.pow(PowerVIII)
-
-    Calculation = Calculation.add(15)
     if (hasMilestone("main", "TM9")) {
-      Calculation = Calculation.sub(0.75)
+      Calculation = Calculation.sub(1)
     }
     if (hasMilestone("main", "TM10")) {
-      Calculation = Calculation.sub(0.71)
+      Calculation = Calculation.sub(1)
     }
     return Calculation
   },
@@ -255,6 +233,7 @@ addLayer("main", {
 
   Accelerant() {
     let Acceleration = new Decimal(1.002)
+    Acceleration = Acceleration.add(tmp.main.OreoAccelerantBoostBonus)
     if (hasMilestone("main", "TM7")) {
       Acceleration = Acceleration.add(0.002)
     }
@@ -264,6 +243,7 @@ addLayer("main", {
     if (hasMilestone("main", "TM10")) {
       Acceleration = Acceleration.add(0.008)
     }
+    
     return Acceleration
   },
 
@@ -313,6 +293,18 @@ addLayer("main", {
     Calculation = Calculation.add(1)
 
     return Calculation
+  },
+  
+  OreoAccelerantBoostBonus() {
+    let Oreo = player.main.oreos
+    let Logarithm = new Decimal(10)
+    
+    let CalculationI = new Decimal.log(Oreo, Logarithm)
+    CalculationIn= CalculationI.add(1)
+    
+    let CalculationII = new Decimal.div(CalculationI, 50)
+    
+    return CalculationII
   },
 
 
@@ -1385,7 +1377,7 @@ addLayer("main", {
             ["raw-html", () => {
           if (player.main.tier.gte(9)) {
             return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player .main.unit)} u<sup>2</sup></HI>, which gives <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">x${format(tmp.main.AccelerantBonus)}</HI> to Points<br>
-              Formula: × ${format(tmp.main.Accelerant)} u<sup>2</sup>/ sec</MA><br>
+              Formula: ^ ${format(tmp.main.Accelerant)} u<sup>2</sup>/ sec</MA><br>
                <HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 10px">Limit ${format(tmp.main.AccelerantLimit)} u<sup>2</sup></HI>`
           }
           return ``
@@ -1428,7 +1420,8 @@ addLayer("main", {
           if (player.main.tier.gte(0)) {
             return `<MA style="font-size: 20px; color: #595959">Your Oreos boost Points by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoPointBoost)}x</HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Stellar by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoStellarBoost)}x </HI></MA><br>
-              <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Limit by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">^${format(tmp.main.OreoAccelerantLimitBoost)} </HI></MA>`
+              <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Limit by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">^${format(tmp.main.OreoAccelerantLimitBoost)} </HI></MA><br>
+              <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Acceleration by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">+${format(tmp.main.OreoAccelerantBoostBonus)} </HI></MA>`
           }
           return ``
                         }],
