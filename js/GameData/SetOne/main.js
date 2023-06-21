@@ -308,7 +308,7 @@ addLayer("main", {
   },
 
 
-  update(diff, delta) {
+  update(diff) {
     if (player.main.points.gte(1) && player.main.tier.gte(5)) {
       player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
     }

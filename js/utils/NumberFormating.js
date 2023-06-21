@@ -267,6 +267,9 @@ function format(decimal, precision=3) {
 	else if (player.notation == 'Cancer') {
 		return letter(decimal, precision, ['😠', '🎂', '🎄', '💀', '🍆', '🐱', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡'])
 	}
+	else if (player.notation == 'Blind') {
+		return letter(decimal, precision, ' ')
+	}
 	else return formatSciEng(decimal, precision)
 }
 
