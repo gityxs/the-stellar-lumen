@@ -133,6 +133,7 @@ addLayer("main", {
     player.main.buyables["Stellar Production"] = new Decimal(0)
     player.main.buyables["Cheaper Stellar"] = new Decimal(0)
     player.main.buyables["Cheaper Stellar Tier"] = new Decimal(0)
+    player.main.buyables["Stellar Accelerant Boost"] = new Decimal(0)
 
     player.main.buyables["Ethereum Point Production"] = new Decimal(0)
     player.main.buyables["Ethereum Stellar Mag Increaser"] = new Decimal(0)
@@ -156,6 +157,7 @@ addLayer("main", {
     if (hasMilestone("main", "TM10")) {
       Calculation = Calculation.sub(1)
     }
+    Calculation = Calculation.sub(buyableEffect("main", "Ethereum Cheaper Factory"))
     return Calculation
   },
 
@@ -166,6 +168,10 @@ addLayer("main", {
     Generation = Generation.add(1)
 
     Generation = Generation.mul(buyableEffect("main", "Ethereum Booster"))
+    
+    if ( player.main.tier.gte(19) ) {
+    Generation = Generation.mul(tmp.main.EthereumStabilizerBoost)
+    }
     return Generation
   },
 
@@ -230,6 +236,25 @@ addLayer("main", {
     }
     return Boost
   },
+  
+  EthereumStabilizer() {
+    let Base = new Decimal(0)
+    
+    Base = Base.add(player.main.buyables["Ethereum Point Production"])
+    Base = Base.add(player.main.buyables["Ethereum Stellar Mag Increaser"])
+    Base = Base.add(player.main.buyables["Ethereum Stellar Mag Booster"])
+    Base = Base.add(player.main.buyables["Ethereum Booster"])
+    Base = Base.add(player.main.buyables["Ethereum Cheaper Factory"])
+      return Base
+  },
+  
+  EthereumStabilizerBoost() {
+    let Base = new Decimal(1.2)
+    
+    let Calculation = new Decimal.pow(Base, tmp.main.EthereumStabilizer)
+    
+    return Calculation
+  },
 
   Accelerant() {
     let Acceleration = new Decimal(1.002)
@@ -251,6 +276,8 @@ addLayer("main", {
   AccelerantBonus() {
     let Unit = player.main.unit
     let Power = new Decimal(0.5)
+    
+    Power = Power.add(buyableEffect("main", "Stellar Accelerant Bonus"))
 
     let Calculation = new Decimal.pow(Unit, Power)
     Calculation = Calculation.add(1)
@@ -867,6 +894,75 @@ addLayer("main", {
         return hasMilestone("main", "TM7");
       }
     },
+    "Stellar Accelerant Bonus": {
+      cost(x) {
+        let PowerI = new Decimal(1e10)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal("1e333").mul(Decimal.pow(PowerI, x.pow(1)))
+        Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs} Better Computing v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Accelerant Falloff</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Stellar</h1>`
+      },
+      canAfford() {
+        return player[this.layer].points.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/STEC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/STECT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].points = player[this.layer].points.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(0.02)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM10");
+      }
+    },
 
     "Ethereum Point Production": {
       cost(x) {
@@ -1152,6 +1248,75 @@ addLayer("main", {
         return hasMilestone("main", "TM7");
       }
     },
+    "Ethereum Cheaper Factory": {
+      cost(x) {
+        let PowerI = new Decimal(1e15)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e100).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Investors v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">-${format(tmp[this.layer].buyables[this.id].effect)} Factory Investment Requirement</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Ethereum</h1>`
+      },
+      canAfford() {
+        return player[this.layer].eth.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/ETHC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/ETHCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].eth = player[this.layer].eth.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(0.5)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM10");
+      }
+    },
+  
   },
 
   milestones: {
@@ -1312,7 +1477,7 @@ addLayer("main", {
       },
       done() { return player.main.tier.gte(19) },
       effectDescription: `<b style="font-size:22px">
-                      + Unlock Ethereum Stabilizer ( soon )<br>
+                      + Unlock Ethereum Stabilizer<br>
                       + 1.5x base Stellar Magnitude Boost<br>
                       + Very minor change in Factory Investment cost`,
       style() {
@@ -1332,8 +1497,8 @@ addLayer("main", {
       },
       done() { return player.main.tier.gte(27) },
       effectDescription: `<b style="font-size:22px">
-                      + Unlock 5th Stellar buyable ( soon )<br>
-                      + Unlock 5th Ethereum buyable ( soon )<br>
+                      + Unlock 5th Stellar buyable<br>
+                      + Unlock 5th Ethereum buyable<br>
                       + Very minor change in Factory Investment cost<br>
                       + Power Accelerant Limit by 2 and Acceleration by 2x`,
       style() {
@@ -1461,6 +1626,7 @@ addLayer("main", {
             ["row", [["buyable", "Stellar Production"]]],
             ["row", [["buyable", "Cheaper Stellar"]]],
             ["row", [["buyable", "Cheaper Stellar Tier"]]],
+            ["row", [["buyable", "Stellar Accelerant Bonus"]]],
           ]
       },
       "Ethereum": {
@@ -1476,6 +1642,14 @@ addLayer("main", {
             return `<MA style="font-size: 20px; color: #595959">You produce <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.ethGainCalc)}</HI> Ethereum / sec</MA>`
         }],
         ["raw-html", () => {
+            if (player.main.tier.gte(19)) {
+              return `<MA style="font-size: 20px; color: #595959">Your have bought <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.EthereumStabilizer)} ETH</HI>, buyables which in return you are compensated with <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">x${format(tmp.main.EthereumStabilizerBoost)}</HI> to Ethereum<br>
+              Formula: OoM ^ ${format(tmp.main.StellarMagBonusDisplay)}</MA><br>
+               <HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 10px">Limit ${format(player.main.limit)} OoMs</HI>`
+            }
+            return ``
+                        }],
+        ["raw-html", () => {
             if (player.main.tier.lte(4.9) && player.main.oreos.gte(0.01)) {
               return `<HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 10px">MAINFRAME_0x4929-ET ERROR: At line 153, player is under threshold. Can't generate Ethereum...</HI>`
             }
@@ -1486,6 +1660,7 @@ addLayer("main", {
             ["row", [["buyable", "Ethereum Stellar Mag Increaser"]]],
             ["row", [["buyable", "Ethereum Stellar Mag Booster"]]],
             ["row", [["buyable", "Ethereum Booster"]]],
+            ["row", [["buyable", "Ethereum Cheaper Factory"]]]
           ]
       }
     }
