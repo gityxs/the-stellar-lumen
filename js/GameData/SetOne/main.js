@@ -233,6 +233,7 @@ addLayer("main", {
 
   Accelerant() {
     let Acceleration = new Decimal(1.002)
+    if (hasMilestone("main", "TM8"))
     Acceleration = Acceleration.add(tmp.main.OreoAccelerantBoostBonus)
     if (hasMilestone("main", "TM7")) {
       Acceleration = Acceleration.add(0.002)
