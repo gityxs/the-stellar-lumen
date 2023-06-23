@@ -40,6 +40,7 @@ addLayer("main", {
     mult = new Decimal(1)
     mult = mult.mul(buyableEffect("main", "Stellar Production"))
     mult = mult.mul(buyableEffect("main", "Ethereum Booster"))
+    mult = mult.mul(buyableEffect("main", "Oreo Stellar Production"))
     if (player.main.tier.gte(7)) {
       mult = mult.mul(tmp.main.StellarMagnitudeBonus)
       
@@ -91,6 +92,7 @@ addLayer("main", {
     Calculation = Calculation.pow(PowerVIII)
 
     Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar Tier"))
+    Calculation = Calculation.div(buyableEffect("main", "Cheaper Oreo Tier"))
     return Calculation
   },
   tierUp() {
@@ -337,6 +339,10 @@ addLayer("main", {
 
 
   update(diff) {
+    if (player.main.factories.gte(1)) {
+    player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
+    }
+    
     if (player.main.points.gte(1) && player.main.tier.gte(5)) {
       player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
     }
@@ -349,17 +355,19 @@ addLayer("main", {
     player.main.unitLimit = tmp.main.AccelerantLimit
     player.main.limit = tmp.main.StellarMagnitudeLimit
 
-    player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
+    
     
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Point Production")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Production")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Cheaper Stellar")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Cheaper Stellar Tier")
+    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Accelerant Bonus")
     
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Point Production")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Increaser")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Booster")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Booster")
+    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Cheaper Factory")
     
     const activeChallenge = player[this.layer].activeChallenge;
     if (activeChallenge && canCompleteChallenge(this.layer, activeChallenge)) {
@@ -373,7 +381,7 @@ addLayer("main", {
     "Looming": {
       display() {
         var AC = tmp[this.layer].challenges[this.id]
-
+        var bonusComp = buyableEffect("main", "Oreo Looming Offsetter")
         return `
             <b style="font-size:22px; text-shadow: 0px 0px 20px #ffffff">- ★ -</b>
             <br>
@@ -382,7 +390,7 @@ addLayer("main", {
             <b style="font-size:17px; text-shadow: 0px 0px 10px #000000">Produce <b style="font-size:20px; text-shadow: 0px 0px 10px #ffffff">^${format(AC.debuff)} Stellar</b> when in this challenge<br>
             <br>
             You need <b style="font-size:20px; text-shadow: 0px 0px 10px #ffffff">${format(AC.goal)} Stellar</b> to finish this challenge once<br>
-            ${format(challengeCompletions(this.layer, this.id))} / ${format(this.completionLimit)} completions<br>
+            ${format(challengeCompletions(this.layer, this.id))} + ${format(bonusComp)} / ${format(this.completionLimit)} completions<br>
             Boost from completations: <b style="font-size:20px; text-shadow: 0px 0px 10px #ffffff">${format(AC.effect)}x Stellar</b>
             <br> <br>
             Entering this challenge will perform Tier like reset!</b>`
@@ -419,6 +427,8 @@ addLayer("main", {
       },
       effect() {
         let x = new Decimal(challengeCompletions(this.layer, this.id))
+        
+        x = x.add(buyableEffect("main", "Oreo Looming Offsetter"))
         
         let PowerI = new Decimal(100)
         let PowerII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
@@ -578,7 +588,7 @@ addLayer("main", {
       return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
     },
     unlocked() {
-      return true
+      return hasMilestone("main", "TM6")
     },
     style() {
       if (tmp[this.layer].clickables[this.id].canRun) return {
@@ -620,6 +630,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -693,6 +704,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -766,6 +778,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1000).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -839,6 +852,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1e63).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -912,6 +926,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal("1e333").mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -981,6 +996,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVI)
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -1053,6 +1069,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVI)
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1000).mul(Decimal.pow(PowerI, x.pow(1)))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -1125,6 +1142,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVI)
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(100000).mul(Decimal.pow(PowerI, x.pow(1)))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -1193,6 +1211,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVI)
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1e12).mul(Decimal.pow(PowerI, x.pow(1)))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -1265,6 +1284,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVI)
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1e100).mul(Decimal.pow(PowerI, x.pow(1)))
+        Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
         return Calculation;
       },
       display() {
@@ -1316,7 +1336,364 @@ addLayer("main", {
         return hasMilestone("main", "TM10");
       }
     },
-  
+    
+    "Oreo Point Production": {
+      cost(x) {
+        let PowerI = new Decimal(1.5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}C-Neural Network v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">x${format(tmp[this.layer].buyables[this.id].effect)} Point Generation</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Oreos</h1>`
+      },
+      canAfford() {
+        return player[this.layer].oreos.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/OreoC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/OreoCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].oreos = player[this.layer].oreos.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(5.66)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Oreo Stellar Production": {
+      cost(x) {
+        let PowerI = new Decimal(1.5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}More Computers v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">x${format(tmp[this.layer].buyables[this.id].effect)} Stellar Production</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Oreos</h1>`
+      },
+      canAfford() {
+        return player[this.layer].oreos.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/OreoC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/OreoCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].oreos = player[this.layer].oreos.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(10)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Oreo Cheaper": {
+      cost(x) {
+        let PowerI = new Decimal(3)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1000).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Mass Part Manufacturing v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">/${format(tmp[this.layer].buyables[this.id].effect)} Ethereum & Stellar Buyables</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Oreos</h1>`
+      },
+      canAfford() {
+        return player[this.layer].oreos.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/OreoC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/OreoCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].oreos = player[this.layer].oreos.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1000)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Cheaper Oreo Tier": {
+      cost(x) {
+        let PowerI = new Decimal(5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(10000).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Advertising v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">/${format(tmp[this.layer].buyables[this.id].effect)} Tier Cost</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Oreos</h1>`
+      },
+      canAfford() {
+        return player[this.layer].oreos.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/OreoC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/OreoCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].oreos = player[this.layer].oreos.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1000)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Oreo Looming Offsetter": {
+      cost(x) {
+        let PowerI = new Decimal(66)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(3e5).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Special Upgrade-I v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Looming Completions</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Oreos</h1>`
+      },
+      canAfford() {
+        return player[this.layer].oreos.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/OreoC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/OreoCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].oreos = player[this.layer].oreos.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+
   },
 
   milestones: {
@@ -1592,9 +1969,13 @@ addLayer("main", {
           return ``
                         }],
       "blank",
-      ["row", [["clickable", "T1AT"]]],
-      "blank",
       ["row", [["challenge", "Looming"]]],
+      "blank",
+      ["row", [["buyable", "Oreo Point Production"]]],
+      ["row", [["buyable", "Oreo Stellar Production"]]],
+      ["row", [["buyable", "Oreo Cheaper"]]],
+      ["row", [["buyable", "Cheaper Oreo Tier"]]],
+      ["row", [["buyable", "Oreo Looming Offsetter"]]],
       ],
     },
   },
@@ -1621,6 +2002,8 @@ addLayer("main", {
             }
             return ``
                         }],
+            ["row", [["clickable", "T1AT"]]],
+            "blank",
             "blank",
             ["row", [["buyable", "Stellar Point Production"]]],
             ["row", [["buyable", "Stellar Production"]]],

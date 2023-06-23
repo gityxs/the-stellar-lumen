@@ -15,7 +15,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.71a2",
+	num: "0.0.0.71a3",
 	name: "Another Journey",
 }
 
@@ -63,6 +63,7 @@ function getPointGen() {
 	let Production = new Decimal(1)
 	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
 	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
+	Production = Production.mul(buyableEffect("main", "Oreo Point Production"))
 	Production = Production.mul(tmp.main.AccelerantBonus)
 	Production = Production.mul(tmp.main.OreoPointBoost)
 	/*
