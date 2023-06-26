@@ -2949,6 +2949,8 @@ addLayer("main", {
                ["raw-html", () => {
             return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.points)}</HI> Points</MA>`
           }],
+          "blank",
+           ["row", [["clickable", "Factory Reset"]]],
           ],
       }
     },
