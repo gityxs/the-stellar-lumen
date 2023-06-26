@@ -1,5 +1,7 @@
-const HEADERs = `<b style="font-size:25px">`
+const HEADERs = `<b style="font-size:28px; text-align: right">`
 const HEADERe = `</b>`
+
+const OreImage = `<img src="images/Mineral_Base.png" width="16" height="16">`
 
 addLayer("main", {
   name: "INF^2",
@@ -9,23 +11,32 @@ addLayer("main", {
   {
     return {
       unlocked: true,
+
+      // Currencies
       points: new Decimal(0),
       eth: new Decimal(0),
+      btc: new Decimal(0),
       tier: new Decimal(0),
+
+      // Bitcoin related
+      hardfork: new Decimal(0),
+      hardforkxp: new Decimal(0),
+      hardforklvl: new Decimal(0),
 
       limit: new Decimal(30),
 
-      unit: new Decimal(1),
+      unit: new Decimal(1.001),
       unitLimit: new Decimal(1e10),
 
       factories: new Decimal(0),
-      oreos: new Decimal(0),
-      
+      oreos: new Decimal(1),
+
       TCH1S: new Decimal(0),
-      
-      auto:{
-      T1AT: false,
-    },
+
+      auto: {
+        T1AT: false,
+      },
+
     }
   },
   color: "#ffffff",
@@ -41,15 +52,17 @@ addLayer("main", {
     mult = mult.mul(buyableEffect("main", "Stellar Production"))
     mult = mult.mul(buyableEffect("main", "Ethereum Booster"))
     mult = mult.mul(buyableEffect("main", "Oreo Stellar Production"))
+    mult = mult.mul(buyableEffect("main", "Bitcoin Stellar Production"))
     if (player.main.tier.gte(7)) {
       mult = mult.mul(tmp.main.StellarMagnitudeBonus)
-      
+
     }
     if (player.main.TCH1S.gte(1)) {
       mult = mult.pow(tmp[this.layer].challenges["Looming"].debuff)
     }
     mult = mult.mul(tmp.main.OreoStellarBoost)
     mult = mult.mul(challengeEff("main", "Looming"))
+    mult = mult.add(1)
     return mult
   },
   gainExp()
@@ -95,6 +108,7 @@ addLayer("main", {
     Calculation = Calculation.div(buyableEffect("main", "Cheaper Oreo Tier"))
     return Calculation
   },
+
   tierUp() {
     player.main.tier = player.main.tier.add(1)
     player.points = new Decimal(0)
@@ -109,7 +123,7 @@ addLayer("main", {
     player.main.buyables["Ethereum Stellar Mag Increaser"] = new Decimal(0)
     player.main.buyables["Ethereum Stellar Mag Booster"] = new Decimal(0)
   },
-  
+
   type1reset() {
     player.points = new Decimal(0)
     player.main.points = new Decimal(0)
@@ -129,7 +143,7 @@ addLayer("main", {
     player.points = new Decimal(0)
     player.main.points = new Decimal(0)
     player.main.eth = new Decimal(0)
-    player.main.unit = new Decimal(1.0)
+    player.main.unit = new Decimal(1.01)
     player.main.tier = new Decimal(0)
     player.main.buyables["Stellar Point Production"] = new Decimal(0)
     player.main.buyables["Stellar Production"] = new Decimal(0)
@@ -145,12 +159,12 @@ addLayer("main", {
 
   factoryInvestmentCostCalc() {
     let Base = new Decimal(15)
-    
+
     let Tier = player.main.factories
     let Layer = new Decimal(1)
     let Calculation = new Decimal(15)
     let Increase = new Decimal.mul(Tier, 3)
-    
+
     Calculation = Calculation.add(Increase)
 
     if (hasMilestone("main", "TM9")) {
@@ -163,6 +177,74 @@ addLayer("main", {
     return Calculation
   },
 
+  hardfork() {
+    player.main.hardfork = player.main.hardfork.add(1)
+    
+    player.points = new Decimal(0)
+    player.main.tier = new Decimal(0)
+    player.main.factories = new Decimal(0)
+    player.main.points = new Decimal(0)
+    player.main.eth = new Decimal(0)
+    player.main.unit = new Decimal(1.0)
+    player.main.oreos = new Decimal(0)
+    player.main.buyables["Stellar Point Production"] = new Decimal(0)
+    player.main.buyables["Stellar Production"] = new Decimal(0)
+    player.main.buyables["Cheaper Stellar"] = new Decimal(0)
+    player.main.buyables["Cheaper Stellar Tier"] = new Decimal(0)
+    player.main.buyables["Stellar Accelerant Boost"] = new Decimal(0)
+
+    player.main.buyables["Ethereum Point Production"] = new Decimal(0)
+    player.main.buyables["Ethereum Stellar Mag Increaser"] = new Decimal(0)
+    player.main.buyables["Ethereum Stellar Mag Booster"] = new Decimal(0)
+    player.main.buyables["Ethereum Booster"] = new Decimal(0)
+    player.main.buyables["Ethereum Cheaper Factory"] = new Decimal(0)
+
+    player.main.buyables["Oreo Point Production"] = new Decimal(0)
+    player.main.buyables["Oreo Stellar Production"] = new Decimal(0)
+    player.main.buyables["Oreo Cheaper"] = new Decimal(0)
+    player.main.buyables["Cheaper Oreo Tier"] = new Decimal(0)
+    player.main.buyables["Oreo Looming Offsetter"] = new Decimal(0)
+    player.main.buyables["Oreo Bonus Booster"] = new Decimal(0)
+  },
+
+  hardforkCostCalc() {
+    let Base = new Decimal("1e1200")
+
+    let Power = player.main.hardfork
+    Power = Power.add(1)
+
+    let CalculationI = new Decimal.pow(Power, 0.1)
+    let CalculationII = new Decimal.pow(Base, CalculationI)
+    return CalculationII
+  },
+
+  hardforkXPCalc() {
+    let Base = player.main.hardfork
+    let Power = new Decimal(2)
+
+    let Calculation = new Decimal.pow(Base, Power)
+    return Calculation
+  },
+
+  hardforkXPlevelCalc() {
+    let Base = new Decimal(10)
+    let Level = player.main.hardforklvl
+
+    let CalculationI = new Decimal.pow(Level, 5)
+    let CalculationII = new Decimal.mul(Base, CalculationI)
+
+    return CalculationII
+  },
+  
+  bitcoinGeneration() {
+    let Base = player.main.hardforklvl
+    let Power = new Decimal(2.5)
+    
+    let Calculation = new Decimal.pow(Power, Base).sub(1)
+    
+    return Calculation
+  },
+
   ethGainCalc() {
     let Stellar = player.main.points
     Stellar = Stellar.add(1)
@@ -170,18 +252,20 @@ addLayer("main", {
     Generation = Generation.add(1)
 
     Generation = Generation.mul(buyableEffect("main", "Ethereum Booster"))
-    
-    if ( player.main.tier.gte(19) ) {
-    Generation = Generation.mul(tmp.main.EthereumStabilizerBoost)
+
+    if (player.main.tier.gte(19)) {
+      Generation = Generation.mul(tmp.main.EthereumStabilizerBoost)
     }
+    Generation = Generation.add(1)
     return Generation
   },
 
   oreoGainCalc() {
     let Factory = player.main.factories
+    Factory = Factory.add(1)
 
     let Production = new Decimal.pow(3, Factory).sub(1)
-
+    Production = Production.add(1)
     return Production
   },
 
@@ -194,6 +278,7 @@ addLayer("main", {
     if (Calculation.gte(Limit)) {
       return Calculation = Limit
     }
+   
     return Calculation
   },
 
@@ -203,6 +288,7 @@ addLayer("main", {
     Power = new Decimal(2)
 
     Power = Power.add(buyableEffect("main", "Ethereum Stellar Mag Booster"))
+    Power = Power.add(buyableEffect("main", "Bitcoin Stellar Mag Booster"))
     if (hasMilestone("main", "TM8")) {
       Power = Power.mul(1.5)
     }
@@ -219,6 +305,7 @@ addLayer("main", {
   StellarMagnitudeLimit() {
     let Limit = new Decimal(30)
     Limit = Limit.add(buyableEffect("main", "Ethereum Stellar Mag Increaser"))
+    Power = Power.add(buyableEffect("main", "Bitcoin Stellar Mag Booster"))
 
     if (hasMilestone("main", "TM6")) {
       Limit = Limit.mul(2)
@@ -238,51 +325,23 @@ addLayer("main", {
     }
     return Boost
   },
-  
+
   EthereumStabilizer() {
     let Base = new Decimal(0)
-    
+
     Base = Base.add(player.main.buyables["Ethereum Point Production"])
     Base = Base.add(player.main.buyables["Ethereum Stellar Mag Increaser"])
     Base = Base.add(player.main.buyables["Ethereum Stellar Mag Booster"])
     Base = Base.add(player.main.buyables["Ethereum Booster"])
     Base = Base.add(player.main.buyables["Ethereum Cheaper Factory"])
-      return Base
+    return Base
   },
-  
+
   EthereumStabilizerBoost() {
     let Base = new Decimal(1.2)
-    
+
     let Calculation = new Decimal.pow(Base, tmp.main.EthereumStabilizer)
-    
-    return Calculation
-  },
 
-  Accelerant() {
-    let Acceleration = new Decimal(1.002)
-    if (hasMilestone("main", "TM8"))
-    Acceleration = Acceleration.add(tmp.main.OreoAccelerantBoostBonus)
-    if (hasMilestone("main", "TM7")) {
-      Acceleration = Acceleration.add(0.002)
-    }
-    if (hasMilestone("main", "TM8")) {
-      Acceleration = Acceleration.add(0.004)
-    }
-    if (hasMilestone("main", "TM10")) {
-      Acceleration = Acceleration.add(0.008)
-    }
-    
-    return Acceleration
-  },
-
-  AccelerantBonus() {
-    let Unit = player.main.unit
-    let Power = new Decimal(0.5)
-    
-    Power = Power.add(buyableEffect("main", "Stellar Accelerant Bonus"))
-
-    let Calculation = new Decimal.pow(Unit, Power)
-    Calculation = Calculation.add(1)
     return Calculation
   },
 
@@ -298,77 +357,128 @@ addLayer("main", {
       Limit = Limit.pow(2)
     }
     Limit = Limit.pow(tmp.main.OreoAccelerantLimitBoost)
+    Limit = Limit.pow(buyableEffect("main", "Bitcoin Accelerant Limit"))
+    Limit = Limit.add(1)
     return Limit
+  },
+
+  AccelerantSpeed() {
+    let Acceleration = new Decimal(1.02)
+
+    if (hasMilestone("main", "TM8"))
+      Acceleration = Acceleration.add(tmp.main.OreoAccelerantBoostBonus)
+    if (hasMilestone("main", "TM7")) {
+      Acceleration = Acceleration.add(0.02)
+    }
+    if (hasMilestone("main", "TM8")) {
+      Acceleration = Acceleration.add(0.04)
+    }
+    if (hasMilestone("main", "TM10")) {
+      Acceleration = Acceleration.add(0.08)
+    }
+    Acceleration = Acceleration.mul(buyableEffect("main", "Bitcoin Accelerant Speed"))
+
+    return Acceleration
+  },
+
+  AccelerantBonus() {
+    let Base = new Decimal(1)
+    Base = Base.add(buyableEffect("main", "Stellar Accelerant Bonus"))
+    Base = Base.add(buyableEffect("main", "Bitcoin Accelerant Bonus"))
+    let Calculation = new Decimal.pow(player.main.unit, Base)
+    
+    Calculation = Calculation.add(1)
+
+    return Calculation
+  },
+
+  AccelerantBonusDisplay() {
+    let Base = new Decimal(1)
+    Base = Base.add(buyableEffect("main", "Stellar Accelerant Bonus"))
+    Base = Base.add(buyableEffect("main", "Bitcoin Accelerant Bonus"))
+    return Base
   },
 
   OreoPointBoost() {
     let Oreo = player.main.oreos
     let Calculation = new Decimal.pow(Oreo, 7)
+    
+    Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
     Calculation = Calculation.add(1)
-
     return Calculation
   },
 
   OreoStellarBoost() {
     let Oreo = player.main.oreos
+    Oreo = Oreo.add(1)
     let Calculation = new Decimal.pow(Oreo, 6)
+    
+    Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
     Calculation = Calculation.add(1)
-
     return Calculation
   },
 
   OreoAccelerantLimitBoost() {
     let Oreo = player.main.oreos
+    Oreo = Oreo.add(1)
     let Calculation = new Decimal.pow(Oreo, 0.05)
+    
+    Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
     Calculation = Calculation.add(1)
-
     return Calculation
   },
-  
+
   OreoAccelerantBoostBonus() {
     let Oreo = player.main.oreos
+    Oreo = Oreo.add(1)
     let Logarithm = new Decimal(10)
-    
+
     let CalculationI = new Decimal.log(Oreo, Logarithm)
-    CalculationIn= CalculationI.add(1)
-    
+    CalculationI = CalculationI.add(1)
+    CalculationI = CalculationI.pow(buyableEffect("main", "Oreo Bonus Booster"))
     let CalculationII = new Decimal.div(CalculationI, 50)
-    
+
     return CalculationII
   },
 
 
   update(diff) {
     if (player.main.factories.gte(1)) {
-    player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
+      player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
     }
     
-    if (player.main.points.gte(1) && player.main.tier.gte(5)) {
       player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
-    }
+    
     if (player.main.tier.gte(9)) {
-      player.main.unit = (player.main.unit.mul(tmp.main.Accelerant))
-    }
-    if (player.main.unit.gte(player.main.unitLimit)) {
-      return player.main.unit = player.main.unitLimit
+      player.main.unit = player.main.unit.times(tmp.main.AccelerantSpeed.pow(diff))
+    
+      if (player.main.unit.gte(tmp.main.AccelerantLimit)) {
+        return player.main.unit = tmp.main.AccelerantLimit
+      }
     }
     player.main.unitLimit = tmp.main.AccelerantLimit
     player.main.limit = tmp.main.StellarMagnitudeLimit
 
+    player.main.hardforkxp = player.main.hardforkxp.add((tmp.main.hardforkXPCalc).times(diff))
     
-    
+    player.main.btc = player.main.btc.add((tmp.main.bitcoinGeneration).times(diff))
+    if (player.main.hardforkxp.gte(tmp.main.hardforkXPlevelCalc)) {
+      player.main.hardforklvl = player.main.hardforklvl.add(1)
+      player.main.hardforkxp = new Decimal(0)
+    }
+
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Point Production")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Production")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Cheaper Stellar")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Cheaper Stellar Tier")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Accelerant Bonus")
-    
+
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Point Production")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Increaser")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Booster")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Booster")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Cheaper Factory")
-    
+
     const activeChallenge = player[this.layer].activeChallenge;
     if (activeChallenge && canCompleteChallenge(this.layer, activeChallenge)) {
       startChallenge(this.layer, activeChallenge);
@@ -397,27 +507,27 @@ addLayer("main", {
       },
       completionLimit: new Decimal(1e12),
       goal() {
-                let x = new Decimal(challengeCompletions(this.layer, this.id))
-        
-                let PowerI = new Decimal(10000)
-                let PowerII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
-                let PowerIII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
-                let PowerIV = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
-        
-                PowerI = PowerI.pow(PowerII)
-                PowerI = PowerI.pow(PowerIII)
-                PowerI = PowerI.pow(PowerIV)
-                let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
-                return Calculation;
-      },
-      canComplete() {
         let x = new Decimal(challengeCompletions(this.layer, this.id))
-        
+
         let PowerI = new Decimal(10000)
         let PowerII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
         let PowerIII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
         let PowerIV = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
-        
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      canComplete() {
+        let x = new Decimal(challengeCompletions(this.layer, this.id))
+
+        let PowerI = new Decimal(10000)
+        let PowerII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
+        let PowerIII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
+        let PowerIV = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -427,14 +537,14 @@ addLayer("main", {
       },
       effect() {
         let x = new Decimal(challengeCompletions(this.layer, this.id))
-        
+
         x = x.add(buyableEffect("main", "Oreo Looming Offsetter"))
-        
+
         let PowerI = new Decimal(100)
         let PowerII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
         let PowerIII = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
         let PowerIV = new Decimal(1).mul(Decimal.div(x, 100)).add(1)
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -567,48 +677,94 @@ addLayer("main", {
         }
       },
       unlocked() {
-        return hasMilestone("main", "TM8") 
+        return hasMilestone("main", "TM8")
       }
     },
-    
+
+    "Hardfork": {
+      title() {
+        let state = player.main.hardfork
+        return `<b style="font-size:35px">Hardfork #${state}</b><br>
+        Reset EVERYTHING before, including Tiers , Factories in exchange for Hardfork that will help you progress beyond further than previous layers did<br>
+        You need ${format(tmp.main.hardforkCostCalc)} Points to Hardfork`
+      },
+      canClick() {
+        return player.points.gte(tmp.main.hardforkCostCalc)
+      },
+      onClick() {
+        tmp.main.hardfork()
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/HardforkC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "animation": "pulseP 2s infinite",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "460px",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/HardforkCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "460px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+
     T1AT: {
-    set: "auto",
-    title() {
-      return `<b style="font-size:25px">Stellar & Ethereum Automator</b><br>
+      set: "auto",
+      title() {
+        return `<b style="font-size:25px">Stellar & Ethereum Automator</b><br>
       <b style="font-size:20px">${Boolean(player.main[this.set][this.id]) ? "On" : "Off"}</b>`
-      
+
+      },
+      canClick() {
+        return true
+      },
+      onClick() {
+        player.main[this.set][this.id] = Boolean(1 - player.main[this.set][this.id])
+      },
+      canRun() {
+        return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
+      },
+      unlocked() {
+        return hasMilestone("main", "TM6")
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canRun) return {
+          "background-image": "url('images/STAT_ON.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto"
+        }
+        return {
+          "background-image": "url('images/STAT_OFF.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto"
+        }
+      },
     },
-    canClick() {
-      return true
-    },
-    onClick() {
-      player.main[this.set][this.id] = Boolean(1 - player.main[this.set][this.id])
-    },
-    canRun() {
-      return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
-    },
-    unlocked() {
-      return hasMilestone("main", "TM6")
-    },
-    style() {
-      if (tmp[this.layer].clickables[this.id].canRun) return {
-        "background-image": "url('images/STAT_ON.png')",
-        "color": "white",
-        "border": "0px",
-        "border-radius": "5px",
-        "width": "300px",
-        "height": "auto"
-      }
-      return {
-        "background-image": "url('images/STAT_OFF.png')",
-        "color": "white",
-        "border": "0px",
-        "border-radius": "5px",
-        "width": "300px",
-        "height": "auto"
-      }
-    },
-  },
 
   },
   buyables: {
@@ -631,6 +787,7 @@ addLayer("main", {
         let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Stellar"))
         return Calculation;
       },
       display() {
@@ -705,6 +862,7 @@ addLayer("main", {
         let Calculation = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Stellar"))
         return Calculation;
       },
       display() {
@@ -779,6 +937,7 @@ addLayer("main", {
         let Calculation = new Decimal(1000).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Stellar"))
         return Calculation;
       },
       display() {
@@ -853,6 +1012,7 @@ addLayer("main", {
         let Calculation = new Decimal(1e63).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Stellar"))
         return Calculation;
       },
       display() {
@@ -927,6 +1087,7 @@ addLayer("main", {
         let Calculation = new Decimal("1e333").mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar"))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Stellar"))
         return Calculation;
       },
       display() {
@@ -968,9 +1129,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(0.02)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -1110,15 +1271,11 @@ addLayer("main", {
         setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
       },
       effect(x) {
-        let PowerI = new Decimal(1.15)
-        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
-        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
-        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerI = new Decimal(7.5)
 
-        PowerI = PowerI.pow(PowerII)
-        PowerI = PowerI.pow(PowerIII)
-        PowerI = PowerI.pow(PowerIV)
-        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1))).sub(1)
+        PowerI = PowerI.mul(x)
+
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
       unlocked() {
@@ -1326,9 +1483,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(0.5)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -1336,7 +1493,7 @@ addLayer("main", {
         return hasMilestone("main", "TM10");
       }
     },
-    
+
     "Oreo Point Production": {
       cost(x) {
         let PowerI = new Decimal(1.5)
@@ -1627,7 +1784,7 @@ addLayer("main", {
     },
     "Oreo Looming Offsetter": {
       cost(x) {
-        let PowerI = new Decimal(66)
+        let PowerI = new Decimal(50)
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
@@ -1641,7 +1798,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerV)
         PowerI = PowerI.pow(PowerVI)
         PowerI = PowerI.pow(PowerVII)
-        let Calculation = new Decimal(3e5).mul(Decimal.pow(PowerI, x.pow(1)))
+        let Calculation = new Decimal(1e5).mul(Decimal.pow(PowerI, x.pow(1)))
         return Calculation;
       },
       display() {
@@ -1683,10 +1840,581 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(1)
+
+        PowerI = PowerI.mul(x)
+
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Oreo Bonus Booster": {
+      cost(x) {
+        let PowerI = new Decimal(2)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e6).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Special Upgrade-II v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">^${format(tmp[this.layer].buyables[this.id].effect)} Oreo Bonuses</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Oreos</h1>`
+      },
+      canAfford() {
+        return player[this.layer].oreos.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/OreoC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/OreoCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].oreos = player[this.layer].oreos.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1.1)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+
+        PowerI = PowerI.sqrt(PowerII)
+        PowerI = PowerI.sqrt(PowerIII)
+        PowerI = PowerI.sqrt(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    
+    
+    "Bitcoin Point Production": {
+      cost(x) {
+        let PowerI = new Decimal(2)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Consise Thinking v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">x${format(tmp[this.layer].buyables[this.id].effect)} Point Generation</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1e4)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Bitcoin Accelerant Limit": {
+      cost(x) {
+        let PowerI = new Decimal(2.5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(50).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}SSD Drive Capacity v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">^${format(tmp[this.layer].buyables[this.id].effect)} Accelerant Limit</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1.025)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Bitcoin Accelerant Speed": {
+      cost(x) {
+        let PowerI = new Decimal(3)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+    
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(100).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Clocking Speed v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+            <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">x${format(tmp[this.layer].buyables[this.id].effect)} Accelerant Speed</b><br>
+        <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1.044)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+    
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Bitcoin Accelerant Bonus": {
+      cost(x) {
+        let PowerI = new Decimal(3.5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+    
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(250).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Precise Computing v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+            <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Accelerant Falloff</b><br>
+        <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(0.05)
         
         PowerI = PowerI.mul(x)
         
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    
+    "Bitcoin Stellar Production": {
+      cost(x) {
+        let PowerI = new Decimal(2)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Nano-Processing v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">x${format(tmp[this.layer].buyables[this.id].effect)} Stellar Production</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1e5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Bitcoin Stellar Mag Booster": {
+      cost(x) {
+        let PowerI = new Decimal(3)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(175).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Smarter Artificial Intelligence v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Stellar  Magnitude Boost</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(2.025)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Bitcoin Cheaper Stellar": {
+      cost(x) {
+        let PowerI = new Decimal(4)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(675).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Part Duplication v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">/${format(tmp[this.layer].buyables[this.id].effect)} Stellar Buyables</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1e6)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
         return Effect;
       },
       unlocked() {
@@ -1706,12 +2434,13 @@ addLayer("main", {
     + Unlock Stellar`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/BronzeMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
         }
       }
     },
@@ -1724,7 +2453,8 @@ addLayer("main", {
     + Unlock 2nd Stellar buyable`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/BronzeMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
@@ -1742,7 +2472,8 @@ addLayer("main", {
         + Unlock 3rd Stellar buyable`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/BronzeMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
@@ -1760,12 +2491,14 @@ addLayer("main", {
         + Unlock Ethereum`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/SilverMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#ffffff"
         }
       }
     },
@@ -1779,12 +2512,14 @@ addLayer("main", {
         + Unlock Stellar Magnitude`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/SilverMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#ffffff"
         }
       }
     },
@@ -1799,12 +2534,14 @@ addLayer("main", {
             + Unlock Accelerant`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/SilverMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#ffffff"
         }
       }
     },
@@ -1819,12 +2556,14 @@ addLayer("main", {
             + Power Accelerant Limit by 2 and Acceleration by 2x`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/GoldMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#000000"
         }
       }
     },
@@ -1839,12 +2578,14 @@ addLayer("main", {
                  + Power Accelerant Limit by 2 and Acceleration by 2x`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/GoldMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#000000"
         }
       }
     },
@@ -1859,12 +2600,14 @@ addLayer("main", {
                       + Very minor change in Factory Investment cost`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/GoldMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#000000"
         }
       }
     },
@@ -1880,12 +2623,14 @@ addLayer("main", {
                       + Power Accelerant Limit by 2 and Acceleration by 2x`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/DiamondMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#000000"
         }
       }
     },
@@ -1895,15 +2640,78 @@ addLayer("main", {
       },
       done() { return player.main.tier.gte(35) },
       effectDescription: `<b style="font-size:22px">
-                                     + Unlock Bitcoin ( soon )`,
+                                     + Unlock Bitcoin`,
       style() {
         return {
-          "background": "#474747",
+          "background-image": "url('images/DiamondMastery.png')",
+          "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
-          "border-radius": "10px"
+          "border-radius": "10px",
+          "color": "#000000"
+        }
+      }
+    },
+    "TM12": {
+      requirementDescription() {
+        return `<b style="font-size:28px">TIER 43</b>`
+      },
+      done() { return player.main.tier.gte(43) },
+      effectDescription: `<b style="font-size:22px">
+                                         + Unlock 3rd Bitcoin Tab`,
+      style() {
+        return {
+          "background-image": "url('images/DiamondMastery.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#000000"
+        }
+      }
+    },
+    "TM13": {
+      requirementDescription() {
+        return `<b style="font-size:28px">TIER 59</b>`
+      },
+      done() { return player.main.tier.gte(59) },
+      effectDescription: `<b style="font-size:22px">
+                                         + Unlock 4th Bitcoin Tab`,
+      style() {
+        return {
+          "background-image": "url('images/AmethystMastery.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#ffffff"
+        }
+      }
+    },
+    "TM14": {
+      requirementDescription() {
+        return `<b style="font-size:28px">TIER 75</b>`
+      },
+      done() { return player.main.tier.gte(75) },
+      effectDescription: `<b style="font-size:22px">
+                                         + Unlock The Machinery ( soon )<br>
+                                         + Unlock Crafting System ( soon )`,
+      style() {
+        return {
+          "background-image": "url('images/AmethystMastery.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#ffffff"
         }
       }
     },
@@ -1911,16 +2719,20 @@ addLayer("main", {
   tabFormat: {
     "Main Progression": {
       content: [
+      "h-line",
+      "blank",
       ['raw-html', () => {
           return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px'>${format(player.points)}</HI> Points</MA>`
                 }],
       ["raw-html", () => {
           return `<MA style="font-size: 19px; color: #595959">You generate <HI style="font-size: 28px; color: #737373; text-shadow: 0px 0px 20px">${format(getPointGen())}</HI> Points / sec</MA>`
             }],
+            "blank",
             ["raw-html", () => {
           if (player.main.tier.gte(9)) {
-            return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player .main.unit)} u<sup>2</sup></HI>, which gives <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">x${format(tmp.main.AccelerantBonus)}</HI> to Points<br>
-              Formula: ^ ${format(tmp.main.Accelerant)} u<sup>2</sup>/ sec</MA><br>
+            return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.unit)} u<sup>2</sup></HI>, which gives <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">x${format(tmp.main.AccelerantBonus)}</HI> to Points<br>
+              Generation Rate: × ${format(tmp.main.AccelerantSpeed)} u<sup>2</sup>/ sec<br>
+              Boost Formula: ( u<sup>2</sup> ^ ${format(tmp.main.AccelerantBonusDisplay)} ) + 1</MA><br>
                <HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 10px">Limit ${format(tmp.main.AccelerantLimit)} u<sup>2</sup></HI>`
           }
           return ``
@@ -1929,23 +2741,11 @@ addLayer("main", {
       ["microtabs", "Main", { 'border-width': '0px' }],
       ],
     },
-    "Tier Tab": {
+    "Progression": {
       unlocked() { return player.points.gte(10) || player.main.tier.gte(1) },
       content: [
     "blank",
-    ["raw-html", () => {
-          return `<MA style="font-size: 28px; color: #c7c7c7">You are at Tier <HI style="font-size: 32px; text-shadow: 0px 0px 20px">${formatNoDecimals(player.main.tier)}</HI></MA>`
-    }],
-
-    ["raw-html", () => {
-          return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.points)}</HI> Points</MA>`
-    }],
-    "blank",
-    ["row", [["clickable", "Tier Up"]]],
-    "blank",
-    ["row", [["clickable", "Factory Reset"]]],
-    "blank",
-    "milestones",
+    ["microtabs", "Progression", { 'border-width': '0px' }],
     "blank",
     ],
     },
@@ -1960,13 +2760,10 @@ addLayer("main", {
           return `<MA style="font-size: 19px; color: #595959">You have produced <HI style="font-size: 28px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.oreos)}</HI> Oreos</MA>`
             }],
             ["raw-html", () => {
-          if (player.main.tier.gte(0)) {
             return `<MA style="font-size: 20px; color: #595959">Your Oreos boost Points by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoPointBoost)}x</HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Stellar by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoStellarBoost)}x </HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Limit by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">^${format(tmp.main.OreoAccelerantLimitBoost)} </HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Acceleration by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">+${format(tmp.main.OreoAccelerantBoostBonus)} </HI></MA>`
-          }
-          return ``
                         }],
       "blank",
       ["row", [["challenge", "Looming"]]],
@@ -1976,6 +2773,7 @@ addLayer("main", {
       ["row", [["buyable", "Oreo Cheaper"]]],
       ["row", [["buyable", "Cheaper Oreo Tier"]]],
       ["row", [["buyable", "Oreo Looming Offsetter"]]],
+      ["row", [["buyable", "Oreo Bonus Booster"]]],
       ],
     },
   },
@@ -2002,6 +2800,7 @@ addLayer("main", {
             }
             return ``
                         }],
+            "blank",
             ["row", [["clickable", "T1AT"]]],
             "blank",
             "blank",
@@ -2045,7 +2844,151 @@ addLayer("main", {
             ["row", [["buyable", "Ethereum Booster"]]],
             ["row", [["buyable", "Ethereum Cheaper Factory"]]]
           ]
+      },
+
+      "Bitcoin": {
+        unlocked() { return hasMilestone("main", "TM11") },
+        content: [
+       "blank",
+       "h-line",
+       "blank",
+       ["raw-html", () => {
+            return `<MA style='font-size: 25px'>You have done <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>${formatNoDecimals(player.main.hardfork)}</HI> Hardforks</MA>`
+               }],
+         ['raw-html', () => {
+            return `<MA style='font-size: 25px'>You have <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>${format(player.main.btc)}</HI> Bitcoin</MA>`
+        }],
+        ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You fork <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.bitcoinGeneration)}</HI> Bitcoin / sec</MA>`
+                        }],
+        "blank",
+        ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You Hardforks generate <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.hardforkXPCalc)} XP</HI> sec</MA>`
+                }],
+        ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.hardforkxp)}</HI> XP</MA>`
+                                }],
+        ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You need <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.hardforkXPlevelCalc)} XP</HI> to reach next Level</MA>`
+                }],
+        ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You are at Level <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.hardforklvl)}</HI></MA>`
+                                }],
+
+            "blank",
+            ["row", [["clickable", "Hardfork"]]],
+            "blank",
+            "blank",
+            "h-line",
+            "blank",
+            ["microtabs", "BitcoinBuyables", { 'border-width': '0px' }],
+          ]
       }
+    },
+
+    Progression: {
+      "Tier": {
+        content: [
+             "blank",
+             "h-line",
+             "blank",
+          ['raw-html', () => {
+            return `<MA style='font-size: 24px'>You are at Tier <HI style='font-size: 30px; text-shadow: 0px 0px 20px'>${formatNoDecimals(player.main.tier)}</HI></MA>`
+                }],
+         ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.points)}</HI> Points</MA>`
+    }],
+    "blank",
+    ["row", [["clickable", "Tier Up"]]],
+    "blank",
+    "blank",
+    ["raw-html", () => {
+            return `<MA style="font-size: 24px; color: #ffffff">Tier Milestones</MA>`
+        }],
+        ["row", [["milestone", "TM1"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM2"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM3"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM4"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM5"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM6"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM7"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM8"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM9"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM10"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM11"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM12"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM13"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM14"]]],
+    ],
+      },
+
+      "Factory": {
+        content: [
+                   "blank",
+                   "h-line",
+                   "blank",
+                ['raw-html', () => {
+            return `<MA style='font-size: 24px'>You own <HI style='font-size: 30px; text-shadow: 0px 0px 20px'>${formatNoDecimals(player.main.factories)}</HI> Factories</MA>`
+                      }],
+               ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You are at Tier <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.tier)}</HI> </MA>`
+          }],
+               ["raw-html", () => {
+            return `<MA style="font-size: 20px; color: #595959">You have <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.points)}</HI> Points</MA>`
+          }],
+          ],
+      }
+    },
+
+    BitcoinBuyables: {
+      "Point Buyables": {
+        content: [
+                         "blank",
+                         "h-line",
+                         "blank",
+                         ["row", [["buyable", "Bitcoin Point Production"]]],
+                         ["row", [["buyable", "Bitcoin Accelerant Limit"]]],
+                         ["row", [["buyable", "Bitcoin Accelerant Speed"]]],
+                         ["row", [["buyable", "Bitcoin Accelerant Bonus"]]],
+                ],
+      },
+      "Stellar Buyables": {
+        content: [
+                   "blank",
+                   "h-line",
+                   "blank",
+                   ["row", [["buyable", "Bitcoin Stellar Production"]]],
+                   ["row", [["buyable", "Bitcoin Stellar Mag Booster"]]],
+                   ["row", [["buyable", "Bitcoin Cheaper Stellar"]]],
+          ],
+      },
+      "Ethereum Buyables": {
+        content: [
+                   "blank",
+                   "h-line",
+                   "blank",
+          ],
+      },
+      "Progression Buyables": {
+        content: [
+                         "blank",
+                         "h-line",
+                         "blank",
+                ],
+      },
     }
   },
   row: 0,

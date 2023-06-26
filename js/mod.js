@@ -44,7 +44,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset", "factoryInvestment", "type1reset"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset", "factoryInvestment", "type1reset", "hardfork"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -64,6 +64,7 @@ function getPointGen() {
 	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
 	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
 	Production = Production.mul(buyableEffect("main", "Oreo Point Production"))
+	Production = Production.mul(buyableEffect("main", "Bitcoin Point Production"))
 	Production = Production.mul(tmp.main.AccelerantBonus)
 	Production = Production.mul(tmp.main.OreoPointBoost)
 	/*
