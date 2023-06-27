@@ -140,7 +140,7 @@ var systemComponents = {
 		<br> Music by Windows96 , from 'How to see through walls' album , <a v-bind:href="'https://youtu.be/eyFfubvho4M'" target="_blank" class="link">Link</a><br>
 		<div class="link" onclick="showTab('changelog-tab')">Changelog</div><br>
         <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>
-        <a class="link" href="https://discord.gg/vbKQTPRnuD" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">Server I exist in</a><br>
+        <a class="link" href="https://discord.gg/tY9wpUFk9H" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">Server I exist in</a><br>
 		<br><br>
         Time Played: {{ formatTime(player.timePlayed) }}<br><br>
         <h3>Hotkeys</h3><br>

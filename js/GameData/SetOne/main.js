@@ -27,6 +27,7 @@ addLayer("main", {
 
       unit: new Decimal(1.001),
       unitLimit: new Decimal(1e10),
+      unitLimitLimit: new Decimal("1e1000"),
 
       factories: new Decimal(0),
       oreos: new Decimal(1),
@@ -35,6 +36,7 @@ addLayer("main", {
 
       auto: {
         T1AT: false,
+        T2AT1: false,
       },
 
     }
@@ -209,20 +211,28 @@ addLayer("main", {
 
   hardforkCostCalc() {
     let Base = new Decimal("1e1200")
+    let HF = player.main.hardfork
 
-    let Power = player.main.hardfork
-    Power = Power.add(1)
-
-    let CalculationI = new Decimal.pow(Power, 0.1)
+    let PowerI = new Decimal(HF)
+    PowerI = PowerI.add(1)
+    
+    let PowerII = new Decimal.div(HF, 20).add(1)
+    let PowerIII = new Decimal.div(HF, 30).add(1)
+    let PowerIV = new Decimal.div(HF, 40).add(1)
+    
+    PowerI = PowerI.pow(PowerII)
+    PowerI = PowerI.pow(PowerIII)
+    PowerI = PowerI.pow(PowerIV)
+    let CalculationI = new Decimal.pow(PowerI, 0.1)
     let CalculationII = new Decimal.pow(Base, CalculationI)
     return CalculationII
   },
 
   hardforkXPCalc() {
     let Base = player.main.hardfork
-    let Power = new Decimal(2)
+    let Power = new Decimal(3)
 
-    let Calculation = new Decimal.pow(Base, Power)
+    let Calculation = new Decimal.pow(Power, Base)
     return Calculation
   },
 
@@ -230,10 +240,16 @@ addLayer("main", {
     let Base = new Decimal(10)
     let Level = player.main.hardforklvl
 
-    let CalculationI = new Decimal.pow(Level, 5)
+    let CalculationI = new Decimal.pow(Level, 2)
     let CalculationII = new Decimal.mul(Base, CalculationI)
 
     return CalculationII
+  },
+  
+  hardforkLevelCap() {
+    let Base = new Decimal(100)
+    
+    return Base
   },
   
   bitcoinGeneration() {
@@ -359,7 +375,17 @@ addLayer("main", {
     Limit = Limit.pow(tmp.main.OreoAccelerantLimitBoost)
     Limit = Limit.pow(buyableEffect("main", "Bitcoin Accelerant Limit"))
     Limit = Limit.add(1)
+    
+    let LimitLimit = player.main.unitLimitLimit
+    if (Limit.gte(LimitLimit)) {
+      return Limit = LimitLimit
+    }
     return Limit
+  },
+  
+  AccelerantLimitLimit() {
+     let Base = new Decimal("1e2000")
+     return Base
   },
 
   AccelerantSpeed() {
@@ -443,28 +469,25 @@ addLayer("main", {
 
 
   update(diff) {
-    if (player.main.factories.gte(1)) {
-      player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
-    }
     
       player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
     
-    if (player.main.tier.gte(9)) {
-      player.main.unit = player.main.unit.times(tmp.main.AccelerantSpeed.pow(diff))
+    player.main.unitLimitLimit = tmp.main.AccelerantLimitLimit
     
-      if (player.main.unit.gte(tmp.main.AccelerantLimit)) {
-        return player.main.unit = tmp.main.AccelerantLimit
-      }
-    }
     player.main.unitLimit = tmp.main.AccelerantLimit
     player.main.limit = tmp.main.StellarMagnitudeLimit
-
+    
     player.main.hardforkxp = player.main.hardforkxp.add((tmp.main.hardforkXPCalc).times(diff))
     
     player.main.btc = player.main.btc.add((tmp.main.bitcoinGeneration).times(diff))
+    
     if (player.main.hardforkxp.gte(tmp.main.hardforkXPlevelCalc)) {
       player.main.hardforklvl = player.main.hardforklvl.add(1)
       player.main.hardforkxp = new Decimal(0)
+      
+      if (player.main.hardforklvl.gte(tmp.main.hardforkLevelCap)) {
+        return player.main.hardforklvl = tmp.main.hardforkLevelCap
+      }
     }
 
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Point Production")
@@ -478,6 +501,9 @@ addLayer("main", {
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Booster")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Booster")
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Cheaper Factory")
+    
+    
+    if (tmp.main.clickables.T2AT1.canRun) clickClickable(this.layer, "Tier Up")
 
     const activeChallenge = player[this.layer].activeChallenge;
     if (activeChallenge && canCompleteChallenge(this.layer, activeChallenge)) {
@@ -486,6 +512,23 @@ addLayer("main", {
         startChallenge(this.layer, activeChallenge);
       }
     }
+    
+    if (player.main.factories.gte(1)) {
+      player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
+    }
+    
+    if (player.main.tier.gte(9)) {
+      player.main.unit = player.main.unit.times(tmp.main.AccelerantSpeed.pow(diff))
+    
+      if (player.main.unit.gte(tmp.main.AccelerantLimit)) {
+        return player.main.unit = tmp.main.AccelerantLimit
+      }
+    }
+    
+    
+    
+    
+    
   },
   challenges: {
     "Looming": {
@@ -745,6 +788,45 @@ addLayer("main", {
       },
       unlocked() {
         return hasMilestone("main", "TM6")
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canRun) return {
+          "background-image": "url('images/STAT_ON.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto"
+        }
+        return {
+          "background-image": "url('images/STAT_OFF.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto"
+        }
+      },
+    },
+    
+    T2AT1: {
+      set: "auto",
+      title() {
+        return `<b style="font-size:25px">Tier Up Automator</b><br>
+      <b style="font-size:20px">${Boolean(player.main[this.set][this.id]) ? "On" : "Off"}</b>`
+
+      },
+      canClick() {
+        return true
+      },
+      onClick() {
+        player.main[this.set][this.id] = Boolean(1 - player.main[this.set][this.id])
+      },
+      canRun() {
+        return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
+      },
+      unlocked() {
+        return true
       },
       style() {
         if (tmp[this.layer].clickables[this.id].canRun) return {
@@ -2715,6 +2797,46 @@ addLayer("main", {
         }
       }
     },
+    "TM15": {
+      requirementDescription() {
+        return `<b style="font-size:28px">TIER 91</b>`
+      },
+      done() { return player.main.tier.gte(91) },
+      effectDescription: `<b style="font-size:22px">
+                                         + Unlock Tier 3 materials`,
+      style() {
+        return {
+          "background-image": "url('images/AmethystMastery.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#ffffff"
+        }
+      }
+    },
+    "TM16": {
+      requirementDescription() {
+        return `<b style="font-size:28px">TIER 113</b>`
+      },
+      done() { return player.main.tier.gte(113) },
+      effectDescription: `<b style="font-size:22px">
+                                             + Unlock Tier 4 , 5 materials`,
+      style() {
+        return {
+          "background-image": "url('images/RubyMastery.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#ffffff"
+        }
+      }
+    },
   },
   tabFormat: {
     "Main Progression": {
@@ -2737,6 +2859,12 @@ addLayer("main", {
           }
           return ``
                         }],
+          ["raw-html", () => {
+            if (tmp.main.AccelerantLimit.gte(tmp.main.AccelerantLimitLimit)) {
+            return `<HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 10px">HARDCAP:  ${format(tmp.main.AccelerantLimitLimit)} u<sup>2</sup> Limit</HI>`
+            }
+            return ``
+          }],
       "blank",
       ["microtabs", "Main", { 'border-width': '0px' }],
       ],
@@ -2872,12 +3000,16 @@ addLayer("main", {
             return `<MA style="font-size: 20px; color: #595959">You need <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.hardforkXPlevelCalc)} XP</HI> to reach next Level</MA>`
                 }],
         ["raw-html", () => {
+          if (player.main.hardforklvl.gte(tmp.main.hardforkLevelCap)) {
+            return `<MA style="font-size: 20px; color: #595959">You are at Level <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.hardforklvl)}</HI> <HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 20px">[ HARDCAPPED ]</HI></MA>`
+          }
             return `<MA style="font-size: 20px; color: #595959">You are at Level <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.hardforklvl)}</HI></MA>`
                                 }],
 
             "blank",
             ["row", [["clickable", "Hardfork"]]],
             "blank",
+            ["row", [["clickable", "T2AT1"]]],
             "blank",
             "h-line",
             "blank",
@@ -2932,6 +3064,10 @@ addLayer("main", {
         ["row", [["milestone", "TM13"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM14"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM15"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM16"]]],
     ],
       },
 
