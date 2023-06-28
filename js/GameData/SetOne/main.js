@@ -37,6 +37,7 @@ addLayer("main", {
       auto: {
         T1AT: false,
         T2AT1: false,
+        T2AT2: false,
       },
 
     }
@@ -108,6 +109,7 @@ addLayer("main", {
 
     Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar Tier"))
     Calculation = Calculation.div(buyableEffect("main", "Cheaper Oreo Tier"))
+    Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Tier"))
     return Calculation
   },
 
@@ -176,6 +178,7 @@ addLayer("main", {
       Calculation = Calculation.sub(1)
     }
     Calculation = Calculation.sub(buyableEffect("main", "Ethereum Cheaper Factory"))
+    Calculation = Calculation.sub(buyableEffect("main", "Bitcoin Cheaper Factory"))
     return Calculation
   },
 
@@ -248,7 +251,7 @@ addLayer("main", {
   
   hardforkLevelCap() {
     let Base = new Decimal(100)
-    
+    Base = Base.add(buyableEffect("main", "Bitcoin Level Limit"))
     return Base
   },
   
@@ -268,6 +271,7 @@ addLayer("main", {
     Generation = Generation.add(1)
 
     Generation = Generation.mul(buyableEffect("main", "Ethereum Booster"))
+    Generation = Generation.mul(buyableEffect("main", "Bitcoin Ethereum Production"))
 
     if (player.main.tier.gte(19)) {
       Generation = Generation.mul(tmp.main.EthereumStabilizerBoost)
@@ -355,6 +359,8 @@ addLayer("main", {
 
   EthereumStabilizerBoost() {
     let Base = new Decimal(1.2)
+    
+    Base = Base.add(buyableEffect("main", "Bitcoin Ethereum Stabilizer Booster"))
 
     let Calculation = new Decimal.pow(Base, tmp.main.EthereumStabilizer)
 
@@ -385,6 +391,7 @@ addLayer("main", {
   
   AccelerantLimitLimit() {
      let Base = new Decimal("1e2000")
+     Base = Base.pow(buyableEffect("main", "Bitcoin Accelerant Limit Limit"))
      return Base
   },
 
@@ -504,7 +511,8 @@ addLayer("main", {
     
     
     if (tmp.main.clickables.T2AT1.canRun) clickClickable(this.layer, "Tier Up")
-
+    if (tmp.main.clickables.T2AT2.canRun) clickClickable(this.layer, "Facotry Reset")
+    
     const activeChallenge = player[this.layer].activeChallenge;
     if (activeChallenge && canCompleteChallenge(this.layer, activeChallenge)) {
       startChallenge(this.layer, activeChallenge);
@@ -796,7 +804,8 @@ addLayer("main", {
           "border": "0px",
           "border-radius": "5px",
           "width": "300px",
-          "height": "auto"
+          "height": "auto",
+          "margin" : "4px"
         }
         return {
           "background-image": "url('images/STAT_OFF.png')",
@@ -804,7 +813,8 @@ addLayer("main", {
           "border": "0px",
           "border-radius": "5px",
           "width": "300px",
-          "height": "auto"
+          "height": "auto",
+          "margin" : "4px"
         }
       },
     },
@@ -813,6 +823,7 @@ addLayer("main", {
       set: "auto",
       title() {
         return `<b style="font-size:25px">Tier Up Automator</b><br>
+        T${format(player.main.tier)}<br><br>
       <b style="font-size:20px">${Boolean(player.main[this.set][this.id]) ? "On" : "Off"}</b>`
 
       },
@@ -844,6 +855,47 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto"
+        }
+      },
+    },
+    T2AT2: {
+      set: "auto",
+      title() {
+        return `<b style="font-size:25px">Factory Investment Automator</b><br>
+        F${format(player.main.factories)}<br><br>
+      <b style="font-size:20px">${Boolean(player.main[this.set][this.id]) ? "On" : "Off"}</b>`
+
+      },
+      canClick() {
+        return true
+      },
+      onClick() {
+        player.main[this.set][this.id] = Boolean(1 - player.main[this.set][this.id])
+      },
+      canRun() {
+        return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
+      },
+      unlocked() {
+        return true
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canRun) return {
+          "background-image": "url('images/STAT_ON.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto",
+          "margin" : "4px"
+        }
+        return {
+          "background-image": "url('images/STAT_OFF.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto",
+          "margin" : "4px"
         }
       },
     },
@@ -1240,6 +1292,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(10).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Ethereum"))
         return Calculation;
       },
       display() {
@@ -1313,6 +1366,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1000).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Ethereum"))
         return Calculation;
       },
       display() {
@@ -1382,6 +1436,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(100000).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Ethereum"))
         return Calculation;
       },
       display() {
@@ -1451,6 +1506,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1e12).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Ethereum"))
         return Calculation;
       },
       display() {
@@ -1524,6 +1580,7 @@ addLayer("main", {
         PowerI = PowerI.pow(PowerVII)
         let Calculation = new Decimal(1e100).mul(Decimal.pow(PowerI, x.pow(1)))
         Calculation = Calculation.div(buyableEffect("main", "Oreo Cheaper"))
+        Calculation = Calculation.div(buyableEffect("main", "Bitcoin Cheaper Ethereum"))
         return Calculation;
       },
       display() {
@@ -2503,6 +2560,496 @@ addLayer("main", {
         return true
       }
     },
+    
+    "Bitcoin Ethereum Production": {
+      cost(x) {
+        let PowerI = new Decimal(4)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e15).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Mainframe CELK-ES v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">x${format(tmp[this.layer].buyables[this.id].effect)} Ethereum Manufacturing</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1e5)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM12")
+      }
+    },
+    "Bitcoin Ethereum Stabilizer Booster": {
+      cost(x) {
+        let PowerI = new Decimal(16)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e18).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Stable Cable v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Ethereum Stabilizer Boost</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(0.15)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM12")
+      }
+    },
+    "Bitcoin Cheaper Ethereum": {
+      cost(x) {
+        let PowerI = new Decimal(64)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e21).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Higher Stocks v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">/${format(tmp[this.layer].buyables[this.id].effect)} Ethereum Buyables</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1e6)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM12")
+      }
+    },
+
+    "Bitcoin Cheaper Tier": {
+      cost(x) {
+        let PowerI = new Decimal(256)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e27).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Code Manipulation v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">/${format(tmp[this.layer].buyables[this.id].effect)} Tier Cost</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1e11)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        let Effect = new Decimal(1).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM13")
+      }
+    },
+    "Bitcoin Cheaper Factory": {
+      cost(x) {
+        let PowerI = new Decimal(1024)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e33).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Build Funding v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">-${format(tmp[this.layer].buyables[this.id].effect)} Facotry Investment Cost</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(1)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM13")
+      }
+    },
+    "Bitcoin Level Limit": {
+      cost(x) {
+        let PowerI = new Decimal(5555)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e33).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Special Upgrade-III v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Hardfork Level Limit</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(10)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(0).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM13")
+      }
+    },
+    "Bitcoin Accelerant Limit Limit": {
+      cost(x) {
+        let PowerI = new Decimal(20480)
+        let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
+        let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
+        let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
+        let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
+        let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
+        let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
+
+        PowerI = PowerI.pow(PowerII)
+        PowerI = PowerI.pow(PowerIII)
+        PowerI = PowerI.pow(PowerIV)
+        PowerI = PowerI.pow(PowerV)
+        PowerI = PowerI.pow(PowerVI)
+        PowerI = PowerI.pow(PowerVII)
+        let Calculation = new Decimal(1e36).mul(Decimal.pow(PowerI, x.pow(1)))
+        return Calculation;
+      },
+      display() {
+        return `${HEADERs}Overflow Limiter v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">^${format(tmp[this.layer].buyables[this.id].effect)} Accelerant Limit Hardcap</b><br>
+    <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
+      },
+      canAfford() {
+        return player[this.layer].btc.gte(this.cost())
+      },
+      style() {
+        if (tmp[this.layer].buyables[this.id].canAfford)
+          return {
+            "background-image": "url('images/BTCC.png')",
+            "background-size": "110% !important",
+            "width": "430px",
+            "height": "130px",
+            "border-radius": "10px",
+            "border": "0px",
+            "margin": "5px",
+            "text-shadow": "0px 0px 5px #000000",
+            "color": "#ffffff"
+          }
+        return {
+          "background-image": "url('images/BTCCT.png')",
+          "background-size": "110% !important",
+          "width": "430px",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      buy() {
+        player[this.layer].btc = player[this.layer].btc.sub(this.cost())
+        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+      },
+      effect(x) {
+        let PowerI = new Decimal(0.1)
+        
+        PowerI = PowerI.mul(x)
+        
+        let Effect = new Decimal(1).add(Decimal.add(PowerI))
+        return Effect;
+      },
+      unlocked() {
+        return hasMilestone("main", "TM13")
+      }
+    },
 
   },
 
@@ -2803,7 +3350,7 @@ addLayer("main", {
       },
       done() { return player.main.tier.gte(91) },
       effectDescription: `<b style="font-size:22px">
-                                         + Unlock Tier 3 materials`,
+                                         + PLACEHOLDER`,
       style() {
         return {
           "background-image": "url('images/AmethystMastery.png')",
@@ -2823,7 +3370,7 @@ addLayer("main", {
       },
       done() { return player.main.tier.gte(113) },
       effectDescription: `<b style="font-size:22px">
-                                             + Unlock Tier 4 , 5 materials`,
+                                             + PLACEHOLDER`,
       style() {
         return {
           "background-image": "url('images/RubyMastery.png')",
@@ -3118,6 +3665,9 @@ addLayer("main", {
                    "blank",
                    "h-line",
                    "blank",
+                   ["row", [["buyable", "Bitcoin Ethereum Production"]]],
+                   ["row", [["buyable", "Bitcoin Ethereum Stabilizer Booster"]]],
+                   ["row", [["buyable", "Bitcoin Cheaper Ethereum"]]],
           ],
       },
       "Progression Buyables": {
@@ -3125,6 +3675,10 @@ addLayer("main", {
                          "blank",
                          "h-line",
                          "blank",
+                         ["row", [["buyable", "Bitcoin Cheaper Tier"]]],
+                         ["row", [["buyable", "Bitcoin Cheaper Factory"]]],
+                         ["row", [["buyable", "Bitcoin Level Limit"]]],
+                         ["row", [["buyable", "Bitcoin Accelerant Limit Limit"]]],
                 ],
       },
     }
