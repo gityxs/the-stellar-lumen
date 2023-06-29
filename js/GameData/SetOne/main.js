@@ -234,29 +234,65 @@ addLayer("main", {
   hardforkXPCalc() {
     let Base = player.main.hardfork
     let Power = new Decimal(3)
-
+    Power = Power.add(buyableEffect("main", "Bitcoin XP Generation"))
     let Calculation = new Decimal.pow(Power, Base)
-    if (player.main.hardforklvl.gte(tmp.main.hardforkLevelCap)) {
-      Calculation = new Decimal(0)
-    }
+    
     return Calculation
   },
 
   hardforkXPlevelCalc() {
     let Base = new Decimal(10)
+    let Power = new Decimal(2)
+    
+    if (player.main.hardforklvl.gte(100)) {
+    Power = Power.add(1)
+    }
+    if (player.main.hardforklvl.gte(200)) {
+      Power = Power.add(1)
+    }
+    if (player.main.hardforklvl.gte(400)) {
+      Power = Power.add(2)
+    }
+    if (player.main.hardforklvl.gte(800)) {
+      Power = Power.add(2)
+    }
+    if (player.main.hardforklvl.gte(1600)) {
+      Power = Power.add(4)
+    }
+    if (player.main.hardforklvl.gte(3200)) {
+      Power = Power.add(4)
+    }
     let Level = player.main.hardforklvl
 
-    let CalculationI = new Decimal.pow(Level, 2)
+    let CalculationI = new Decimal.pow(Level, Power)
     let CalculationII = new Decimal.mul(Base, CalculationI)
 
     return CalculationII
   },
   
-  hardforkLevelCap() {
-    let Base = new Decimal(100)
-    Base = Base.add(buyableEffect("main", "Bitcoin Level Limit"))
-    return Base
+  hardforkLevelDisplay() {
+    let Mark = new Decimal(0)
+    if (player.main.hardforklvl.gte(100)) {
+      Mark = Mark.add(1)
+    }
+    if (player.main.hardforklvl.gte(200)) {
+      Mark = Mark.add(1)
+    }
+    if (player.main.hardforklvl.gte(400)) {
+      Mark = Mark.add(1)
+    }
+    if (player.main.hardforklvl.gte(800)) {
+      Mark = Mark.add(1)
+    }
+    if (player.main.hardforklvl.gte(1600)) {
+      Mark = Mark.add(1)
+    }
+    if (player.main.hardforklvl.gte(3200)) {
+      Mark = Mark.add(1)
+    }
+    return Mark
   },
+  
   
   bitcoinGeneration() {
     let Base = player.main.hardforklvl
@@ -494,10 +530,6 @@ addLayer("main", {
     if (player.main.hardforkxp.gte(tmp.main.hardforkXPlevelCalc)) {
       player.main.hardforklvl = player.main.hardforklvl.add(1)
       player.main.hardforkxp = new Decimal(0)
-      
-      if (player.main.hardforklvl.gte(tmp.main.hardforkLevelCap)) {
-        return player.main.hardforklvl = tmp.main.hardforkLevelCap
-      }
     }
 
     if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Point Production")
@@ -2917,7 +2949,7 @@ addLayer("main", {
         return hasMilestone("main", "TM13")
       }
     },
-    "Bitcoin Level Limit": {
+    "Bitcoin XP Generation": {
       cost(x) {
         let PowerI = new Decimal(5555)
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
@@ -2937,8 +2969,8 @@ addLayer("main", {
         return Calculation;
       },
       display() {
-        return `${HEADERs}Special Upgrade-III v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
-        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Hardfork Level Limit</b><br>
+        return `${HEADERs}Hardforking Channels v${format(player[this.layer].buyables[this.id], 0)}${HEADERe}
+        <b style="font-size:18px; text-shadow: 0px 0px 4px #000000">+${format(tmp[this.layer].buyables[this.id].effect)} Hardfork XP Base Generation</b><br>
     <h1>${format(tmp[this.layer].buyables[this.id].cost)} Bitcoin</h1>`
       },
       canAfford() {
@@ -2974,7 +3006,7 @@ addLayer("main", {
         setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
       },
       effect(x) {
-        let PowerI = new Decimal(10)
+        let PowerI = new Decimal(0.05)
         
         PowerI = PowerI.mul(x)
         
@@ -3531,6 +3563,12 @@ addLayer("main", {
        "h-line",
        "blank",
        ["raw-html", () => {
+       
+                let Mark = "MK. " + tmp.main.hardforkLevelDisplay
+       
+                return `<MA style='font-size: 25px'> <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>Bitcoin ${Mark} </HI> </MA><br><br>`
+                      }],
+       ["raw-html", () => {
             return `<MA style='font-size: 25px'>You have done <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>${formatNoDecimals(player.main.hardfork)}</HI> Hardforks</MA>`
                }],
          ['raw-html', () => {
@@ -3550,9 +3588,6 @@ addLayer("main", {
             return `<MA style="font-size: 20px; color: #595959">You need <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.hardforkXPlevelCalc)} XP</HI> to reach next Level</MA>`
                 }],
         ["raw-html", () => {
-          if (player.main.hardforklvl.gte(tmp.main.hardforkLevelCap)) {
-            return `<MA style="font-size: 20px; color: #595959">You are at Level <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.hardforklvl)}</HI> <HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 20px">[ HARDCAPPED ]</HI></MA>`
-          }
             return `<MA style="font-size: 20px; color: #595959">You are at Level <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.hardforklvl)}</HI></MA>`
                                 }],
 
@@ -3680,7 +3715,7 @@ addLayer("main", {
                          "blank",
                          ["row", [["buyable", "Bitcoin Cheaper Tier"]]],
                          ["row", [["buyable", "Bitcoin Cheaper Factory"]]],
-                         ["row", [["buyable", "Bitcoin Level Limit"]]],
+                         ["row", [["buyable", "Bitcoin XP Generation"]]],
                          ["row", [["buyable", "Bitcoin Accelerant Limit Limit"]]],
                 ],
       },
