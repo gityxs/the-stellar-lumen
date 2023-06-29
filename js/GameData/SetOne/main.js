@@ -236,6 +236,9 @@ addLayer("main", {
     let Power = new Decimal(3)
 
     let Calculation = new Decimal.pow(Power, Base)
+    if (player.main.hardforklvl.gte(tmp.main.hardforkLevelCap)) {
+      Calculation = new Decimal(0)
+    }
     return Calculation
   },
 
