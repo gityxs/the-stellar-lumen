@@ -5,6 +5,7 @@ let modInfo = {
 	pointsName: "points",
 	modFiles: [
 	"GameData/SetOne/main.js", 
+	"GameData/SetOne/LayerAchievement.js",
 	"tree.js"],
 
 	discordName: "",
@@ -15,8 +16,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.71a4",
-	name: "Another Journey",
+	num: "0.0.0.73-1",
+	name: "Era of Eras",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -44,7 +45,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset", "factoryInvestment", "type1reset", "hardfork"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset", "factoryInvestment", "type1reset", "hardfork", "HardReset", "MultiplierReset", "RebirthReset", "SRebirthReset", "URebirthReset"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -76,6 +77,8 @@ function getPointGen() {
 	Production = Production.mul(buyableEffect("main", "Tether Point Production"))
 	Production = Production.pow(buyableEffect("main", "Time Point Production"))
 	Production = Production.mul(player.main.tier.gte(1) ? new Decimal.pow(TM1Boost, player.main.tier) : 1)*/
+	Production = Production.pow(tmp.ach.achivementPow)
+	Production= Production.add(1)
 	return Production
 }
 

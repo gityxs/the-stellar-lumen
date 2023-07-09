@@ -66,6 +66,10 @@ function buyableEffect(layer, id) {
 	return (tmp[layer].buyables[id].effect)
 }
 
+function milestoneEffect(layer, id) {
+  return (tmp[layer].milestones[id].effectReward)
+}
+
 function clickableEffect(layer, id) {
 	return (tmp[layer].clickables[id].effect)
 }

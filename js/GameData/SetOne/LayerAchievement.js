@@ -12,376 +12,345 @@ addLayer("ach", {
     achievementNotif() {
       return `Achievement Finished` // little tamper in utils.js at line 276 :troll:
     },
+    achivementPow() {
+      let Base = new Decimal(0)
+      let Achievement = player.ach.achievements.length
+      
+      let Calculation = new Decimal.pow(1.005, Achievement)
+      Base = Base.add(Calculation)
+      
+      return Base
+    },
     achievements: {
-        "TS1": {
-            name: "Total Stellar I",
+      "TTST1": {
+            name: "First of many",
             done() { return player.main.points.gt(1) },
-            tooltip: "Get your first Stellar!",
+            tooltip: "Produce your first Stellar!",
+      },
+      "TTST2": {
+        name: "Thousand",
+        done() { return player.main.points.gt(1000) },
+        tooltip: "Produce 1,000 Stellar!",
+      },
+      "TTST3": {
+        name: "Wealthy",
+        done() { return player.main.points.gt(1e9) },
+        tooltip: "Produce 1,000,000,000 Stellar!",
+      },
+      "TTST4": {
+        name: "Richer than Elon Musk",
+        done() { return player.main.points.gt(1e18) },
+        tooltip: "Produce 1e18 Stellar!",
+      },
+      "TTST5": {
+        name: "More worth than Earth",
+        done() { return player.main.points.gt(1e36) },
+        tooltip: "Produce 1e36 Stellar!",
+      },
+      "TTST6": {
+        name: "Funnily Rich",
+        done() { return player.main.points.gt(1e144) },
+        tooltip: "Produce 1e144 Stellar!",
+      },
+      "TTST7": {
+        name: "Unfunnily Rich",
+        done() { return player.main.points.gt("1e576") },
+        tooltip: "Produce 1e576 Stellar!",
+      },
+      "TTST8": {
+        name: `<img src="images/gihun.jpeg" width="32" height="32">`,
+        done() { return player.main.points.gt("1e2304") },
+        tooltip: "Produce 1e2,304 Stellar!",
+      },
+      "TTST9": {
+        name: `More worth than Observable Universe `,
+        done() { return player.main.points.gt("1e9216") },
+        tooltip: "Produce 1e9,216 Stellar!",
+      },
+      "TTST10": {
+        name: `Richer than MrBeast?`,
+        done() { return player.main.points.gt("1e36864") },
+        tooltip: "Produce 1e36,864 Stellar!",
+      },
+      "TTST11": {
+        name: `Wow.`,
+        done() { return player.main.points.gt("1e147456") },
+        tooltip: "Produce 1e147,455 Stellar!",
+      },
+      
+      "TTET1": {
+        name: `What's this?`,
+        done() { return player.main.eth.gt(1) },
+        tooltip: "Manufacture 1 Ethereum!",
+      },
+      "TTET2": {
+        name: `Copy of Stellar`,
+        done() { return player.main.eth.gt(1000) },
+        tooltip: "Manufacture 1,000 Ethereum!",
+      },
+      "TTET3": {
+        name: `Is this currency even worth of grind?`,
+        done() { return player.main.eth.gt(1e12) },
+        tooltip: "Manufacture 1e12 Ethereum!",
+      },
+      "TTET4": {
+        name: `Rich again`,
+        done() { return player.main.eth.gt(1e48) },
+        tooltip: "Manufacture 1e48 Ethereum!",
+      },
+      "TTET5": {
+        name: `Elon would be proud`,
+        done() { return player.main.eth.gt(1e192) },
+        tooltip: "Manufacture 1e129 Ethereum!",
+      },
+      "TTET6": {
+        name: `I own more than I can count`,
+        done() { return player.main.eth.gt("1e384") },
+        tooltip: "Manufacture 1e384 Ethereum!",
+      },
+      "TTET7": {
+        name: `The gods are pleased`,
+        done() { return player.main.eth.gt("1e768") },
+        tooltip: "Manufacture 1e768 Ethereum!",
+      },
+      "TTET8": {
+        name: `They forgot to limit my Ethereum manufacturing`,
+        done() { return player.main.eth.gt("1e3072") },
+        tooltip: `Manufacture 1e3,072 Ethereum!`,
+      },
+      "TTET9": {
+        name: `Is this real?`,
+        done() { return player.main.eth.gt("1e12288") },
+        tooltip: `Manufacture 1e12,288 Ethereum!`,
+      },
+      "TTET10": {
+        name: `Lumen is pleased`,
+        done() { return player.main.eth.gt("1e49512") },
+        tooltip: `Manufacture 1e49,512 Ethereum!`,
+      },
+      
+      "TTBT1": {
+        name: `A start of new Era`,
+        done() { return player.main.btc.gt("1") },
+        tooltip: `Fork your first Bitcoin!`,
+      },
+      "TTBT2": {
+        name: `In this video I gave away 1,000 Bitcoin to a random subscriber`,
+        done() { return player.main.btc.gt("1000") },
+        tooltip: `Fork 1,000 Bitcoin!`,
+      },
+      "TTBT3": {
+        name: `Satoshi upper limit`,
+        done() { return player.main.btc.gt("21000000") },
+        tooltip: `Fork 21,000,000 Bitcoin!`,
+      },
+      "TTBT4": {
+        name: `Wealthy^2`,
+        done() { return player.main.btc.gt("1e18") },
+        tooltip: `Fork 1e18 Bitcoin!`,
+      },
+      "TTBT5": {
+        name: `Wealthy^3`,
+        done() { return player.main.btc.gt("1e36") },
+        tooltip: `Fork 1e36 Bitcoin!`,
+      },
+      "TTBT6": {
+        name: `Wealthy^4`,
+        done() { return player.main.btc.gt("1e72") },
+        tooltip: `Fork 1e72 Bitcoin!`,
+      },
+      "TTBT7": {
+        name: `Uncle Satoshi would be proud`,
+        done() { return player.main.btc.gt("1e144") },
+        tooltip: `Fork 1e144 Bitcoin!`,
+      },
+      "TTBT8": {
+        name: `Where do you even get all of this?`,
+        done() { return player.main.btc.gt("1e288") },
+        tooltip: `Fork 1e288 Bitcoin!`,
+      },
+      "TTBT9": {
+        name: `<img src="images/gihun2.png" width="32" height="32">`,
+        done() { return player.main.btc.gt("1e576") },
+        tooltip: `Fork 1e576 Bitcoin!`,
+      },
+      "TTBT10": {
+        name: `And still no major inflation at stock market???`,
+        done() { return player.main.btc.gt("1e1052") },
+        tooltip: `Fork 1e1052 Bitcoin!`,
+      },
+      
+      "TTT1": {
+        name: `All that progress gone...`,
+        done() { return player.main.tier.gte("1") },
+        tooltip: `Obtain Tier 1!`,
+      },
+      "TTT2": {
+        name: `That was easy`,
+        done() { return player.main.tier.gte("2") },
+        tooltip: `Obtain Tier 2!`,
+      },
+      "TTT3": {
+        name: `That was even easier!`,
+        done() { return player.main.tier.gte("3") },
+        tooltip: `Obtain Tier 3!`,
+      },
+      "TTT4": {
+        name: `Is this game actually this easy?`,
+        done() { return player.main.tier.gte("5") },
+        tooltip: `Obtain Tier 5!`,
+      },
+      "TTT5": {
+        name: `Racking these Tiers`,
+        done() { return player.main.tier.gte("10") },
+        tooltip: `Obtain Tier 10!`,
+      },
+      "TTT6": {
+        name: `Speedrunning through `,
+        done() { return player.main.tier.gte("20") },
+        tooltip: `Obtain Tier 20!`,
+      },
+      "TTT7": {
+        name: `A challenge please!`,
+        done() { return player.main.tier.gte("40") },
+        tooltip: `Obtain Tier 40!`,
+      },
+      "TTT8": {
+        name: `a`,
+        done() { return player.main.tier.gte("80") },
+        tooltip: `Obtain Tier 80!`,
+      },
+      "TTT9": {
+        name: `Okay I was kidding...`,
+        done() { return player.main.tier.gte("160") },
+        tooltip: `Obtain Tier 160!`,
+      },
+      "TTT10": {
+        name: `Stopppp.....`,
+        done() { return player.main.tier.gte("320") },
+        tooltip: `Obtain Tier 320!`,
+      },
+      
+      "TTAC1": {
+        name: `Bronze Mastery`,
+        done() { return player.ach.achievements.length > 5 },
+        tooltip: `Have more than 5 achievements`,
+        style() {
+          return {
+            "background-image": "url('images/MasteryI.png')",
+            "background-size": "100% !important"
+          }
         },
-        "TS2": {
-            name: "Total Stellar II",
-            done() { return player.main.points.gt(100) },
-            tooltip: "Get 100 Stellar!",
+        unlocked() {
+          return player.ach.achievements.length > 5
+        }
+      },
+      "TTAC2": {
+        name: `Silver Mastery`,
+        done() { return player.ach.achievements.length > 10 },
+        tooltip: `Have more than 10 achievements`,
+        style() {
+          return {
+            "background-image": "url('images/MasteryII.png')",
+            "background-size": "100% !important"
+          }
         },
-        "TS3": {
-          name: "Total Stellar III",
-          done() { return player.main.points.gt(1e6) },
-          tooltip: "Get 1,000,000 Stellar!",
+        unlocked() {
+          return player.ach.achievements.length > 10
+        }
+      },
+      "TTAC3": {
+        name: `Gold Mastery`,
+        done() { return player.ach.achievements.length > 15 },
+        tooltip: `Have more than 15 achievements`,
+        style() {
+          return {
+            "background-image": "url('images/MasteryIII.png')",
+            "background-size": "100% !important"
+          }
         },
-        "TS4": {
-          name: "Total Stellar IV",
-          done() { return player.main.points.gt(1e9) },
-          tooltip: "Get 1,000,000,000 Stellar!",
+        unlocked() {
+          return player.ach.achievements.length > 15
+        }
+      },
+      "TTAC4": {
+       name: `Diamond Mastery`,
+       done() { return player.ach.achievements.length > 20 },
+       tooltip: `Have more than 20 achievements`,
+       style() {
+         return {
+           "background-image": "url('images/MasteryIV.png')",
+           "background-size": "100% !important"
+         }
+       },
+       unlocked() {
+         return player.ach.achievements.length > 20
+       }
+       },
+       "TTAC5": {
+        name: `Amethyst Mastery`,
+        done() { return player.ach.achievements.length > 30 },
+        tooltip: `Have more than 30 achievements`,
+        style() {
+          return {
+            "background-image": "url('images/MasteryV.png')",
+            "background-size": "100% !important"
+          }
         },
-        
-        "TS5": {
-          name: "Total Stellar V",
-          done() { return player.main.points.gt(1e12) },
-          tooltip: "Get 1,000,000,000,000 Stellar!",
+        unlocked() {
+          return player.ach.achievements.length > 30
+        }
         },
-        "TS6": {
-          name: "Total Stellar VI",
-          done() { return player.main.points.gt(1e15) },
-          tooltip: "Get 1,000,000,000,000,000 Stellar!",
-        },
-        "TS7": {
-          name: "Total Stellar VII",
-          done() { return player.main.points.gt(1e18) },
-          tooltip: "Get 1 × 10^18 Stellar!",
-        },
-        "TS8": {
-          name: "Total Stellar VIII",
-          done() { return player.main.points.gt(1e21) },
-          tooltip: "Get 1 × 10^21 Stellar!",
-        },
-        
-        
-        "TS9": {
-          name: "Total Stellar IX",
-          done() { return player.main.points.gt(1e27) },
-          tooltip: "Get 1 × 10^27 Stellar!",
-        },
-        "TS10": {
-          name: "Total Stellar X",
-          done() { return player.main.points.gt(1e33) },
-          tooltip: "Get 1 × 10^33 Stellar!",
-        },
-        "TS11": {
-          name: "Total Stellar XI",
-          done() { return player.main.points.gt(1e39) },
-          tooltip: "Get 1 × 10^39 Stellar!",
-        },
-        "TS12": {
-          name: "Total Stellar XII",
-          done() { return player.main.points.gt(1e45) },
-          tooltip: "Get 1 × 10^45 Stellar!",
-        },
-        
-        "TS13": {
-          name: "Total Stellar XIII",
-          done() { return player.main.points.gt(1e51) },
-          tooltip: "Get 1 × 10^51 Stellar!",
-        },
-        "TS14": {
-          name: "Total Stellar XIV",
-          done() { return player.main.points.gt(1e57) },
-          tooltip: "Get 1 × 10^57 Stellar!",
-        },
-        "TS15": {
-          name: "Total Stellar XV",
-          done() { return player.main.points.gt(1e63) },
-          tooltip: "Get 1 × 10^63 Stellar!",
-        },
-        "TS16": {
-          name: "Total Stellar XVI",
-          done() { return player.main.points.gt(1e69) },
-          tooltip: "Get 1 × 10^69 Stellar!",
-        },
-        
-        
-        "TS17": {
-          name: "Total Stellar XVII",
-          done() { return player.main.points.gt(1e81) },
-          tooltip: "Get 1 × 10^81 Stellar!",
-        },
-        "TS18": {
-          name: "Total Stellar XVIII",
-          done() { return player.main.points.gt(1e93) },
-          tooltip: "Get 1 × 10^93 Stellar!",
-        },
-        "TS19": {
-          name: "Total Stellar XIX",
-          done() { return player.main.points.gt(1e105) },
-          tooltip: "Get 1 × 10^105 Stellar!",
-        },
-        "TS20": {
-          name: "Total Stellar XX",
-          done() { return player.main.points.gt(1e117) },
-          tooltip: "Get 1 × 10^117 Stellar!",
-        },
-        
-        "TS21": {
-          name: "Total Stellar XXI",
-          done() { return player.main.points.gt(1e129) },
-          tooltip: "Get 1 × 10^129 Stellar!",
-        },
-        "TS22": {
-          name: "Total Stellar XXII",
-          done() { return player.main.points.gt(1e141) },
-          tooltip: "Get 1 × 10^141 Stellar!",
-        },
-        "TS23": {
-          name: "Total Stellar XXIII",
-          done() { return player.main.points.gt(1e153) },
-          tooltip: "Get 1 × 10^153 Stellar!",
-        },
-        "TS24": {
-          name: "Total Stellar XXIV",
-          done() { return player.main.points.gt(1e165) },
-          tooltip: "Get 1 × 10^165 Stellar!",
-        },
-        
-        
-        "TS25": {
-          name: "Total Stellar XXV",
-          done() { return player.main.points.gt(1e189) },
-          tooltip: "Get 1 × 10^189 Stellar!",
-        },
-        "TS26": {
-          name: "Total Stellar XXVI",
-          done() { return player.main.points.gt(1e213) },
-          tooltip: "Get 1 × 10^213 Stellar!",
-        },
-        "TS27": {
-          name: "Total Stellar XXVII",
-          done() { return player.main.points.gt(1e237) },
-          tooltip: "Get 1 × 10^237 Stellar!",
-        },
-        "TS28": {
-          name: "Total Stellar XXVII",
-          done() { return player.main.points.gt(1e261) },
-          tooltip: "Get 1 × 10^261 Stellar!",
-        },
-        
-        "TS29": {
-          name: "Total Stellar XXIX",
-          done() { return player.main.points.gt(1e285) },
-          tooltip: "Get 1 × 10^285 Stellar!",
-        },
-        "TS30": {
-          name: "Total Stellar XXX",
-          done() { return player.main.points.gt(1e309) },
-          tooltip: "Get 1 × 10^309 Stellar!",
-        },
-        "TS31": {
-          name: "Total Stellar XXXI",
-          done() { return player.main.points.gt(1e333) },
-          tooltip: "Get 1 × 10^333 Stellar!",
-        },
-        "TS32": {
-          name: "Total Stellar XXXII",
-          done() { return player.main.points.gt(1e357) },
-          tooltip: "Get 1 × 10^357 Stellar!",
-        },
-        
-        
-        
-        "TE1": {
-            name: "Total Ethereum I",
-            done() { return player.main.eth.gt(1) },
-            tooltip: "Manufacture your first Ethereum!",
-        },
-        "TE2": {
-            name: "Total Ethereum II",
-            done() { return player.main.eth.gt(10) },
-            tooltip: "Manufacture 10 Ethereum!",
-        },
-        "TE3": {
-          name: "Total Ethereum III",
-          done() { return player.main.eth.gt(1000) },
-          tooltip: "Manufacture 1,000 Ethereum!",
-        },
-        "TE4": {
-          name: "Total Ethereum IV",
-          done() { return player.main.eth.gt(1e5) },
-          tooltip: "Manufacture 100,000 Ethereum!",
-        },
-        
-        "TE5": {
-          name: "Total Ethereum V",
-          done() { return player.main.eth.gt(1e7) },
-          tooltip: "Manufacture 10,000,000 Ethereum!",
-        },
-        "TE6": {
-          name: "Total Ethereum VI",
-          done() { return player.main.eth.gt(1e9) },
-          tooltip: "Manufacture 1,000,000,000 Ethereum!",
-        },
-        "TE7": {
-          name: "Total Ethereum VII",
-          done() { return player.main.eth.gt(1e11) },
-          tooltip: "Manufacture 100,000,000,000 Ethereum!",
-        },
-        "TE8": {
-          name: "Total Ethereum VIII",
-          done() { return player.main.eth.gt(1e13) },
-          tooltip: "Manufacture 10,000,000,000,000 Ethereum!",
-        },
-        
-        
-        "TE9": {
-          name: "Total Ethereum IX",
-          done() { return player.main.eth.gt(1e17) },
-          tooltip: "Manufacture 100,000,000,000,000,000 Ethereum!",
-        },
-        "TE10": {
-          name: "Total Ethereum X",
-          done() { return player.main.eth.gt(1e21) },
-          tooltip: "Manufacture 1 × 10^21 Ethereum!",
-        },
-        "TE11": {
-          name: "Total Ethereum XI",
-          done() { return player.main.eth.gt(1e25) },
-          tooltip: "Manufacture 1 × 10^25 Ethereum!",
-        },
-        "TE12": {
-          name: "Total Ethereum XII",
-          done() { return player.main.eth.gt(1e29) },
-          tooltip: "Manufacture 1 × 10^29 Ethereum!",
-        },
-        
-        "TE13": {
-          name: "Total Ethereum XIII",
-          done() { return player.main.eth.gt(1e33) },
-          tooltip: "Manufacture 1 × 10^33 Ethereum!",
-        },
-        "TE14": {
-          name: "Total Ethereum XIV",
-          done() { return player.main.eth.gt(1e37) },
-          tooltip: "Manufacture 1 × 10^37 Ethereum!",
-        },
-        "TE15": {
-          name: "Total Ethereum XV",
-          done() { return player.main.eth.gt(1e41) },
-          tooltip: "Manufacture 1 × 10^41 Ethereum!",
-        },
-        "TE16": {
-          name: "Total Ethereum XVI",
-          done() { return player.main.eth.gt(1e45) },
-          tooltip: "Manufacture 1 × 10^45 Ethereum!",
-        },
-        
-        
-        "TE17": {
-          name: "Total Ethereum XVII",
-          done() { return player.main.eth.gt(1e53) },
-          tooltip: "Manufacture 1 × 10^53 Ethereum!",
-        },
-        "TE18": {
-          name: "Total Ethereum XVIII",
-          done() { return player.main.eth.gt(1e61) },
-          tooltip: "Manufacture 1 × 10^61 Ethereum!",
-        },
-        "TE19": {
-          name: "Total Ethereum XIX",
-          done() { return player.main.eth.gt(1e69) },
-          tooltip: "Manufacture 1 × 10^69 Ethereum!",
-        },
-        "TE20": {
-          name: "Total Ethereum XX",
-          done() { return player.main.eth.gt(1e77) },
-          tooltip: "Manufacture 1 × 10^77 Ethereum!",
-        },
-        
-        "TE21": {
-          name: "Total Ethereum XXI",
-          done() { return player.main.eth.gt(1e85) },
-          tooltip: "Manufacture 1 × 10^85 Ethereum!",
-        },
-        "TE22": {
-          name: "Total Ethereum XXII",
-          done() { return player.main.eth.gt(1e93) },
-          tooltip: "Manufacture 1 × 10^93 Ethereum!",
-        },
-        "TE23": {
-          name: "Total Ethereum XXIII",
-          done() { return player.main.eth.gt(1e101) },
-          tooltip: "Manufacture 1 × 10^101 Ethereum!",
-        },
-        "TE24": {
-          name: "Total Ethereum XXIV",
-          done() { return player.main.eth.gt(1e109) },
-          tooltip: "Manufacture 1 × 10^109 Ethereum!",
-        },
-        
-        
-        "TE25": {
-          name: "Total Ethereum XXV",
-          done() { return player.main.eth.gt(1e125) },
-          tooltip: "Manufacture 1 × 10^125 Ethereum!",
-        },
-        "TE26": {
-          name: "Total Ethereum XXVI",
-          done() { return player.main.eth.gt(1e141) },
-          tooltip: "Manufacture 1 × 10^141 Ethereum!",
-        },
-        "TE27": {
-          name: "Total Ethereum XXVII",
-          done() { return player.main.eth.gt(1e157) },
-          tooltip: "Manufacture 1 × 10^157 Ethereum!",
-        },
-        "TE28": {
-          name: "Total Ethereum XXVIII",
-          done() { return player.main.eth.gt(1e173) },
-          tooltip: "Manufacture 1 × 10^173 Ethereum!",
-        },
-        
-        "TE29": {
-          name: "Total Ethereum XXIX",
-          done() { return player.main.eth.gt(1e189) },
-          tooltip: "Manufacture 1 × 10^189 Ethereum!",
-        },
-        "TE30": {
-          name: "Total Ethereum XXX",
-          done() { return player.main.eth.gt(1e205) },
-          tooltip: "Manufacture 1 × 10^205 Ethereum!",
-        },
-        "TE31": {
-          name: "Total Ethereum XXXI",
-          done() { return player.main.eth.gt(1e221) },
-          tooltip: "Manufacture 1 × 10^221 Ethereum!",
-        },
-        "TE32": {
-          name: "Total Ethereum XXXII",
-          done() { return player.main.eth.gt(1e237) },
-          tooltip: "Manufacture 1 × 10^237 Ethereum!",
+        "TTAC6": {
+          name: `Ruby Mastery`,
+          done() { return player.ach.achievements.length > 40 },
+          tooltip: `Have more than 40 achievements`,
+          style() {
+            return {
+              "background-image" : "url('images/MasteryVI.png')",
+              "background-size" : "100% !important"
+            }
+          },
+          unlocked() {
+            return player.ach.achievements.length > 40
+          }
         },
     },
+
     tabFormat: [
             "blank",
-            ["display-text", function() { return "Achievements: " + player.ach.achievements.length + "/" + (Object.keys(tmp.ach.achievements).length - 2) }],
+            ["display-text", function() { return "<MA style='font-size: 25px'>Achievements: " + player.ach.achievements.length + " / " + (Object.keys(tmp.ach.achievements).length - 2) }],
+             ["display-text", function() { return `<MA style='font-size: 25px'>Your acheivements raise Point generation by ^${format(tmp.ach.achivementPow)}</MA><br>
+             <MA style="font-size: 20px; color: #595959">1.005x for each achievement</MA>` }],
             "blank", "blank",
-            ["display-text", function() { return "Stellar Achievements"}],
-       ["row", [["achievement", "TS1"], ["achievement", "TS2"], ["achievement", "TS3"], ["achievement", "TS4"]]],
-       ["row", [["achievement", "TS5"], ["achievement", "TS6"], ["achievement", "TS7"], ["achievement", "TS8"]]],
-       ["row", [["achievement", "TS9"], ["achievement", "TS10"], ["achievement", "TS11"], ["achievement", "TS12"]]],
-       ["row", [["achievement", "TS13"], ["achievement", "TS14"], ["achievement", "TS15"], ["achievement", "TS16"]]],
-       ["row", [["achievement", "TS17"], ["achievement", "TS18"], ["achievement", "TS19"], ["achievement", "TS20"]]],
-       ["row", [["achievement", "TS21"], ["achievement", "TS22"], ["achievement", "TS23"], ["achievement", "TS24"]]],
-       ["row", [["achievement", "TS25"], ["achievement", "TS26"], ["achievement", "TS27"], ["achievement", "TS28"]]],
-       ["row", [["achievement", "TS29"], ["achievement", "TS30"], ["achievement", "TS31"], ["achievement", "TS32"]]],
-       
-       "blank", "blank", "blank", "blank",
-       
-       ["display-text", function() { return "Ethereum Achievements"}],
-       ["row", [["achievement", "TE1"], ["achievement", "TE2"], ["achievement", "TE3"], ["achievement", "TE4"]]],
-       ["row", [["achievement", "TE5"], ["achievement", "TE6"], ["achievement", "TE7"], ["achievement", "TE8"]]],
-       ["row", [["achievement", "TE9"], ["achievement", "TE10"], ["achievement", "TE11"], ["achievement", "TE12"]]],
-       ["row", [["achievement", "TE13"], ["achievement", "TE14"], ["achievement", "TE15"], ["achievement", "TE16"]]],
-       ["row", [["achievement", "TE17"], ["achievement", "TE18"], ["achievement", "TE19"], ["achievement", "TE20"]]],
-       ["row", [["achievement", "TE21"], ["achievement", "TE22"], ["achievement", "TE23"], ["achievement", "TE24"]]],
-       ["row", [["achievement", "TE25"], ["achievement", "TE26"], ["achievement", "TE27"], ["achievement", "TE28"]]],
-       ["row", [["achievement", "TE29"], ["achievement", "TE30"], ["achievement", "TE31"], ["achievement", "TE32"]]],
+       ["display-text", function() { return "Stellar Achievements"}],
+       ["row", [["achievement", "TTST1"], ["achievement", "TTST2"], ["achievement", "TTST3"], ["achievement", "TTST4"]]],
+       ["row", [["achievement", "TTST5"], ["achievement", "TTST6"], ["achievement", "TTST7"], ["achievement", "TTST8"]]],
+       ["row", [["achievement", "TTST9"], ["achievement", "TTST10"], ["achievement", "TTST11"]]],
+       "blank",
+       "blank",
+       ["display-text", function() { return "Ethereum Achievements" }],
+       ["row", [["achievement", "TTET1"], ["achievement", "TTET2"], ["achievement", "TTET3"], ["achievement", "TTET4"]]],
+       ["row", [["achievement", "TTET5"], ["achievement", "TTET6"], ["achievement", "TTET7"], ["achievement", "TTET8"]]],
+       ["row", [["achievement", "TTET9"], ["achievement", "TTET10"]]],
+       "blank",
+       "blank",
+        ["display-text", function() { return "Bitcoin Achievements" }],
+        ["row", [["achievement", "TTBT1"], ["achievement", "TTBT2"], ["achievement", "TTBT3"], ["achievement", "TTBT4"]]],
+        ["row", [["achievement", "TTBT5"], ["achievement", "TTBT6"], ["achievement", "TTBT7"], ["achievement", "TTBT8"]]],
+        ["row", [["achievement", "TTBT9"], ["achievement", "TTBT10"]]],
+        "blank",
+        "blank",
+        ["display-text", function() { return "Tier Achievements" }],
+        ["row", [["achievement", "TTT1"], ["achievement", "TTT2"], ["achievement", "TTT3"], ["achievement", "TTBT4"]]],
+        ["row", [["achievement", "TTT5"], ["achievement", "TTT6"], ["achievement", "TTT7"], ["achievement", "TTT8"]]],
+        ["row", [["achievement", "TTT9"], ["achievement", "TTT10"]]],
+        "blank",
+        "blank",
+        ["display-text", function() { return "Mastery Achievements" }],
+        ["row", [["achievement", "TTAC1"], ["achievement", "TTAC2"], ["achievement", "TTAC3"], ["achievement", "TTAC4"]]],
+        ["row", [["achievement", "TTAC5"], ["achievement", "TTAC6"]]]
+  
         ],
     layerShown(){return true}
 })

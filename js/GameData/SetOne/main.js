@@ -33,9 +33,23 @@ addLayer("main", {
       oreos: new Decimal(1),
 
       TCH1S: new Decimal(0),
+      
+      
+      // Bruh, Button Simulator extension. Savefile is already 5,000+ characters so why not increase it?
+      cash: new Decimal(0),
+      multiplier: new Decimal(0),
+      multiplierP: new Decimal(0),
+      rebirth: new Decimal(0),
+      rebirthP: new Decimal(0),
+      srebirth: new Decimal(0),
+      srebirthP: new Decimal(0),
+      urebirth: new Decimal(0),
+      urebirthP: new Decimal(0),
 
       auto: {
-        T1AT: false,
+        T1AT1: false,
+        T1AT2: false,
+        
         T2AT1: false,
         T2AT2: false,
       },
@@ -63,9 +77,10 @@ addLayer("main", {
     if (player.main.TCH1S.gte(1)) {
       mult = mult.pow(tmp[this.layer].challenges["Looming"].debuff)
     }
+    if (hasMilestone("main", "TM19"))
     mult = mult.mul(tmp.main.OreoStellarBoost)
     mult = mult.mul(challengeEff("main", "Looming"))
-    mult = mult.add(1)
+
     return mult
   },
   gainExp()
@@ -79,7 +94,7 @@ addLayer("main", {
   tierCostCalc() {
     let Base = new Decimal(50)
     let Tier = player.main.tier
-    let Layer = new Decimal(1.35)
+    let Layer = new Decimal(1.287)
 
     let PowerI = new Decimal.div(player.main.tier, 20).add(1)
     let PowerII = new Decimal.div(player.main.tier, 40).add(1)
@@ -89,6 +104,8 @@ addLayer("main", {
     let PowerVI = new Decimal.div(player.main.tier, 640).add(1)
     let PowerVII = new Decimal.div(player.main.tier, 1280).add(1)
     let PowerVIII = new Decimal.div(player.main.tier, 2560).add(1)
+    let PowerIX = new Decimal.div(player.main.tier, 5120).add(1)
+    let PowerX = new Decimal.div(player.main.tier, 10240).add(1)
 
     let ScaleI = new Decimal.pow(10, Tier)
     let CostI = new Decimal.mul(ScaleI, Tier)
@@ -106,6 +123,8 @@ addLayer("main", {
     Calculation = Calculation.pow(PowerVI)
     Calculation = Calculation.pow(PowerVII)
     Calculation = Calculation.pow(PowerVIII)
+    Calculation = Calculation.pow(PowerIX)
+    Calculation = Calculation.pow(PowerX)
 
     Calculation = Calculation.div(buyableEffect("main", "Cheaper Stellar Tier"))
     Calculation = Calculation.div(buyableEffect("main", "Cheaper Oreo Tier"))
@@ -185,6 +204,7 @@ addLayer("main", {
   hardfork() {
     player.main.hardfork = player.main.hardfork.add(1)
     
+    if (!hasMilestone("main", "TM15")) {
     player.points = new Decimal(0)
     player.main.tier = new Decimal(0)
     player.main.factories = new Decimal(0)
@@ -210,10 +230,12 @@ addLayer("main", {
     player.main.buyables["Cheaper Oreo Tier"] = new Decimal(0)
     player.main.buyables["Oreo Looming Offsetter"] = new Decimal(0)
     player.main.buyables["Oreo Bonus Booster"] = new Decimal(0)
+    }
   },
 
   hardforkCostCalc() {
     let Base = new Decimal("1e1200")
+   /*
     let HF = player.main.hardfork
 
     let PowerI = new Decimal(HF)
@@ -228,77 +250,82 @@ addLayer("main", {
     PowerI = PowerI.pow(PowerIV)
     let CalculationI = new Decimal.pow(PowerI, 0.1)
     let CalculationII = new Decimal.pow(Base, CalculationI)
-    return CalculationII
+    if (hasMilestone("main", "TM15")) {
+      CalculationII = CalculationII.pow(0.5)
+    }*/
+    
+    let StartingCost = new Decimal("1e1200")
+    let HF1 = player.main.hardfork
+    let HF2 = new Decimal.div(HF1, 10).add(1)
+    let HF3 = new Decimal.div(HF1, 20).add(1)
+    let HF4 = new Decimal.div(HF1, 30).add(1)
+    let HF5 = new Decimal.div(HF1, 40).add(1)
+    let HF6 = new Decimal.div(HF1, 50).add(1)
+    
+    let ScaleI = new Decimal.pow(1.05, HF1)
+    let ScaleII = new Decimal.pow(1.06, HF2)
+    let ScaleIII = new Decimal.pow(1.075, HF3)
+    let ScaleIV = new Decimal.pow(1.09, HF4)
+    let ScaleV = new Decimal.pow(1.11, HF5)
+    let ScaleVI = new Decimal.pow(1.14, HF6)
+    
+    StartingCost = StartingCost.pow(ScaleI)
+    StartingCost = StartingCost.pow(ScaleII)
+    StartingCost = StartingCost.pow(ScaleIII)
+    StartingCost = StartingCost.pow(ScaleIV)
+    StartingCost = StartingCost.pow(ScaleV)
+    StartingCost = StartingCost.pow(ScaleVI)
+    return StartingCost
   },
 
   hardforkXPCalc() {
     let Base = player.main.hardfork
     let Power = new Decimal(3)
     Power = Power.add(buyableEffect("main", "Bitcoin XP Generation"))
-    let Calculation = new Decimal.pow(Power, Base)
+    let Calculation = new Decimal.pow(Power, Base).sub(1)
     
     return Calculation
   },
 
   hardforkXPlevelCalc() {
     let Base = new Decimal(10)
-    let Power = new Decimal(2)
+    let Power = new Decimal(1.1)
     
-    if (player.main.hardforklvl.gte(100)) {
-    Power = Power.add(1)
-    }
-    if (player.main.hardforklvl.gte(200)) {
-      Power = Power.add(1)
-    }
-    if (player.main.hardforklvl.gte(400)) {
-      Power = Power.add(2)
-    }
-    if (player.main.hardforklvl.gte(800)) {
-      Power = Power.add(2)
-    }
-    if (player.main.hardforklvl.gte(1600)) {
-      Power = Power.add(4)
-    }
-    if (player.main.hardforklvl.gte(3200)) {
-      Power = Power.add(4)
-    }
+    
     let Level = player.main.hardforklvl
 
-    let CalculationI = new Decimal.pow(Level, Power)
+    let CalculationI = new Decimal.pow(Power, Level)
     let CalculationII = new Decimal.mul(Base, CalculationI)
-
+    
     return CalculationII
   },
   
   hardforkLevelDisplay() {
     let Mark = new Decimal(0)
-    if (player.main.hardforklvl.gte(100)) {
-      Mark = Mark.add(1)
-    }
-    if (player.main.hardforklvl.gte(200)) {
-      Mark = Mark.add(1)
-    }
-    if (player.main.hardforklvl.gte(400)) {
-      Mark = Mark.add(1)
-    }
-    if (player.main.hardforklvl.gte(800)) {
-      Mark = Mark.add(1)
-    }
-    if (player.main.hardforklvl.gte(1600)) {
-      Mark = Mark.add(1)
-    }
-    if (player.main.hardforklvl.gte(3200)) {
+    let Threshold = new Decimal(100)
+    
+    
+    if (player.main.hardforklvl.gte(Threshold)) {
+      Threshold = Threshold.mul(2)
       Mark = Mark.add(1)
     }
     return Mark
   },
   
   
+  
   bitcoinGeneration() {
     let Base = player.main.hardforklvl
     let Power = new Decimal(2.5)
     
-    let Calculation = new Decimal.pow(Power, Base).sub(1)
+    if(hasMilestone("main", "TM12")) {
+      Power = Power.mul(1.2)
+    }
+    if (hasMilestone("main", "TM13")) {
+      Power = Power.mul(1.3)
+    }
+    
+    let Calculation = new Decimal.pow(Power, Base).sub(2.5)
     
     return Calculation
   },
@@ -486,7 +513,6 @@ addLayer("main", {
     let Calculation = new Decimal.pow(Oreo, 6)
     
     Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
-    Calculation = Calculation.add(1)
     return Calculation
   },
 
@@ -512,11 +538,236 @@ addLayer("main", {
 
     return CalculationII
   },
+  
+  OrderIndex() {
+    let Index = new Decimal(0)
+    if (player.main.rebirth.gte(1)) {
+      Index = new Decimal(1)
+    }
+    if (player.main.srebirth.gte(1)) {
+      Index = new Decimal(2)
+    }
+    if (player.main.urebirth.gte(1)) {
+      Index = new Decimal(3)
+    }
+    return Index
+  },
+  
+  HardReset() {
+    player.main.multiplier = new Decimal(0)
+    player.main.cash = new Decimal(0)
+    player.main.multiplierP = new Decimal(0)
+    player.main.rebirth = new Decimal(0)
+    player.main.rebirthP = new Decimal(0)
+    player.main.srebirth = new Decimal(0)
+    player.main.srebirthP = new Decimal(0)
+    player.main.urebirth = new Decimal(0)
+    player.main.urebirthP = new Decimal(0)
+  },
+  
+  LevelCalculation() {
+    let Base = player.main.cash
+    Base = Base.add(1)
+    
+    let LevelC = new Decimal.log(Base, 10).add(1)
+    return LevelC
+  },
+  
+  CashCalculation() {
+    let Base = new Decimal(1)
+    let Multiplier = player.main.multiplier
+    let SRebirth = player.main.srebirth
+    
+    let BoostI = new Decimal.mul(Multiplier, 1.25)
+    let URebirthBoost = new Decimal.mul(player.main.urebirth, 3).add(1)
+    
+    
+    let Calculation = new Decimal.add(Base, BoostI)
+    Calculation = Calculation.mul(tmp.main.RebirthBoostCalc)
+    return Calculation
+  },
+  
+  MultiplierReset() {
+    player.main.cash = new Decimal(0)
+  },
+  
+  MultiplierCostCalc() {
+    let AmountBuy = player.main.multiplierP 
+    let Amount = player.main.multiplierP
+    let Currency = player.main.cash
+    
+    let BaseCost = new Decimal(10) 
+    let CostFactor = new Decimal(2.25) 
+    let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+    BaseCost = BaseCost.mul(CostPower)
+    
+    let PowerI = new Decimal.div(Amount, 1e6).add(1)
+    let PowerII = new Decimal.div(Amount, 1e9).add(1)
+    let PowerIII = new Decimal.div(Amount, 1e12).add(1)
+    
+    BaseCost = BaseCost.pow(PowerI)
+    BaseCost = BaseCost.pow(PowerII)
+    BaseCost = BaseCost.pow(PowerIII)
+    
+    return BaseCost
+  },
+  
+  MultiplierAmountCalc() {
+    let AmountBuy = player.main.multiplierP
+    let Amount = player.main.multiplierP
+    let Currency = player.main.cash
+    
+    let RebirthBoost = new Decimal.mul(player.main.rebirth, 2).add(1)
+    let URebirthBoost = new Decimal.mul(player.main.urebirth, 1.5).add(1)
+    
+    let BaseAmount = new Decimal(1)
+    let AmountFactor = new Decimal(1.5)
+    let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+    BaseAmount = BaseAmount.mul(AmountPower)
+    
+    let PowerI = new Decimal.div(Amount, 1e6).add(1)
+    let PowerII = new Decimal.div(Amount, 1e9).add(1)
+    let PowerIII = new Decimal.div(Amount, 1e12).add(1)
+    
+    BaseAmount = BaseAmount.mul(RebirthBoost)
+    BaseAmount = BaseAmount.mul(URebirthBoost)
+    
+    BaseAmount = BaseAmount.pow(PowerI)
+    BaseAmount = BaseAmount.pow(PowerII)
+    BaseAmount = BaseAmount.pow(PowerIII)
+    return BaseAmount
+  },
+  
+  MultiplierBoost() {
+    let Power = new Decimal(10)
+    let Multiplier = player.main.multiplier
+    
+    let Calculation = new Decimal.pow(Multiplier, Power)
+    return Calculation
+  },
+  
+  RebirthReset() {
+    player.main.multiplier = new Decimal(0)
+    player.main.cash = new Decimal(0)
+  },
+  
+  RebirthCostCalc() {
+      let AmountBuy = player.main.rebirthP
+      let Currency = player.main.multiplier
+      
+      let BaseCost = new Decimal(500)
+      let CostFactor = new Decimal(3.37)
+      let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+      BaseCost = BaseCost.mul(CostPower)
+  
+      return BaseCost
+    },
+  
+    RebirthAmountCalc() {
+      let AmountBuy = player.main.rebirthP
+      let Currency = player.main.multiplier
+      
+      let SRebirthBoost = new Decimal.mul(player.main.srebirth, 3).add(1)
+      let URebirthBoost = new Decimal.mul(player.main.srebirth, 2).add(1)
+  
+      let BaseAmount = new Decimal(1)
+      let AmountFactor = new Decimal(1.5)
+      let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+      BaseAmount = BaseAmount.mul(AmountPower)
+      
+      BaseAmount = BaseAmount.mul(SRebirthBoost)
+      BaseAmount = BaseAmount.mul(URebirthBoost)
+      return BaseAmount
+    },
+    
+    RebirthBoostCalc() {
+      let Rebirth = player.main.rebirth
+      let BaseBoost = new Decimal(2)
+      
+      let Calculation = new Decimal.mul(BaseBoost, Rebirth).add(1)
+      
+      return Calculation
+    },
+    
+    SRebirthReset() {
+      player.main.rebirth = new Decimal(0)
+        player.main.multiplier = new Decimal(0)
+        player.main.cash = new Decimal(0)
+      },
+    
+      SRebirthCostCalc() {
+        let AmountBuy = player.main.srebirthP
+        let Currency = player.main.rebirth
+    
+        let BaseCost = new Decimal(50000)
+        let CostFactor = new Decimal(5.06)
+        let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+        BaseCost = BaseCost.mul(CostPower)
+    
+        return BaseCost
+      },
+    
+      SRebirthAmountCalc() {
+        let AmountBuy = player.main.srebirthP
+        let Currency = player.main.rebirth
+        
+        let URebirthBoost = new Decimal.mul(player.main.urebirth, 4).add(1)
+    
+        let BaseAmount = new Decimal(1)
+        let AmountFactor = new Decimal(1.5)
+        let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+        BaseAmount = BaseAmount.mul(AmountPower)
+        BaseAmount = BaseAmount.mul(URebirthBoost)
+    
+        return BaseAmount
+      },
+    
+      SRebirthBoostCalc() {
+        let SRebirth = player.main.srebirth
+        let BaseBoost = new Decimal(4)
+    
+        let Calculation = new Decimal.mul(BaseBoost, SRebirth).add(1)
+    
+        return Calculation
+      },
+      
+      URebirthReset() {
+        player.main.srebirth = new Decimal(0)
+          player.main.rebirth = new Decimal(0)
+          player.main.multiplier = new Decimal(0)
+          player.main.cash = new Decimal(0)
+        },
+      
+        URebirthCostCalc() {
+          let AmountBuy = player.main.urebirthP
+          let Currency = player.main.srebirth
+      
+          let BaseCost = new Decimal(5e15)
+          let CostFactor = new Decimal(7.59)
+          let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+          BaseCost = BaseCost.mul(CostPower)
+      
+          return BaseCost
+        },
+      
+        URebirthAmountCalc() {
+          let AmountBuy = player.main.urebirthP
+          let Currency = player.main.srebirth
+      
+          let BaseAmount = new Decimal(1)
+          let AmountFactor = new Decimal(1.5)
+          let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+          BaseAmount = BaseAmount.mul(AmountPower)
+      
+          return BaseAmount
+        },
+     
+  
+  
 
 
   update(diff) {
     
-      player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
     
     player.main.unitLimitLimit = tmp.main.AccelerantLimitLimit
     
@@ -532,17 +783,17 @@ addLayer("main", {
       player.main.hardforkxp = new Decimal(0)
     }
 
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Point Production")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Production")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Cheaper Stellar")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Cheaper Stellar Tier")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Stellar Accelerant Bonus")
+    if (tmp.main.clickables.T1AT1.canRun) buyBuyable(this.layer, "Stellar Point Production")
+    if (tmp.main.clickables.T1AT1.canRun) buyBuyable(this.layer, "Stellar Production")
+    if (tmp.main.clickables.T1AT1.canRun) buyBuyable(this.layer, "Cheaper Stellar")
+    if (tmp.main.clickables.T1AT1.canRun) buyBuyable(this.layer, "Cheaper Stellar Tier")
+    if (tmp.main.clickables.T1AT1.canRun) buyBuyable(this.layer, "Stellar Accelerant Bonus")
 
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Point Production")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Increaser")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Booster")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Booster")
-    if (tmp.main.clickables.T1AT.canRun) buyBuyable(this.layer, "Ethereum Cheaper Factory")
+    if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Point Production")
+    if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Increaser")
+    if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Booster")
+    if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Booster")
+    if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Cheaper Factory")
     
     
     if (tmp.main.clickables.T2AT1.canRun) clickClickable(this.layer, "Tier Up")
@@ -556,8 +807,16 @@ addLayer("main", {
       }
     }
     
+    if (player.main.tier.gte(5)) {
+      player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
+    }
+    
     if (player.main.factories.gte(1)) {
       player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
+    }
+    
+    if (hasMilestone("main", "TM15")) {
+      player.main.cash = player.main.cash.add((tmp.main.CashCalculation).times(diff))
     }
     
     if (player.main.tier.gte(9)) {
@@ -812,11 +1071,1619 @@ addLayer("main", {
         return true
       }
     },
+    
+    "HardReset": {
+      title() {
+        return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">-- HARD RESET --</b><br>
+        Resets anything Funny Dong Zone related!!!`
+      },
+      canClick() {
+        return true
+      },
+      onClick() {
+        tmp.main.HardReset()
+      },
+      style() {
+        return {
+          "background-image": "url('images/Reset.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "auto",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
 
-    T1AT: {
+    "Buy Multiplier": {
+      title() {
+        return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Multiplier - ${format(player.main.multiplierP)}×</b><br>
+        
+          <b style="font-size:25px; text-shadow: 0px 0px 20px #000000">${format(tmp.main.MultiplierCostCalc)} Cash = ${format(tmp.main.MultiplierAmountCalc)} Multiplier</b><br>
+         Click on arrows to increase/decrease bulk buy!`
+      },
+      canClick() {
+        return player.main.cash.gte(tmp.main.MultiplierCostCalc)
+      },
+      onClick() {
+        tmp.main.MultiplierReset()
+        player.main.multiplier = player.main.multiplier.add(tmp.main.MultiplierAmountCalc)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "auto",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "auto",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+1": {
+      title() {
+        return `+1`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(1)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+10": {
+      title() {
+        return `+10`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(10)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+100": {
+      title() {
+        return `+100`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(100)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+1000": {
+      title() {
+        return `+1Kx`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(1000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+10000": {
+      title() {
+        return `+10Kx`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(10000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+100000": {
+      title() {
+        return `+100Kx`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(100000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+1000000": {
+      title() {
+        return `+1Mx`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(1000000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier+10000000": {
+      title() {
+        return `+10Mx`
+      },
+      canClick() {
+        return true || player.main.multiplierP.gte(0)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.add(10000000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+
+    "Buy Multiplier-1": {
+      title() {
+        return `-1x`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(1)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(1)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-10": {
+      title() {
+        return `-10x`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(10)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(10)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-100": {
+      title() {
+        return `-100x`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(100)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(100)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-1000": {
+      title() {
+        return `-1Kx`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(1000)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(1000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-10000": {
+      title() {
+        return `-10Kx`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(10000)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(10000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-100000": {
+      title() {
+        return `-100Kx`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(100000)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(100000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-1000000": {
+      title() {
+        return `-1Mx`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(1000000)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(1000000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Multiplier-10000000": {
+      title() {
+        return `-10Mx`
+      },
+      canClick() {
+        return player.main.multiplierP.gte(10000000)
+      },
+      onClick() {
+        player.main.multiplierP = player.main.multiplierP.sub(10000000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/MultiplierC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+
+
+    "Buy Rebirth": {
+      title() {
+        return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Rebirth - ${format(player.main.rebirthP)}×</b><br>
+        
+          <b style="font-size:25px; text-shadow: 0px 0px 20px #000000">${format(tmp.main.RebirthCostCalc)} Multiplier = ${format(tmp.main.RebirthAmountCalc)} Rebirth</b><br>
+         Click on arrows to increase/decrease bulk buy!<br>
+         Note that buying Rebirth resets Multiplier and Cash`
+      },
+      canClick() {
+        return player.main.multiplier.gte(tmp.main.RebirthCostCalc)
+      },
+      onClick() {
+        tmp.main.RebirthReset()
+        player.main.rebirth = player.main.rebirth.add(tmp.main.RebirthAmountCalc)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "auto",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "auto",
+          "height": " 130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(0) || player.main.multiplier.gte(500) 
+      }
+    },
+    "Buy Rebirth+1": {
+      title() {
+        return `+1x`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(0)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.add(1)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth+10": {
+      title() {
+        return `+10x`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(0)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.add(10)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth+100": {
+      title() {
+        return `+100x`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(0)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.add(100)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth+1000": {
+      title() {
+        return `+1Kx`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(0)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.add(1000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth+10000": {
+      title() {
+        return `+10Kx`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(0)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.add(10000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+ 
+    "Buy Rebirth-1": {
+      title() {
+        return `-1x`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(1)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.sub(1)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth-10": {
+      title() {
+        return `-10x`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(10)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.sub(10)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth-100": {
+      title() {
+        return `-100x`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(100)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.sub(100)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth-1000": {
+      title() {
+        return `-1Kx`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(1000)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.sub(1000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    "Buy Rebirth-10000": {
+      title() {
+        return `-10Kx`
+      },
+      canClick() {
+        return player.main.rebirthP.gte(10000)
+      },
+      onClick() {
+        player.main.rebirthP = player.main.rebirthP.sub(10000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/RebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return true
+      }
+    },
+    
+    
+    "Buy Super Rebirth": {
+      title() {
+        return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Super Rebirth - ${format(player.main.srebirthP)}×</b><br>
+        
+          <b style="font-size:25px; text-shadow: 0px 0px 20px #000000">${format(tmp.main.SRebirthCostCalc)} Rebirth = ${format(tmp.main.SRebirthAmountCalc)} Super Rebirth</b><br>
+         Click on arrows to increase/decrease bulk buy!<br>
+         Note that buying Super Rebirth resets Rebirth , Multiplier and Cash`
+      },
+      canClick() {
+        return player.main.rebirth.gte(tmp.main.SRebirthCostCalc)
+      },
+      onClick() {
+        tmp.main.SRebirthReset()
+        player.main.srebirth = player.main.srebirth.add(tmp.main.SRebirthAmountCalc)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "auto",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "auto",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1) || player.main.rebirth.gte(50000)
+      }
+    },
+    "Buy SRebirth+1": {
+      title() {
+        return `+1x`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(0)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.add(1)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    "Buy SRebirth+10": {
+      title() {
+        return `+10x`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(0)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.add(10)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    "Buy SRebirth+100": {
+      title() {
+        return `+100x`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(0)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.add(100)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    "Buy SRebirth+1000": {
+      title() {
+        return `+1Kx`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(0)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.add(1000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    
+    "Buy SRebirth-1": {
+      title() {
+        return `-1x`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(1)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.sub(1)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    "Buy SRebirth-10": {
+      title() {
+        return `-10x`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(10)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.sub(10)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    "Buy SRebirth-100": {
+      title() {
+        return `-100x`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(100)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.sub(100)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    "Buy SRebirth-1000": {
+      title() {
+        return `-1Kx`
+      },
+      canClick() {
+        return player.main.srebirthP.gte(1000)
+      },
+      onClick() {
+        player.main.srebirthP = player.main.srebirthP.sub(1000)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/SRebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "50px",
+          "height": "40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "50px",
+          "height": " 40px !important",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(1)
+      }
+    },
+    
+    
+    "Buy Ultra Rebirth": {
+      title() {
+        return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Ultra Rebirth - ${format(player.main.urebirthP)}×</b><br>
+        
+          <b style="font-size:25px; text-shadow: 0px 0px 20px #000000">${format(tmp.main.URebirthCostCalc)} Super Rebirth = ${format(tmp.main.URebirthAmountCalc)} Ultra Rebirth</b><br>
+         Click on arrows to increase/decrease bulk buy!<br>
+         Note that buying Ultra Rebirth resets Super Rebirth , Rebirth , Multiplier and Cash`
+      },
+      canClick() {
+        return player.main.srebirth.gte(tmp.main.URebirthCostCalc)
+      },
+      onClick() {
+        tmp.main.URebirthReset()
+        player.main.urebirth = player.main.urebirth.add(tmp.main.URebirthAmountCalc)
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canClick) return {
+          "background-image": "url('images/URebirthC.png')",
+          "background-size": "cover",
+          "background-color": "#ffffff",
+          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+          "width": "auto",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 15px #000000",
+          "color": "#ffffff"
+        }
+        return {
+          "background-image": "url('images/MultiplierCT.png')",
+          "background-size": "cover",
+          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+          "width": "auto",
+          "height": "130px",
+          "border-radius": "10px",
+          "border": "0px",
+          "margin": "5px",
+          "text-shadow": "0px 0px 10px #000000",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return tmp.main.OrderIndex.gte(2) || player.main.srebirth.gte(5e15)
+      }
+    },
+
+
+
+
+
+    T1AT1: {
       set: "auto",
       title() {
-        return `<b style="font-size:25px">Stellar & Ethereum Automator</b><br>
+        return `<b style="font-size:25px">Stellar Automator</b><br>
       <b style="font-size:20px">${Boolean(player.main[this.set][this.id]) ? "On" : "Off"}</b>`
 
       },
@@ -830,7 +2697,7 @@ addLayer("main", {
         return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
       },
       unlocked() {
-        return hasMilestone("main", "TM6")
+        return hasMilestone("main", "TM5")
       },
       style() {
         if (tmp[this.layer].clickables[this.id].canRun) return {
@@ -853,7 +2720,46 @@ addLayer("main", {
         }
       },
     },
-    
+    T1AT2: {
+      set: "auto",
+      title() {
+        return `<b style="font-size:25px">Ethereum Automator</b><br>
+      <b style="font-size:20px">${Boolean(player.main[this.set][this.id]) ? "On" : "Off"}</b>`
+
+      },
+      canClick() {
+        return true
+      },
+      onClick() {
+        player.main[this.set][this.id] = Boolean(1 - player.main[this.set][this.id])
+      },
+      canRun() {
+        return player.main[this.set][this.id] && tmp.main.clickables[this.id].canClick
+      },
+      unlocked() {
+        return hasMilestone("main", "TM8")
+      },
+      style() {
+        if (tmp[this.layer].clickables[this.id].canRun) return {
+          "background-image": "url('images/STAT_ON.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto",
+          "margin" : "4px"
+        }
+        return {
+          "background-image": "url('images/STAT_OFF.png')",
+          "color": "white",
+          "border": "0px",
+          "border-radius": "5px",
+          "width": "300px",
+          "height": "auto",
+          "margin" : "4px"
+        }
+      },
+    },
     T2AT1: {
       set: "auto",
       title() {
@@ -3091,14 +4997,16 @@ addLayer("main", {
   milestones: {
     "TM1": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 1</b>`
+        let STATE = []
+        if(hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 1 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(1) },
       effectDescription: `<b style="font-size:22px">
-    + Unlock Stellar`,
+      + Unlock Stellar`,
       style() {
         return {
-          "background-image": "url('images/BronzeMastery.png')",
+          "background-image": "url('images/MasteryI.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3110,14 +5018,16 @@ addLayer("main", {
     },
     "TM2": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 2</b>`
+        let STATE = []
+        if(hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 2 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(2) },
       effectDescription: `<b style="font-size:22px">
-    + Unlock 2nd Stellar buyable`,
+      + Unlock 2nd Stellar buyable`,
       style() {
         return {
-          "background-image": "url('images/BronzeMastery.png')",
+          "background-image": "url('images/MasteryI.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3129,14 +5039,16 @@ addLayer("main", {
     },
     "TM3": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 3</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 3 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(3) },
       effectDescription: `<b style="font-size:22px">
-        + Unlock 3rd Stellar buyable`,
+      + Unlock 3rd Stellar buyable`,
       style() {
         return {
-          "background-image": "url('images/BronzeMastery.png')",
+          "background-image": "url('images/MasteryI.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3148,14 +5060,16 @@ addLayer("main", {
     },
     "TM4": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 5</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 5 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(5) },
       effectDescription: `<b style="font-size:22px">
-        + Unlock Ethereum`,
+      + Unlock Ethereum`,
       style() {
         return {
-          "background-image": "url('images/SilverMastery.png')",
+          "background-image": "url('images/MasteryII.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3164,19 +5078,25 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+      return player.main.tier.gte(3)
       }
     },
     "TM5": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 7</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 7 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(7) },
       effectDescription: `<b style="font-size:22px">
-        + Unlock 2nd Ethereum buyable<br>
-        + Unlock Stellar Magnitude`,
+      + Unlock 2nd Ethereum buyable<br>
+      + Unlock Stellar Magnitude<br>
+      + Unlock Stellar Automator`,
       style() {
         return {
-          "background-image": "url('images/SilverMastery.png')",
+          "background-image": "url('images/MasteryII.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3185,20 +5105,25 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+      return player.main.tier.gte(3)
       }
     },
     "TM6": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 9</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 9 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(9) },
       effectDescription: `<b style="font-size:22px">
-            + Unlock 3rd Ethereum buyable<br>
-            + 2x Stellar Magnitude limit<br>
-            + Unlock Accelerant`,
+      + Unlock 3rd Ethereum buyable<br>
+      + 2x Stellar Magnitude limit<br>
+      + Unlock Accelerant`,
       style() {
         return {
-          "background-image": "url('images/SilverMastery.png')",
+          "background-image": "url('images/MasteryII.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3207,87 +5132,108 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(3)
       }
     },
     "TM7": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 11</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 13 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(11) },
+      done() { return player.main.tier.gte(13) },
       effectDescription: `<b style="font-size:22px">
-            + Unlock 4th Stellar buyable<br>
-            + Unlock 4th Ethereum buyable<br>
-            + Power Accelerant Limit by 2 and Acceleration by 2x`,
+      + Unlock 4th Stellar buyable<br>
+      + Unlock 4th Ethereum buyable<br>
+      + Power Accelerant Limit by 2 and Acceleration by 2x`,
       style() {
         return {
-          "background-image": "url('images/GoldMastery.png')",
+          "background-image": "url('images/MasteryIII.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
           "border-radius": "10px",
-          "color": "#000000"
+          "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(9)
       }
     },
     "TM8": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 15</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 17 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(15) },
+      done() { return player.main.tier.gte(17) },
       effectDescription: `<b style="font-size:22px">
-                 + Unlock Factory Investment<br>
-                 + 1.5x base Stellar Magnitude Boost<br>
-                 + Power Accelerant Limit by 2 and Acceleration by 2x`,
+      + Unlock Factory Investment<br>
+      + 1.5x base Stellar Magnitude Boost<br>
+      + Power Accelerant Limit by 2 and Acceleration by 2x<br>
+      + Unlock Ethereum Automator`,
       style() {
         return {
-          "background-image": "url('images/GoldMastery.png')",
+          "background-image": "url('images/MasteryIII.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
           "border-radius": "10px",
-          "color": "#000000"
+          "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(9)
       }
     },
     "TM9": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 19</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 21 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(19) },
+      done() { return player.main.tier.gte(21) },
       effectDescription: `<b style="font-size:22px">
                       + Unlock Ethereum Stabilizer<br>
                       + 1.5x base Stellar Magnitude Boost<br>
                       + Very minor change in Factory Investment cost`,
       style() {
         return {
-          "background-image": "url('images/GoldMastery.png')",
+          "background-image": "url('images/MasteryIII.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
           "padding": "5px",
           "border": "0px solid",
           "border-radius": "10px",
-          "color": "#000000"
+          "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(9)
       }
     },
     "TM10": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 27</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #ffffff">TIER 29 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(27) },
+      done() { return player.main.tier.gte(29) },
       effectDescription: `<b style="font-size:22px">
-                      + Unlock 5th Stellar buyable<br>
-                      + Unlock 5th Ethereum buyable<br>
-                      + Very minor change in Factory Investment cost<br>
-                      + Power Accelerant Limit by 2 and Acceleration by 2x`,
+      + Unlock 5th Stellar buyable<br>
+      + Unlock 5th Ethereum buyable<br>
+      + Very minor change in Factory Investment cost<br>
+      + Power Accelerant Limit by 2 and Acceleration by 2x`,
       style() {
         return {
-          "background-image": "url('images/DiamondMastery.png')",
+          "background-image": "url('images/MasteryIV.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3296,18 +5242,23 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#000000"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(21)
       }
     },
     "TM11": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 35</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #ffffff">TIER 37 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(35) },
+      done() { return player.main.tier.gte(37) },
       effectDescription: `<b style="font-size:22px">
-                                     + Unlock Bitcoin`,
+      + Unlock Bitcoin`,
       style() {
         return {
-          "background-image": "url('images/DiamondMastery.png')",
+          "background-image": "url('images/MasteryIV.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3316,18 +5267,24 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#000000"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(21)
       }
     },
     "TM12": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 43</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #ffffff">TIER 45 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(43) },
+      done() { return player.main.tier.gte(45) },
       effectDescription: `<b style="font-size:22px">
-                                         + Unlock 3rd Bitcoin Tab`,
+      + Unlock 3rd Bitcoin Tab<br>
+      + 1.2x Bitcoin Forked per Level`,
       style() {
         return {
-          "background-image": "url('images/DiamondMastery.png')",
+          "background-image": "url('images/MasteryIV.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3336,18 +5293,24 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#000000"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(21)
       }
     },
     "TM13": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 59</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 61 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(59) },
+      done() { return player.main.tier.gte(61) },
       effectDescription: `<b style="font-size:22px">
-                                         + Unlock 4th Bitcoin Tab`,
+      + Unlock 4th Bitcoin Tab<br>
+      + 1.3x Bitcoin Forked per Level`,
       style() {
         return {
-          "background-image": "url('images/AmethystMastery.png')",
+          "background-image": "url('images/MasteryV.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3356,19 +5319,26 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(45)
       }
     },
     "TM14": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 75</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 77 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(75) },
+      done() { return player.main.tier.gte(77) },
       effectDescription: `<b style="font-size:22px">
-                                         + Unlock The Machinery ( soon )<br>
-                                         + Unlock Crafting System ( soon )`,
+      + 1.4x Bitcoin Forked per Level<br>
+      + Minor change in Factory Investment cost<br>
+      + Unlock 6th Stellar Buyable<br>
+      + Unlock 6th Ethereum Buyable`,
       style() {
         return {
-          "background-image": "url('images/AmethystMastery.png')",
+          "background-image": "url('images/MasteryV.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3377,18 +5347,32 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(45)
       }
     },
     "TM15": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 91</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 93 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(91) },
+      done() { return player.main.tier.gte(93) },
       effectDescription: `<b style="font-size:22px">
-                                         + PLACEHOLDER`,
+      + 1.5x Bitcoin Forked per Level<br>
+      + ^0.975 Hardfork cost<br>
+      + Hardforking doesn't reset anything anymore<br>
+      + Unlock a new Bitcoin buyable<br>
+      + Unlock a funny dong zone`,
+      effectReward() {
+        if (hasMilestone(this.layer, this.id)) {
+          BitcoinReset = new Decimal(1)
+        }
+      },
       style() {
         return {
-          "background-image": "url('images/AmethystMastery.png')",
+          "background-image": "url('images/MasteryV.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3397,18 +5381,26 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(45)
       }
     },
     "TM16": {
       requirementDescription() {
-        return `<b style="font-size:28px">TIER 113</b>`
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 125 ${STATE}</b>`
       },
-      done() { return player.main.tier.gte(113) },
+      done() { return player.main.tier.gte(125) },
       effectDescription: `<b style="font-size:22px">
-                                             + PLACEHOLDER`,
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER`,
       style() {
         return {
-          "background-image": "url('images/RubyMastery.png')",
+          "background-image": "url('images/MasteryVI.png')",
           "background-size": "50% !important",
           "width": "600px",
           "height": "auto",
@@ -3417,8 +5409,146 @@ addLayer("main", {
           "border-radius": "10px",
           "color": "#ffffff"
         }
+      },
+      unlocked() {
+        return player.main.tier.gte(93)
       }
     },
+    "TM17": {
+      requirementDescription() {
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 157 ${STATE}</b>`
+      },
+      done() { return player.main.tier.gte(157) },
+      effectDescription: `<b style="font-size:22px">
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER`,
+      style() {
+        return {
+          "background-image": "url('images/MasteryVI.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return player.main.tier.gte(93)
+      }
+    },
+    "TM18": {
+      requirementDescription() {
+        let STATE = []
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 189 ${STATE}</b>`
+      },
+      done() { return player.main.tier.gte(189) },
+      effectDescription: `<b style="font-size:22px">
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER`,
+      style() {
+        return {
+          "background-image": "url('images/MasteryVI.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#ffffff"
+        }
+      },
+      unlocked() {
+        return player.main.tier.gte(93)
+      }
+    },
+    "TM19": {
+      requirementDescription() {
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 251</b>`
+      },
+      done() { return player.main.tier.gte(251) },
+      effectDescription: `<b style="font-size:22px">
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER`,
+      style() {
+        return {
+          "background-image": "url('images/MasteryVII.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#000000"
+        }
+      },
+      unlocked() {
+        return player.main.tier.gte(187)
+      }
+    },
+    "TM20": {
+      requirementDescription() {
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #ffffff">TIER 315</b>`
+      },
+      done() { return player.main.tier.gte(315) },
+      effectDescription: `<b style="font-size:22px">
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER`,
+      style() {
+        return {
+          "background-image": "url('images/MasteryVII.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#000000"
+        }
+      },
+      unlocked() {
+        return player.main.tier.gte(187)
+      }
+    },
+    "TM21": {
+      requirementDescription() {
+        return `<b style="font-size:32px; text-shadow: 0px 0px 10px #ffffff">TIER 379</b>`
+      },
+      done() { return player.main.tier.gte(379) },
+      effectDescription: `<b style="font-size:22px">
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER<br>
+      + PLACEHOLDER`,
+      style() {
+        return {
+          "background-image": "url('images/MasteryVII.png')",
+          "background-size": "50% !important",
+          "width": "600px",
+          "height": "auto",
+          "padding": "5px",
+          "border": "0px solid",
+          "border-radius": "10px",
+          "color": "#000000"
+        }
+      },
+      unlocked() {
+        return player.main.tier.gte(187)
+      }
+    },
+    
   },
   tabFormat: {
     "Main Progression": {
@@ -3486,6 +5616,15 @@ addLayer("main", {
       ["row", [["buyable", "Oreo Bonus Booster"]]],
       ],
     },
+    
+        "Funny Zone": {
+          unlocked() { return hasMilestone("main", "TM15") },
+          content: [
+            "h-line",
+            "blank",
+          ["microtabs", "FunnyZone", { 'border-width': '0px' }],
+  ]
+  },
   },
 
   microtabs: {
@@ -3511,8 +5650,7 @@ addLayer("main", {
             return ``
                         }],
             "blank",
-            ["row", [["clickable", "T1AT"]]],
-            "blank",
+            ["row", [["image", "url('images/ConnectorVasak.png')"],["clickable", "T1AT1"]]],
             "blank",
             ["row", [["buyable", "Stellar Point Production"]]],
             ["row", [["buyable", "Stellar Production"]]],
@@ -3547,6 +5685,8 @@ addLayer("main", {
             }
             return ``
             }],
+            "blank",
+            ["row", [["clickable", "T1AT2"]]],
             "blank",
             ["row", [["buyable", "Ethereum Point Production"]]],
             ["row", [["buyable", "Ethereum Stellar Mag Increaser"]]],
@@ -3622,41 +5762,60 @@ addLayer("main", {
     ["raw-html", () => {
             return `<MA style="font-size: 24px; color: #ffffff">Tier Milestones</MA>`
         }],
+        ["raw-html", () => {
+          return `<MA style="font-size: 24px; color: #ffffff">TM Sets unlocked: <HI style='font-size: 30px; text-shadow: 0px 0px 20px'> 0 of 10</HI></MA>`
+                }],
+            ["raw-html", () => {
+              return `<MA style="font-size: 20px; color: #595959">Tier Milestones are sorted into Masteries.<br> Each Mastery has 3 Milestones and each Mastery it gets more harder to gain new Milestones</MA>`
+                }],
+        "blank",
         ["row", [["milestone", "TM1"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM2"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM3"]]],
-        ["blank", "3px"],
+        ["blank", "12px"],
         ["row", [["milestone", "TM4"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM5"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM6"]]],
-        ["blank", "3px"],
+        ["blank", "12px"],
         ["row", [["milestone", "TM7"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM8"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM9"]]],
-        ["blank", "3px"],
+        ["blank", "12px"],
         ["row", [["milestone", "TM10"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM11"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM12"]]],
-        ["blank", "3px"],
+        ["blank", "12px"],
         ["row", [["milestone", "TM13"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM14"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM15"]]],
-        ["blank", "3px"],
+        ["blank", "12px"],
         ["row", [["milestone", "TM16"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM17"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM18"]]],
+        ["blank", "12px"],
+        ["row", [["milestone", "TM19"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM20"]]],
+        ["blank", "3px"],
+        ["row", [["milestone", "TM21"]]],
+        
     ],
       },
 
       "Factory": {
+        unlocked() { return hasMilestone("main", "TM8") },
         content: [
                    "blank",
                    "h-line",
@@ -3719,7 +5878,115 @@ addLayer("main", {
                          ["row", [["buyable", "Bitcoin Accelerant Limit Limit"]]],
                 ],
       },
-    }
+    },
+    
+    FunnyZone: {
+      "Game": {
+        content: [
+          "blank",
+          "h-line",
+          "blank",
+      ['raw-html', () => {
+            return `<MA style='font-size: 24px'>Level: <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ffffff'>${format(tmp.main.LevelCalculation)}</HI></MA>`
+                              }],
+       ['raw-html', () => {
+              return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1fff5a'>${format(player.main.cash)}</HI> Cash</MA>`
+                    }],
+          ['raw-html', () => {
+            return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>${format(player.main.multiplier)}</HI> Multiplier</MA>`
+                              }],
+          ['raw-html', () => {
+            if (tmp.main.OrderIndex.gte(1)) {
+            return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>${format(player.main.rebirth)}</HI> Rebirth</MA>`
+            }
+            return ``
+                             }],
+          ['raw-html', () => {
+            if (tmp.main.OrderIndex.gte(2)) {
+              return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#f403fc'>${format(player.main.srebirth)}</HI> Super Rebirth</MA>`
+            }
+            return ``
+                                       }],
+          ['raw-html', () => {
+            if (tmp.main.OrderIndex.gte(3)) {
+              return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#9003fc'>${format(player.main.urebirth)}</HI> Ultra Rebirth</MA>`
+                                         }
+                                         return ``
+                                                                              }],
+                              "blank",
+                              "blank",
+  ["row", [["clickable", "Buy Multiplier"]]],
+  ["row", [["clickable", "Buy Multiplier-10000000"],["clickable", "Buy Multiplier-1000000"],["clickable", "Buy Multiplier-100000"],["clickable", "Buy Multiplier-10000"],["clickable", "Buy Multiplier-1000"], ["clickable", "Buy Multiplier-100"], ["clickable", "Buy Multiplier-10"], ["clickable", "Buy Multiplier-1"]]],
+  ["row", [["clickable", "Buy Multiplier+1"], ["clickable", "Buy Multiplier+10"], ["clickable", "Buy Multiplier+100"], ["clickable", "Buy Multiplier+1000"], ["clickable", "Buy Multiplier+10000"], ["clickable", "Buy Multiplier+100000"], ["clickable", "Buy Multiplier+1000000"], ["clickable", "Buy Multiplier+10000000"]]],
+  "blank",
+  ["row", [["clickable", "Buy Rebirth"]]],
+  ["row", [["clickable", "Buy Rebirth-10000"], ["clickable", "Buy Rebirth-1000"], ["clickable", "Buy Rebirth-100"], ["clickable", "Buy Rebirth-10"],
+  ["clickable", "Buy Rebirth-1"]]],
+  ["row", [["clickable", "Buy Rebirth+1"], ["clickable", "Buy Rebirth+10"], ["clickable", "Buy Rebirth+100"], ["clickable", "Buy Rebirth+1000"], ["clickable", "Buy Rebirth+10000"]]],
+  "blank",
+   ["row", [["clickable", "Buy Super Rebirth"]]],
+    ["row", [["clickable", "Buy SRebirth-1000"], ["clickable", "Buy SRebirth-100"], ["clickable", "Buy SRebirth-10"], ["clickable", "Buy SRebirth-1"]]],
+  ["row", [["clickable", "Buy SRebirth+1"], ["clickable", "Buy SRebirth+10"], ["clickable", "Buy SRebirth+100"], ["clickable", "Buy SRebirth+1000"]]],
+    "blank",
+  ["row", [["clickable", "Buy Ultra Rebirth"]]],
+                ],
+      },
+    
+    
+  "The Index": {
+  content: [
+    "blank",
+    "h-line",
+    "blank",
+    ["microtabs", "Indexing", { 'border-width': '0px' }],
+       ]
+    },
+    
+    "Settings": {
+    content: [
+        "blank",
+        "h-line",
+        "blank",
+      ["row", [["clickable", "HardReset"]]],
+           ]
+    },
+    },
+   
+ Indexing: {
+ "This Extension Index": {
+  content: [
+    "blank",
+    "h-line",
+    "blank",
+    ['raw-html', () => {
+    return `<MA style='font-size: 24px'>Multiplier = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>1.25 × x</HI> Cash</MA>`
+                      }],
+    ['raw-html', () => {
+    return `<MA style='font-size: 24px'>Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>2 × x</HI> Multiplier , <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>2 × x</HI> Cash</MA>`
+                      }],
+    ['raw-html', () => {
+    return `<MA style='font-size: 24px'>Super Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#f403fc'>3 × x</HI> Rebirth</MA>`
+                          }],
+       ]
+    },
+    
+    "Outside Extension Index": {
+       content: [
+         "blank",
+         "h-line",
+         "blank",
+        ['raw-html', () => {
+           return `<MA style='font-size: 24px'>Multiplier = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>x ^ 10</HI> Points</MA>`
+                          }],
+      ['raw-html', () => {
+        if (tmp.main.OrderIndex.gte(1)) {
+           return `<MA style='font-size: 24px'>Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>x ^ 15</HI> Stellar , Ethereum</MA>`
+        }
+        return ``
+                          }],
+           ]
+     }
+  },
   },
   row: 0,
   layerShown() { return true }

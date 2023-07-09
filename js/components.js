@@ -269,6 +269,13 @@ function loadVue() {
 		</div>
 	`
 	})
+	
+	Vue.component('image', {
+	  props: ['layer', 'data'],
+	  template: `
+	  <img 
+	  `
+	})
 
 	Vue.component('buyable', {
 		props: ['layer', 'data'],
