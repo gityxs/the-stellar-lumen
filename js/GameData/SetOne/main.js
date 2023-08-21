@@ -33,8 +33,8 @@ addLayer("main", {
       oreos: new Decimal(1),
 
       TCH1S: new Decimal(0),
-      
-      
+
+
       // Bruh, Button Simulator extension. Savefile is already 5,000+ characters so why not increase it?
       cash: new Decimal(0),
       multiplier: new Decimal(0),
@@ -49,7 +49,7 @@ addLayer("main", {
       auto: {
         T1AT1: false,
         T1AT2: false,
-        
+
         T2AT1: false,
         T2AT2: false,
       },
@@ -78,7 +78,7 @@ addLayer("main", {
       mult = mult.pow(tmp[this.layer].challenges["Looming"].debuff)
     }
     if (hasMilestone("main", "TM19"))
-    mult = mult.mul(tmp.main.OreoStellarBoost)
+      mult = mult.mul(tmp.main.OreoStellarBoost)
     mult = mult.mul(challengeEff("main", "Looming"))
 
     return mult
@@ -203,57 +203,57 @@ addLayer("main", {
 
   hardfork() {
     player.main.hardfork = player.main.hardfork.add(1)
-    
+
     if (!hasMilestone("main", "TM15")) {
-    player.points = new Decimal(0)
-    player.main.tier = new Decimal(0)
-    player.main.factories = new Decimal(0)
-    player.main.points = new Decimal(0)
-    player.main.eth = new Decimal(0)
-    player.main.unit = new Decimal(1.0)
-    player.main.oreos = new Decimal(0)
-    player.main.buyables["Stellar Point Production"] = new Decimal(0)
-    player.main.buyables["Stellar Production"] = new Decimal(0)
-    player.main.buyables["Cheaper Stellar"] = new Decimal(0)
-    player.main.buyables["Cheaper Stellar Tier"] = new Decimal(0)
-    player.main.buyables["Stellar Accelerant Boost"] = new Decimal(0)
+      player.points = new Decimal(0)
+      player.main.tier = new Decimal(0)
+      player.main.factories = new Decimal(0)
+      player.main.points = new Decimal(0)
+      player.main.eth = new Decimal(0)
+      player.main.unit = new Decimal(1.0)
+      player.main.oreos = new Decimal(0)
+      player.main.buyables["Stellar Point Production"] = new Decimal(0)
+      player.main.buyables["Stellar Production"] = new Decimal(0)
+      player.main.buyables["Cheaper Stellar"] = new Decimal(0)
+      player.main.buyables["Cheaper Stellar Tier"] = new Decimal(0)
+      player.main.buyables["Stellar Accelerant Boost"] = new Decimal(0)
 
-    player.main.buyables["Ethereum Point Production"] = new Decimal(0)
-    player.main.buyables["Ethereum Stellar Mag Increaser"] = new Decimal(0)
-    player.main.buyables["Ethereum Stellar Mag Booster"] = new Decimal(0)
-    player.main.buyables["Ethereum Booster"] = new Decimal(0)
-    player.main.buyables["Ethereum Cheaper Factory"] = new Decimal(0)
+      player.main.buyables["Ethereum Point Production"] = new Decimal(0)
+      player.main.buyables["Ethereum Stellar Mag Increaser"] = new Decimal(0)
+      player.main.buyables["Ethereum Stellar Mag Booster"] = new Decimal(0)
+      player.main.buyables["Ethereum Booster"] = new Decimal(0)
+      player.main.buyables["Ethereum Cheaper Factory"] = new Decimal(0)
 
-    player.main.buyables["Oreo Point Production"] = new Decimal(0)
-    player.main.buyables["Oreo Stellar Production"] = new Decimal(0)
-    player.main.buyables["Oreo Cheaper"] = new Decimal(0)
-    player.main.buyables["Cheaper Oreo Tier"] = new Decimal(0)
-    player.main.buyables["Oreo Looming Offsetter"] = new Decimal(0)
-    player.main.buyables["Oreo Bonus Booster"] = new Decimal(0)
+      player.main.buyables["Oreo Point Production"] = new Decimal(0)
+      player.main.buyables["Oreo Stellar Production"] = new Decimal(0)
+      player.main.buyables["Oreo Cheaper"] = new Decimal(0)
+      player.main.buyables["Cheaper Oreo Tier"] = new Decimal(0)
+      player.main.buyables["Oreo Looming Offsetter"] = new Decimal(0)
+      player.main.buyables["Oreo Bonus Booster"] = new Decimal(0)
     }
   },
 
   hardforkCostCalc() {
     let Base = new Decimal("1e1200")
-   /*
-    let HF = player.main.hardfork
+    /*
+     let HF = player.main.hardfork
 
-    let PowerI = new Decimal(HF)
-    PowerI = PowerI.add(1)
-    
-    let PowerII = new Decimal.div(HF, 20).add(1)
-    let PowerIII = new Decimal.div(HF, 30).add(1)
-    let PowerIV = new Decimal.div(HF, 40).add(1)
-    
-    PowerI = PowerI.pow(PowerII)
-    PowerI = PowerI.pow(PowerIII)
-    PowerI = PowerI.pow(PowerIV)
-    let CalculationI = new Decimal.pow(PowerI, 0.1)
-    let CalculationII = new Decimal.pow(Base, CalculationI)
-    if (hasMilestone("main", "TM15")) {
-      CalculationII = CalculationII.pow(0.5)
-    }*/
-    
+     let PowerI = new Decimal(HF)
+     PowerI = PowerI.add(1)
+     
+     let PowerII = new Decimal.div(HF, 20).add(1)
+     let PowerIII = new Decimal.div(HF, 30).add(1)
+     let PowerIV = new Decimal.div(HF, 40).add(1)
+     
+     PowerI = PowerI.pow(PowerII)
+     PowerI = PowerI.pow(PowerIII)
+     PowerI = PowerI.pow(PowerIV)
+     let CalculationI = new Decimal.pow(PowerI, 0.1)
+     let CalculationII = new Decimal.pow(Base, CalculationI)
+     if (hasMilestone("main", "TM15")) {
+       CalculationII = CalculationII.pow(0.5)
+     }*/
+
     let StartingCost = new Decimal("1e1200")
     let HF1 = player.main.hardfork
     let HF2 = new Decimal.div(HF1, 10).add(1)
@@ -261,20 +261,21 @@ addLayer("main", {
     let HF4 = new Decimal.div(HF1, 30).add(1)
     let HF5 = new Decimal.div(HF1, 40).add(1)
     let HF6 = new Decimal.div(HF1, 50).add(1)
-    
+
     let ScaleI = new Decimal.pow(1.05, HF1)
     let ScaleII = new Decimal.pow(1.06, HF2)
     let ScaleIII = new Decimal.pow(1.075, HF3)
     let ScaleIV = new Decimal.pow(1.09, HF4)
     let ScaleV = new Decimal.pow(1.11, HF5)
     let ScaleVI = new Decimal.pow(1.14, HF6)
-    
+
     StartingCost = StartingCost.pow(ScaleI)
     StartingCost = StartingCost.pow(ScaleII)
     StartingCost = StartingCost.pow(ScaleIII)
     StartingCost = StartingCost.pow(ScaleIV)
     StartingCost = StartingCost.pow(ScaleV)
     StartingCost = StartingCost.pow(ScaleVI)
+    StartingCost = StartingCost.div("1e1000")
     return StartingCost
   },
 
@@ -283,52 +284,56 @@ addLayer("main", {
     let Power = new Decimal(3)
     Power = Power.add(buyableEffect("main", "Bitcoin XP Generation"))
     let Calculation = new Decimal.pow(Power, Base).sub(1)
-    
+
     return Calculation
   },
 
   hardforkXPlevelCalc() {
     let Base = new Decimal(10)
     let Power = new Decimal(1.1)
-    
-    
+
+
     let Level = player.main.hardforklvl
 
     let CalculationI = new Decimal.pow(Power, Level)
     let CalculationII = new Decimal.mul(Base, CalculationI)
-    
+
     return CalculationII
   },
-  
+
   hardforkLevelDisplay() {
     let Mark = new Decimal(0)
     let Threshold = new Decimal(100)
-    
-    
+
+
     if (player.main.hardforklvl.gte(Threshold)) {
       Threshold = Threshold.mul(2)
       Mark = Mark.add(1)
     }
     return Mark
   },
-  
-  
-  
+
+
+
   bitcoinGeneration() {
     let Base = player.main.hardforklvl
     let Power = new Decimal(2.5)
-    
-    if(hasMilestone("main", "TM12")) {
+
+    if (hasMilestone("main", "TM12")) {
       Power = Power.mul(1.2)
     }
     if (hasMilestone("main", "TM13")) {
       Power = Power.mul(1.3)
     }
-    
-    let Calculation = new Decimal.pow(Power, Base).sub(2.5)
-    
+
+    let Calculation = new Decimal.pow(Power, Base).sub(1)
+
     return Calculation
   },
+  
+ fixBitcoin() {
+  player.main.btc = new Decimal(0)
+ },
 
   ethGainCalc() {
     let Stellar = player.main.points
@@ -364,7 +369,7 @@ addLayer("main", {
     if (Calculation.gte(Limit)) {
       return Calculation = Limit
     }
-   
+
     return Calculation
   },
 
@@ -425,7 +430,7 @@ addLayer("main", {
 
   EthereumStabilizerBoost() {
     let Base = new Decimal(1.2)
-    
+
     Base = Base.add(buyableEffect("main", "Bitcoin Ethereum Stabilizer Booster"))
 
     let Calculation = new Decimal.pow(Base, tmp.main.EthereumStabilizer)
@@ -447,18 +452,18 @@ addLayer("main", {
     Limit = Limit.pow(tmp.main.OreoAccelerantLimitBoost)
     Limit = Limit.pow(buyableEffect("main", "Bitcoin Accelerant Limit"))
     Limit = Limit.add(1)
-    
+
     let LimitLimit = player.main.unitLimitLimit
     if (Limit.gte(LimitLimit)) {
       return Limit = LimitLimit
     }
     return Limit
   },
-  
+
   AccelerantLimitLimit() {
-     let Base = new Decimal("1e2000")
-     Base = Base.pow(buyableEffect("main", "Bitcoin Accelerant Limit Limit"))
-     return Base
+    let Base = new Decimal("1e2000")
+    Base = Base.pow(buyableEffect("main", "Bitcoin Accelerant Limit Limit"))
+    return Base
   },
 
   AccelerantSpeed() {
@@ -485,7 +490,7 @@ addLayer("main", {
     Base = Base.add(buyableEffect("main", "Stellar Accelerant Bonus"))
     Base = Base.add(buyableEffect("main", "Bitcoin Accelerant Bonus"))
     let Calculation = new Decimal.pow(player.main.unit, Base)
-    
+
     Calculation = Calculation.add(1)
 
     return Calculation
@@ -501,7 +506,7 @@ addLayer("main", {
   OreoPointBoost() {
     let Oreo = player.main.oreos
     let Calculation = new Decimal.pow(Oreo, 7)
-    
+
     Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
     Calculation = Calculation.add(1)
     return Calculation
@@ -511,7 +516,7 @@ addLayer("main", {
     let Oreo = player.main.oreos
     Oreo = Oreo.add(1)
     let Calculation = new Decimal.pow(Oreo, 6)
-    
+
     Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
     return Calculation
   },
@@ -520,7 +525,7 @@ addLayer("main", {
     let Oreo = player.main.oreos
     Oreo = Oreo.add(1)
     let Calculation = new Decimal.pow(Oreo, 0.05)
-    
+
     Calculation = Calculation.pow(buyableEffect("main", "Oreo Bonus Booster"))
     Calculation = Calculation.add(1)
     return Calculation
@@ -538,7 +543,7 @@ addLayer("main", {
 
     return CalculationII
   },
-  
+
   OrderIndex() {
     let Index = new Decimal(0)
     if (player.main.rebirth.gte(1)) {
@@ -552,7 +557,7 @@ addLayer("main", {
     }
     return Index
   },
-  
+
   HardReset() {
     player.main.multiplier = new Decimal(0)
     player.main.cash = new Decimal(0)
@@ -564,220 +569,248 @@ addLayer("main", {
     player.main.urebirth = new Decimal(0)
     player.main.urebirthP = new Decimal(0)
   },
-  
+
   LevelCalculation() {
     let Base = player.main.cash
     Base = Base.add(1)
-    
+
     let LevelC = new Decimal.log(Base, 10).add(1)
     return LevelC
   },
-  
+
   CashCalculation() {
     let Base = new Decimal(1)
     let Multiplier = player.main.multiplier
     let SRebirth = player.main.srebirth
-    
+
     let BoostI = new Decimal.mul(Multiplier, 1.25)
     let URebirthBoost = new Decimal.mul(player.main.urebirth, 3).add(1)
-    
-    
+
+
     let Calculation = new Decimal.add(Base, BoostI)
     Calculation = Calculation.mul(tmp.main.RebirthBoostCalc)
     return Calculation
   },
-  
+
   MultiplierReset() {
-    player.main.cash = new Decimal(0)
+    player.main.cash = player.main.cash.sub(tmp.main.MultiplierCostCalc)
   },
-  
+
   MultiplierCostCalc() {
-    let AmountBuy = player.main.multiplierP 
+    let AmountBuy = player.main.multiplierP
     let Amount = player.main.multiplierP
     let Currency = player.main.cash
-    
-    let BaseCost = new Decimal(10) 
-    let CostFactor = new Decimal(2.25) 
+
+    let PowerI = new Decimal.div(Amount, 70).add(1)
+    let PowerII = new Decimal.div(Amount, 140).add(1)
+    let PowerIII = new Decimal.div(Amount, 280).add(1)
+
+    let BaseCost = new Decimal(10)
+    let CostFactor = new Decimal(2.25)
+    CostFactor = CostFactor.pow(PowerI)
+    CostFactor = CostFactor.pow(PowerII)
+    CostFactor = CostFactor.pow(PowerIII)
+
     let CostPower = new Decimal.pow(CostFactor, AmountBuy)
     BaseCost = BaseCost.mul(CostPower)
-    
-    let PowerI = new Decimal.div(Amount, 1e6).add(1)
-    let PowerII = new Decimal.div(Amount, 1e9).add(1)
-    let PowerIII = new Decimal.div(Amount, 1e12).add(1)
-    
+
     BaseCost = BaseCost.pow(PowerI)
     BaseCost = BaseCost.pow(PowerII)
     BaseCost = BaseCost.pow(PowerIII)
-    
+
     return BaseCost
   },
-  
+
   MultiplierAmountCalc() {
     let AmountBuy = player.main.multiplierP
     let Amount = player.main.multiplierP
     let Currency = player.main.cash
-    
+
+    let PowerI = new Decimal.div(Amount, 100).add(1)
+    let PowerII = new Decimal.div(Amount, 200).add(1)
+    let PowerIII = new Decimal.div(Amount, 400).add(1)
+
     let RebirthBoost = new Decimal.mul(player.main.rebirth, 2).add(1)
     let URebirthBoost = new Decimal.mul(player.main.urebirth, 1.5).add(1)
-    
+
     let BaseAmount = new Decimal(1)
     let AmountFactor = new Decimal(1.5)
+    AmountFactor = AmountFactor.pow(PowerI)
+    AmountFactor = AmountFactor.pow(PowerII)
+    AmountFactor = AmountFactor.pow(PowerIII)
+
     let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
     BaseAmount = BaseAmount.mul(AmountPower)
-    
-    let PowerI = new Decimal.div(Amount, 1e6).add(1)
-    let PowerII = new Decimal.div(Amount, 1e9).add(1)
-    let PowerIII = new Decimal.div(Amount, 1e12).add(1)
-    
     BaseAmount = BaseAmount.mul(RebirthBoost)
     BaseAmount = BaseAmount.mul(URebirthBoost)
-    
-    BaseAmount = BaseAmount.pow(PowerI)
-    BaseAmount = BaseAmount.pow(PowerII)
-    BaseAmount = BaseAmount.pow(PowerIII)
+
+
     return BaseAmount
   },
-  
+
   MultiplierBoost() {
     let Power = new Decimal(10)
     let Multiplier = player.main.multiplier
-    
+
     let Calculation = new Decimal.pow(Multiplier, Power)
     return Calculation
   },
-  
+
   RebirthReset() {
     player.main.multiplier = new Decimal(0)
     player.main.cash = new Decimal(0)
   },
-  
+
   RebirthCostCalc() {
-      let AmountBuy = player.main.rebirthP
-      let Currency = player.main.multiplier
-      
-      let BaseCost = new Decimal(500)
-      let CostFactor = new Decimal(3.37)
-      let CostPower = new Decimal.pow(CostFactor, AmountBuy)
-      BaseCost = BaseCost.mul(CostPower)
-  
-      return BaseCost
-    },
-  
-    RebirthAmountCalc() {
-      let AmountBuy = player.main.rebirthP
-      let Currency = player.main.multiplier
-      
-      let SRebirthBoost = new Decimal.mul(player.main.srebirth, 3).add(1)
-      let URebirthBoost = new Decimal.mul(player.main.srebirth, 2).add(1)
-  
-      let BaseAmount = new Decimal(1)
-      let AmountFactor = new Decimal(1.5)
-      let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
-      BaseAmount = BaseAmount.mul(AmountPower)
-      
-      BaseAmount = BaseAmount.mul(SRebirthBoost)
-      BaseAmount = BaseAmount.mul(URebirthBoost)
-      return BaseAmount
-    },
-    
-    RebirthBoostCalc() {
-      let Rebirth = player.main.rebirth
-      let BaseBoost = new Decimal(2)
-      
-      let Calculation = new Decimal.mul(BaseBoost, Rebirth).add(1)
-      
-      return Calculation
-    },
-    
-    SRebirthReset() {
-      player.main.rebirth = new Decimal(0)
-        player.main.multiplier = new Decimal(0)
-        player.main.cash = new Decimal(0)
-      },
-    
-      SRebirthCostCalc() {
-        let AmountBuy = player.main.srebirthP
-        let Currency = player.main.rebirth
-    
-        let BaseCost = new Decimal(50000)
-        let CostFactor = new Decimal(5.06)
-        let CostPower = new Decimal.pow(CostFactor, AmountBuy)
-        BaseCost = BaseCost.mul(CostPower)
-    
-        return BaseCost
-      },
-    
-      SRebirthAmountCalc() {
-        let AmountBuy = player.main.srebirthP
-        let Currency = player.main.rebirth
-        
-        let URebirthBoost = new Decimal.mul(player.main.urebirth, 4).add(1)
-    
-        let BaseAmount = new Decimal(1)
-        let AmountFactor = new Decimal(1.5)
-        let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
-        BaseAmount = BaseAmount.mul(AmountPower)
-        BaseAmount = BaseAmount.mul(URebirthBoost)
-    
-        return BaseAmount
-      },
-    
-      SRebirthBoostCalc() {
-        let SRebirth = player.main.srebirth
-        let BaseBoost = new Decimal(4)
-    
-        let Calculation = new Decimal.mul(BaseBoost, SRebirth).add(1)
-    
-        return Calculation
-      },
-      
-      URebirthReset() {
-        player.main.srebirth = new Decimal(0)
-          player.main.rebirth = new Decimal(0)
-          player.main.multiplier = new Decimal(0)
-          player.main.cash = new Decimal(0)
-        },
-      
-        URebirthCostCalc() {
-          let AmountBuy = player.main.urebirthP
-          let Currency = player.main.srebirth
-      
-          let BaseCost = new Decimal(5e15)
-          let CostFactor = new Decimal(7.59)
-          let CostPower = new Decimal.pow(CostFactor, AmountBuy)
-          BaseCost = BaseCost.mul(CostPower)
-      
-          return BaseCost
-        },
-      
-        URebirthAmountCalc() {
-          let AmountBuy = player.main.urebirthP
-          let Currency = player.main.srebirth
-      
-          let BaseAmount = new Decimal(1)
-          let AmountFactor = new Decimal(1.5)
-          let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
-          BaseAmount = BaseAmount.mul(AmountPower)
-      
-          return BaseAmount
-        },
-     
-  
-  
+    let AmountBuy = player.main.multiplierP
+    let Amount = player.main.multiplierP
+    let Currency = player.main.cash
+
+    let PowerI = new Decimal.div(Amount, 70).add(1)
+    let PowerII = new Decimal.div(Amount, 140).add(1)
+    let PowerIII = new Decimal.div(Amount, 280).add(1)
+
+    let BaseCost = new Decimal(500)
+    let CostFactor = new Decimal(3.37)
+    CostFactor = CostFactor.pow(PowerI)
+    CostFactor = CostFactor.pow(PowerII)
+    CostFactor = CostFactor.pow(PowerIII)
+
+    let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+    BaseCost = BaseCost.mul(CostPower)
+
+    BaseCost = BaseCost.pow(PowerI)
+    BaseCost = BaseCost.pow(PowerII)
+    BaseCost = BaseCost.pow(PowerIII)
+
+    return BaseCost
+  },
+
+  RebirthAmountCalc() {
+    let AmountBuy = player.main.rebirthP
+    let Amount = player.main.rebirthP
+    let Currency = player.main.multiplier
+
+    let PowerI = new Decimal.div(Amount, 100).add(1)
+    let PowerII = new Decimal.div(Amount, 200).add(1)
+    let PowerIII = new Decimal.div(Amount, 400).add(1)
+
+    let RebirthBoost = new Decimal.mul(player.main.rebirth, 2).add(1)
+    let URebirthBoost = new Decimal.mul(player.main.urebirth, 1.5).add(1)
+
+    let BaseAmount = new Decimal(1)
+    let AmountFactor = new Decimal(1.5)
+    AmountFactor = AmountFactor.pow(PowerI)
+    AmountFactor = AmountFactor.pow(PowerII)
+    AmountFactor = AmountFactor.pow(PowerIII)
+
+    let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+    BaseAmount = BaseAmount.mul(AmountPower)
+    BaseAmount = BaseAmount.mul(RebirthBoost)
+    BaseAmount = BaseAmount.mul(URebirthBoost)
+
+
+    return BaseAmount
+  },
+
+  RebirthBoostCalc() {
+    let Rebirth = player.main.rebirth
+    let BaseBoost = new Decimal(2)
+
+    let Calculation = new Decimal.mul(BaseBoost, Rebirth).add(1)
+
+    return Calculation
+  },
+
+  SRebirthReset() {
+    player.main.rebirth = new Decimal(0)
+    player.main.multiplier = new Decimal(0)
+    player.main.cash = new Decimal(0)
+  },
+
+  SRebirthCostCalc() {
+    let AmountBuy = player.main.srebirthP
+    let Currency = player.main.rebirth
+
+    let BaseCost = new Decimal(50000)
+    let CostFactor = new Decimal(5.06)
+    let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+    BaseCost = BaseCost.mul(CostPower)
+
+    return BaseCost
+  },
+
+  SRebirthAmountCalc() {
+    let AmountBuy = player.main.srebirthP
+    let Currency = player.main.rebirth
+
+    let URebirthBoost = new Decimal.mul(player.main.urebirth, 4).add(1)
+
+    let BaseAmount = new Decimal(1)
+    let AmountFactor = new Decimal(1.5)
+    let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+    BaseAmount = BaseAmount.mul(AmountPower)
+    BaseAmount = BaseAmount.mul(URebirthBoost)
+
+    return BaseAmount
+  },
+
+  SRebirthBoostCalc() {
+    let SRebirth = player.main.srebirth
+    let BaseBoost = new Decimal(4)
+
+    let Calculation = new Decimal.mul(BaseBoost, SRebirth).add(1)
+
+    return Calculation
+  },
+
+  URebirthReset() {
+    player.main.srebirth = new Decimal(0)
+    player.main.rebirth = new Decimal(0)
+    player.main.multiplier = new Decimal(0)
+    player.main.cash = new Decimal(0)
+  },
+
+  URebirthCostCalc() {
+    let AmountBuy = player.main.urebirthP
+    let Currency = player.main.srebirth
+
+    let BaseCost = new Decimal(5e15)
+    let CostFactor = new Decimal(7.59)
+    let CostPower = new Decimal.pow(CostFactor, AmountBuy)
+    BaseCost = BaseCost.mul(CostPower)
+
+    return BaseCost
+  },
+
+  URebirthAmountCalc() {
+    let AmountBuy = player.main.urebirthP
+    let Currency = player.main.srebirth
+
+    let BaseAmount = new Decimal(1)
+    let AmountFactor = new Decimal(1.5)
+    let AmountPower = new Decimal.pow(AmountFactor, AmountBuy)
+    BaseAmount = BaseAmount.mul(AmountPower)
+
+    return BaseAmount
+  },
+
+
+
 
 
   update(diff) {
-    
-    
+
+
     player.main.unitLimitLimit = tmp.main.AccelerantLimitLimit
-    
+
     player.main.unitLimit = tmp.main.AccelerantLimit
     player.main.limit = tmp.main.StellarMagnitudeLimit
-    
+
     player.main.hardforkxp = player.main.hardforkxp.add((tmp.main.hardforkXPCalc).times(diff))
-    
+
     player.main.btc = player.main.btc.add((tmp.main.bitcoinGeneration).times(diff))
-    
+
     if (player.main.hardforkxp.gte(tmp.main.hardforkXPlevelCalc)) {
       player.main.hardforklvl = player.main.hardforklvl.add(1)
       player.main.hardforkxp = new Decimal(0)
@@ -794,11 +827,11 @@ addLayer("main", {
     if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Stellar Mag Booster")
     if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Booster")
     if (tmp.main.clickables.T1AT2.canRun) buyBuyable(this.layer, "Ethereum Cheaper Factory")
-    
-    
+
+
     if (tmp.main.clickables.T2AT1.canRun) clickClickable(this.layer, "Tier Up")
     if (tmp.main.clickables.T2AT2.canRun) clickClickable(this.layer, "Facotry Reset")
-    
+
     const activeChallenge = player[this.layer].activeChallenge;
     if (activeChallenge && canCompleteChallenge(this.layer, activeChallenge)) {
       startChallenge(this.layer, activeChallenge);
@@ -806,31 +839,31 @@ addLayer("main", {
         startChallenge(this.layer, activeChallenge);
       }
     }
-    
+
     if (player.main.tier.gte(5)) {
       player.main.eth = player.main.eth.add((tmp.main.ethGainCalc).times(diff))
     }
-    
+
     if (player.main.factories.gte(1)) {
       player.main.oreos = player.main.oreos.add((tmp.main.oreoGainCalc).times(diff))
     }
-    
+
     if (hasMilestone("main", "TM15")) {
       player.main.cash = player.main.cash.add((tmp.main.CashCalculation).times(diff))
     }
-    
+
     if (player.main.tier.gte(9)) {
       player.main.unit = player.main.unit.times(tmp.main.AccelerantSpeed.pow(diff))
-    
+
       if (player.main.unit.gte(tmp.main.AccelerantLimit)) {
         return player.main.unit = tmp.main.AccelerantLimit
       }
     }
-    
-    
-    
-    
-    
+
+
+
+
+
   },
   challenges: {
     "Looming": {
@@ -979,7 +1012,6 @@ addLayer("main", {
         return true
       }
     },
-
     "Factory Reset": {
       title() {
         let state = player.main.factories
@@ -1025,7 +1057,6 @@ addLayer("main", {
         return hasMilestone("main", "TM8")
       }
     },
-
     "Hardfork": {
       title() {
         let state = player.main.hardfork
@@ -1071,7 +1102,51 @@ addLayer("main", {
         return true
       }
     },
-    
+        "FBTC": {
+         title() {
+          return `<b style="font-size:35px">Fix Bitcoin</b><br>
+            If Bitcoin went negative or NaN<br>`
+         },
+         canClick() {
+          return true
+         },
+         onClick() {
+          tmp.main.fixBitcoin()
+         },
+         style() {
+          if (tmp[this.layer].clickables[this.id].canClick) return {
+           "background-image": "url('images/HardforkC.png')",
+           "background-size": "cover",
+           "background-color": "#ffffff",
+           "animation": "pulseP 2s infinite",
+           "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
+           "width": "460px",
+           "height": "130px",
+           "border-radius": "10px",
+           "border": "0px",
+           "margin": "5px",
+           "text-shadow": "0px 0px 15px #000000",
+           "color": "#ffffff"
+          }
+          return {
+           "background-image": "url('images/HardforkCT.png')",
+           "background-size": "cover",
+           "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
+           "width": "460px",
+           "height": " 130px",
+           "border-radius": "10px",
+           "border": "0px",
+           "margin": "5px",
+           "text-shadow": "0px 0px 10px #000000",
+           "color": "#ffffff"
+          }
+         },
+         unlocked() {
+          return true
+         }
+        },
+
+
     "HardReset": {
       title() {
         return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">-- HARD RESET --</b><br>
@@ -1101,7 +1176,6 @@ addLayer("main", {
         return true
       }
     },
-
     "Buy Multiplier": {
       title() {
         return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Multiplier - ${format(player.main.multiplierP)}×</b><br>
@@ -1147,15 +1221,22 @@ addLayer("main", {
         return true
       }
     },
-    "Buy Multiplier+1": {
+    
+    "Buy Multiplier MAG+": {
       title() {
-        return `+1`
+        var AC = tmp[this.layer].clickables[this.id]
+        return `Increase Bulk Buy +${AC.magnitudeAmount}x`
       },
       canClick() {
-        return true || player.main.multiplierP.gte(0)
+        return true
       },
       onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(1)
+        var AC = tmp[this.layer].clickables[this.id]
+        player.main.multiplierP = player.main.multiplierP.add(AC.magnitudeAmount)
+      },
+      magnitudeAmount() {
+        let Base = new Decimal(1)
+        return Base
       },
       style() {
         if (tmp[this.layer].clickables[this.id].canClick) return {
@@ -1163,7 +1244,7 @@ addLayer("main", {
           "background-size": "cover",
           "background-color": "#ffffff",
           "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
+          "width": "auto",
           "height": "40px !important",
           "border-radius": "10px",
           "border": "0px",
@@ -1175,7 +1256,7 @@ addLayer("main", {
           "background-image": "url('images/MultiplierCT.png')",
           "background-size": "cover",
           "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
+          "width": "auto",
           "height": " 40px !important",
           "border-radius": "10px",
           "border": "0px",
@@ -1188,15 +1269,21 @@ addLayer("main", {
         return true
       }
     },
-    "Buy Multiplier+10": {
+    "Buy Multiplier MAG-": {
       title() {
-        return `+10`
+        var AC = tmp[this.layer].clickables[this.id]
+        return `Decrease Bulk Buy -${AC.magnitudeAmount}x`
       },
       canClick() {
-        return true || player.main.multiplierP.gte(0)
+        return player.main.multiplierP.gte(1)
       },
       onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(10)
+        var AC = tmp[this.layer].clickables[this.id]
+        player.main.multiplierP = player.main.multiplierP.sub(AC.magnitudeAmount)
+      },
+      magnitudeAmount() {
+        let Base = new Decimal(1)
+        return Base
       },
       style() {
         if (tmp[this.layer].clickables[this.id].canClick) return {
@@ -1204,7 +1291,7 @@ addLayer("main", {
           "background-size": "cover",
           "background-color": "#ffffff",
           "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
+          "width": "auto",
           "height": "40px !important",
           "border-radius": "10px",
           "border": "0px",
@@ -1216,253 +1303,7 @@ addLayer("main", {
           "background-image": "url('images/MultiplierCT.png')",
           "background-size": "cover",
           "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier+100": {
-      title() {
-        return `+100`
-      },
-      canClick() {
-        return true || player.main.multiplierP.gte(0)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(100)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier+1000": {
-      title() {
-        return `+1Kx`
-      },
-      canClick() {
-        return true || player.main.multiplierP.gte(0)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(1000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier+10000": {
-      title() {
-        return `+10Kx`
-      },
-      canClick() {
-        return true || player.main.multiplierP.gte(0)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(10000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier+100000": {
-      title() {
-        return `+100Kx`
-      },
-      canClick() {
-        return true || player.main.multiplierP.gte(0)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(100000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier+1000000": {
-      title() {
-        return `+1Mx`
-      },
-      canClick() {
-        return true || player.main.multiplierP.gte(0)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(1000000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier+10000000": {
-      title() {
-        return `+10Mx`
-      },
-      canClick() {
-        return true || player.main.multiplierP.gte(0)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.add(10000000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
+          "width": "auto",
           "height": " 40px !important",
           "border-radius": "10px",
           "border": "0px",
@@ -1476,326 +1317,6 @@ addLayer("main", {
       }
     },
 
-    "Buy Multiplier-1": {
-      title() {
-        return `-1x`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(1)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(1)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-10": {
-      title() {
-        return `-10x`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(10)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(10)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-100": {
-      title() {
-        return `-100x`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(100)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(100)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-1000": {
-      title() {
-        return `-1Kx`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(1000)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(1000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-10000": {
-      title() {
-        return `-10Kx`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(10000)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(10000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-100000": {
-      title() {
-        return `-100Kx`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(100000)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(100000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-1000000": {
-      title() {
-        return `-1Mx`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(1000000)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(1000000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    "Buy Multiplier-10000000": {
-      title() {
-        return `-10Mx`
-      },
-      canClick() {
-        return player.main.multiplierP.gte(10000000)
-      },
-      onClick() {
-        player.main.multiplierP = player.main.multiplierP.sub(10000000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/MultiplierC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
 
 
     "Buy Rebirth": {
@@ -1841,7 +1362,7 @@ addLayer("main", {
         }
       },
       unlocked() {
-        return tmp.main.OrderIndex.gte(0) || player.main.multiplier.gte(500) 
+        return tmp.main.OrderIndex.gte(0) || player.main.multiplier.gte(500)
       }
     },
     "Buy Rebirth+1": {
@@ -2008,48 +1529,6 @@ addLayer("main", {
         return true
       }
     },
-    "Buy Rebirth+10000": {
-      title() {
-        return `+10Kx`
-      },
-      canClick() {
-        return player.main.rebirthP.gte(0)
-      },
-      onClick() {
-        player.main.rebirthP = player.main.rebirthP.add(10000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/RebirthC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "box-shadow": "0px 0px 15px rgba(171, 50, 58, 1)",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
- 
     "Buy Rebirth-1": {
       title() {
         return `-1x`
@@ -2210,48 +1689,7 @@ addLayer("main", {
         return true
       }
     },
-    "Buy Rebirth-10000": {
-      title() {
-        return `-10Kx`
-      },
-      canClick() {
-        return player.main.rebirthP.gte(10000)
-      },
-      onClick() {
-        player.main.rebirthP = player.main.rebirthP.sub(10000)
-      },
-      style() {
-        if (tmp[this.layer].clickables[this.id].canClick) return {
-          "background-image": "url('images/RebirthC.png')",
-          "background-size": "cover",
-          "background-color": "#ffffff",
-          "box-shadow": "0 0 0 0 rgba(255, 255, 255, 1)",
-          "width": "50px",
-          "height": "40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 15px #000000",
-          "color": "#ffffff"
-        }
-        return {
-          "background-image": "url('images/MultiplierCT.png')",
-          "background-size": "cover",
-          "width": "50px",
-          "height": " 40px !important",
-          "border-radius": "10px",
-          "border": "0px",
-          "margin": "5px",
-          "text-shadow": "0px 0px 10px #000000",
-          "color": "#ffffff"
-        }
-      },
-      unlocked() {
-        return true
-      }
-    },
-    
-    
+
     "Buy Super Rebirth": {
       title() {
         return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Super Rebirth - ${format(player.main.srebirthP)}×</b><br>
@@ -2462,7 +1900,6 @@ addLayer("main", {
         return tmp.main.OrderIndex.gte(1)
       }
     },
-    
     "Buy SRebirth-1": {
       title() {
         return `-1x`
@@ -2627,8 +2064,8 @@ addLayer("main", {
         return tmp.main.OrderIndex.gte(1)
       }
     },
-    
-    
+
+
     "Buy Ultra Rebirth": {
       title() {
         return `<b style="font-size:35px; text-shadow: 0px 0px 10px #000000">Buy Ultra Rebirth - ${format(player.main.urebirthP)}×</b><br>
@@ -2707,7 +2144,7 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto",
-          "margin" : "4px"
+          "margin": "4px"
         }
         return {
           "background-image": "url('images/STAT_OFF.png')",
@@ -2716,7 +2153,7 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto",
-          "margin" : "4px"
+          "margin": "4px"
         }
       },
     },
@@ -2747,7 +2184,7 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto",
-          "margin" : "4px"
+          "margin": "4px"
         }
         return {
           "background-image": "url('images/STAT_OFF.png')",
@@ -2756,7 +2193,7 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto",
-          "margin" : "4px"
+          "margin": "4px"
         }
       },
     },
@@ -2827,7 +2264,7 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto",
-          "margin" : "4px"
+          "margin": "4px"
         }
         return {
           "background-image": "url('images/STAT_OFF.png')",
@@ -2836,7 +2273,7 @@ addLayer("main", {
           "border-radius": "5px",
           "width": "300px",
           "height": "auto",
-          "margin" : "4px"
+          "margin": "4px"
         }
       },
     },
@@ -4002,8 +3439,8 @@ addLayer("main", {
         return true
       }
     },
-    
-    
+
+
     "Bitcoin Point Production": {
       cost(x) {
         let PowerI = new Decimal(2)
@@ -4065,7 +3502,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4137,7 +3574,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4157,7 +3594,7 @@ addLayer("main", {
         let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
         let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
         let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
-    
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4209,7 +3646,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-    
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4229,7 +3666,7 @@ addLayer("main", {
         let PowerV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 337).add(1))
         let PowerVI = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 505).add(1))
         let PowerVII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 757).add(1))
-    
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4278,9 +3715,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(0.05)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -4288,7 +3725,7 @@ addLayer("main", {
         return true
       }
     },
-    
+
     "Bitcoin Stellar Production": {
       cost(x) {
         let PowerI = new Decimal(2)
@@ -4350,7 +3787,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4419,9 +3856,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(2.025)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -4490,7 +3927,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4501,7 +3938,7 @@ addLayer("main", {
         return true
       }
     },
-    
+
     "Bitcoin Ethereum Production": {
       cost(x) {
         let PowerI = new Decimal(4)
@@ -4563,7 +4000,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4632,9 +4069,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(0.15)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -4703,7 +4140,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4776,7 +4213,7 @@ addLayer("main", {
         let PowerII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 100).add(1))
         let PowerIII = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 150).add(1))
         let PowerIV = new Decimal(1).mul(Decimal.div(player[this.layer].buyables[this.id], 225).add(1))
-        
+
         PowerI = PowerI.pow(PowerII)
         PowerI = PowerI.pow(PowerIII)
         PowerI = PowerI.pow(PowerIV)
@@ -4845,9 +4282,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(1)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -4913,9 +4350,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(0.05)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(0).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -4981,9 +4418,9 @@ addLayer("main", {
       },
       effect(x) {
         let PowerI = new Decimal(0.1)
-        
+
         PowerI = PowerI.mul(x)
-        
+
         let Effect = new Decimal(1).add(Decimal.add(PowerI))
         return Effect;
       },
@@ -4998,7 +4435,7 @@ addLayer("main", {
     "TM1": {
       requirementDescription() {
         let STATE = []
-        if(hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
         return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 1 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(1) },
@@ -5019,7 +4456,7 @@ addLayer("main", {
     "TM2": {
       requirementDescription() {
         let STATE = []
-        if(hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
+        if (hasMilestone(this.layer, this.id)) STATE.push('<img src="images/Checkmark_White.png" width="32" height="32">')
         return `<b style="font-size:32px; text-shadow: 0px 0px 10px #000000">TIER 2 ${STATE}</b>`
       },
       done() { return player.main.tier.gte(2) },
@@ -5080,7 +4517,7 @@ addLayer("main", {
         }
       },
       unlocked() {
-      return player.main.tier.gte(3)
+        return player.main.tier.gte(3)
       }
     },
     "TM5": {
@@ -5107,7 +4544,7 @@ addLayer("main", {
         }
       },
       unlocked() {
-      return player.main.tier.gte(3)
+        return player.main.tier.gte(3)
       }
     },
     "TM6": {
@@ -5548,7 +4985,7 @@ addLayer("main", {
         return player.main.tier.gte(187)
       }
     },
-    
+
   },
   tabFormat: {
     "Main Progression": {
@@ -5572,10 +5009,10 @@ addLayer("main", {
           return ``
                         }],
           ["raw-html", () => {
-            if (tmp.main.AccelerantLimit.gte(tmp.main.AccelerantLimitLimit)) {
+          if (tmp.main.AccelerantLimit.gte(tmp.main.AccelerantLimitLimit)) {
             return `<HI style="font-size: 24px; color: #c70e3c; text-shadow: 0px 0px 10px">HARDCAP:  ${format(tmp.main.AccelerantLimitLimit)} u<sup>2</sup> Limit</HI>`
-            }
-            return ``
+          }
+          return ``
           }],
       "blank",
       ["microtabs", "Main", { 'border-width': '0px' }],
@@ -5600,7 +5037,7 @@ addLayer("main", {
           return `<MA style="font-size: 19px; color: #595959">You have produced <HI style="font-size: 28px; color: #737373; text-shadow: 0px 0px 20px">${format(player.main.oreos)}</HI> Oreos</MA>`
             }],
             ["raw-html", () => {
-            return `<MA style="font-size: 20px; color: #595959">Your Oreos boost Points by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoPointBoost)}x</HI></MA><br>
+          return `<MA style="font-size: 20px; color: #595959">Your Oreos boost Points by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoPointBoost)}x</HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Stellar by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">${format(tmp.main.OreoStellarBoost)}x </HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Limit by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">^${format(tmp.main.OreoAccelerantLimitBoost)} </HI></MA><br>
               <MA style="font-size: 20px; color: #595959">Your Oreos boost Accelerant Acceleration by <HI style="font-size: 24px; color: #737373; text-shadow: 0px 0px 20px">+${format(tmp.main.OreoAccelerantBoostBonus)} </HI></MA>`
@@ -5616,15 +5053,15 @@ addLayer("main", {
       ["row", [["buyable", "Oreo Bonus Booster"]]],
       ],
     },
-    
-        "Funny Zone": {
-          unlocked() { return hasMilestone("main", "TM15") },
-          content: [
+
+    "Funny Zone": {
+      unlocked() { return hasMilestone("main", "TM15") },
+      content: [
             "h-line",
             "blank",
           ["microtabs", "FunnyZone", { 'border-width': '0px' }],
   ]
-  },
+    },
   },
 
   microtabs: {
@@ -5650,7 +5087,7 @@ addLayer("main", {
             return ``
                         }],
             "blank",
-            ["row", [["image", "url('images/ConnectorVasak.png')"],["clickable", "T1AT1"]]],
+            ["row", [["image", "url('images/ConnectorVasak.png')"], ["clickable", "T1AT1"]]],
             "blank",
             ["row", [["buyable", "Stellar Point Production"]]],
             ["row", [["buyable", "Stellar Production"]]],
@@ -5703,10 +5140,10 @@ addLayer("main", {
        "h-line",
        "blank",
        ["raw-html", () => {
-       
-                let Mark = "MK. " + tmp.main.hardforkLevelDisplay
-       
-                return `<MA style='font-size: 25px'> <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>Bitcoin ${Mark} </HI> </MA><br><br>`
+
+            let Mark = "MK. " + tmp.main.hardforkLevelDisplay
+
+            return `<MA style='font-size: 25px'> <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>Bitcoin ${Mark} </HI> </MA><br><br>`
                       }],
        ["raw-html", () => {
             return `<MA style='font-size: 25px'>You have done <HI style='font-size: 28px; text-shadow: 0px 0px 15px'>${formatNoDecimals(player.main.hardfork)}</HI> Hardforks</MA>`
@@ -5733,6 +5170,7 @@ addLayer("main", {
 
             "blank",
             ["row", [["clickable", "Hardfork"]]],
+            ["row", [["clickable", "FBTC"]]],
             "blank",
             ["row", [["clickable", "T2AT1"]]],
             "blank",
@@ -5763,10 +5201,10 @@ addLayer("main", {
             return `<MA style="font-size: 24px; color: #ffffff">Tier Milestones</MA>`
         }],
         ["raw-html", () => {
-          return `<MA style="font-size: 24px; color: #ffffff">TM Sets unlocked: <HI style='font-size: 30px; text-shadow: 0px 0px 20px'> 0 of 10</HI></MA>`
+            return `<MA style="font-size: 24px; color: #ffffff">TM Sets unlocked: <HI style='font-size: 30px; text-shadow: 0px 0px 20px'> 0 of 10</HI></MA>`
                 }],
             ["raw-html", () => {
-              return `<MA style="font-size: 20px; color: #595959">Tier Milestones are sorted into Masteries.<br> Each Mastery has 3 Milestones and each Mastery it gets more harder to gain new Milestones</MA>`
+            return `<MA style="font-size: 20px; color: #595959">Tier Milestones are sorted into Masteries.<br> Each Mastery has 3 Milestones and each Mastery it gets more harder to gain new Milestones</MA>`
                 }],
         "blank",
         ["row", [["milestone", "TM1"]]],
@@ -5810,7 +5248,7 @@ addLayer("main", {
         ["row", [["milestone", "TM20"]]],
         ["blank", "3px"],
         ["row", [["milestone", "TM21"]]],
-        
+
     ],
       },
 
@@ -5879,7 +5317,7 @@ addLayer("main", {
                 ],
       },
     },
-    
+
     FunnyZone: {
       "Game": {
         content: [
@@ -5890,14 +5328,14 @@ addLayer("main", {
             return `<MA style='font-size: 24px'>Level: <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ffffff'>${format(tmp.main.LevelCalculation)}</HI></MA>`
                               }],
        ['raw-html', () => {
-              return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1fff5a'>${format(player.main.cash)}</HI> Cash</MA>`
+            return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1fff5a'>${format(player.main.cash)}</HI> Cash</MA>`
                     }],
           ['raw-html', () => {
             return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>${format(player.main.multiplier)}</HI> Multiplier</MA>`
                               }],
           ['raw-html', () => {
             if (tmp.main.OrderIndex.gte(1)) {
-            return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>${format(player.main.rebirth)}</HI> Rebirth</MA>`
+              return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>${format(player.main.rebirth)}</HI> Rebirth</MA>`
             }
             return ``
                              }],
@@ -5910,17 +5348,19 @@ addLayer("main", {
           ['raw-html', () => {
             if (tmp.main.OrderIndex.gte(3)) {
               return `<MA style='font-size: 24px'>You have <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#9003fc'>${format(player.main.urebirth)}</HI> Ultra Rebirth</MA>`
-                                         }
-                                         return ``
+            }
+            return ``
                                                                               }],
                               "blank",
                               "blank",
   ["row", [["clickable", "Buy Multiplier"]]],
-  ["row", [["clickable", "Buy Multiplier-10000000"],["clickable", "Buy Multiplier-1000000"],["clickable", "Buy Multiplier-100000"],["clickable", "Buy Multiplier-10000"],["clickable", "Buy Multiplier-1000"], ["clickable", "Buy Multiplier-100"], ["clickable", "Buy Multiplier-10"], ["clickable", "Buy Multiplier-1"]]],
-  ["row", [["clickable", "Buy Multiplier+1"], ["clickable", "Buy Multiplier+10"], ["clickable", "Buy Multiplier+100"], ["clickable", "Buy Multiplier+1000"], ["clickable", "Buy Multiplier+10000"], ["clickable", "Buy Multiplier+100000"], ["clickable", "Buy Multiplier+1000000"], ["clickable", "Buy Multiplier+10000000"]]],
+  
+  ["row", [["clickable", "Buy Multiplier MAG+"]]],
+  ["row", [["clickable", "Buy Multiplier MAG-"]]],
+  
   "blank",
   ["row", [["clickable", "Buy Rebirth"]]],
-  ["row", [["clickable", "Buy Rebirth-10000"], ["clickable", "Buy Rebirth-1000"], ["clickable", "Buy Rebirth-100"], ["clickable", "Buy Rebirth-10"],
+  ["row", [["clickable", "Buy Rebirth-1000"], ["clickable", "Buy Rebirth-100"], ["clickable", "Buy Rebirth-10"],
   ["clickable", "Buy Rebirth-1"]]],
   ["row", [["clickable", "Buy Rebirth+1"], ["clickable", "Buy Rebirth+10"], ["clickable", "Buy Rebirth+100"], ["clickable", "Buy Rebirth+1000"], ["clickable", "Buy Rebirth+10000"]]],
   "blank",
@@ -5931,62 +5371,62 @@ addLayer("main", {
   ["row", [["clickable", "Buy Ultra Rebirth"]]],
                 ],
       },
-    
-    
-  "The Index": {
-  content: [
+
+
+      "The Index": {
+        content: [
     "blank",
     "h-line",
     "blank",
     ["microtabs", "Indexing", { 'border-width': '0px' }],
        ]
-    },
-    
-    "Settings": {
-    content: [
+      },
+
+      "Settings": {
+        content: [
         "blank",
         "h-line",
         "blank",
       ["row", [["clickable", "HardReset"]]],
            ]
+      },
     },
-    },
-   
- Indexing: {
- "This Extension Index": {
-  content: [
+
+    Indexing: {
+      "This Extension Index": {
+        content: [
     "blank",
     "h-line",
     "blank",
     ['raw-html', () => {
-    return `<MA style='font-size: 24px'>Multiplier = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>1.25 × x</HI> Cash</MA>`
+            return `<MA style='font-size: 24px'>Multiplier = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>1.25 × x</HI> Cash</MA>`
                       }],
     ['raw-html', () => {
-    return `<MA style='font-size: 24px'>Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>2 × x</HI> Multiplier , <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>2 × x</HI> Cash</MA>`
+            return `<MA style='font-size: 24px'>Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>2 × x</HI> Multiplier , <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>2 × x</HI> Cash</MA>`
                       }],
     ['raw-html', () => {
-    return `<MA style='font-size: 24px'>Super Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#f403fc'>3 × x</HI> Rebirth</MA>`
+            return `<MA style='font-size: 24px'>Super Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#f403fc'>3 × x</HI> Rebirth</MA>`
                           }],
        ]
-    },
-    
-    "Outside Extension Index": {
-       content: [
+      },
+
+      "Outside Extension Index": {
+        content: [
          "blank",
          "h-line",
          "blank",
         ['raw-html', () => {
-           return `<MA style='font-size: 24px'>Multiplier = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>x ^ 10</HI> Points</MA>`
+            return `<MA style='font-size: 24px'>Multiplier = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#ff261f'>x ^ 10</HI> Points</MA>`
                           }],
       ['raw-html', () => {
-        if (tmp.main.OrderIndex.gte(1)) {
-           return `<MA style='font-size: 24px'>Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>x ^ 15</HI> Stellar , Ethereum</MA>`
-        }
-        return ``
+            if (tmp.main.OrderIndex.gte(1)) {
+              return `<MA style='font-size: 24px'>Rebirth = <HI style='font-size: 30px; text-shadow: 0px 0px 20px; color:#1f53ff'>x ^ 15</HI> Stellar , Ethereum</MA>`
+            }
+            return ``
                           }],
            ]
-     }
-  },
+      }
+    },
   },
   row: 0,
   layerShown() { return true }
