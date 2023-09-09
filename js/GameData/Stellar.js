@@ -53,7 +53,7 @@ addLayer("ST", {
       effect(x) {
         let pow = new Decimal(1)
         let bonus = x.div(7).add(1)
-        pow = pow.mul(hasMilestone("T", "T0-4") ? bonus : 0)
+        pow = pow.mul(hasMilestone("T", "T0-4") ? bonus : 1)
         pow = pow.add(buyableEffect("ST", "T0-ST-3"))
         return new Decimal.mul(pow, x)
       },
