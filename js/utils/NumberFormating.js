@@ -270,6 +270,9 @@ function format(decimal, precision=3) {
 	else if (player.notation == 'Blind') {
 		return letter(decimal, precision, ' ')
 	}
+	else if (player.notation == 'Data') {
+	  return letter(decimal, precision, ['b', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB', 'K-b', 'K-kB', 'K-MB', 'K-GB', 'K-TB', 'K-PB'])
+	}
 	else return formatSciEng(decimal, precision)
 }
 
@@ -458,6 +461,37 @@ function distShort(s) {
 		}
 	return format(s.div(scale1[id])) + scale2[id]
 }
+
+function FDS(bytes) {
+  bytes = new Decimal(bytes)
+  if (bytes.eq(0)) return '0 Bytes';
+
+  const sizes = ['Bytes', 'kB', 'MB', 'GB', 'TB'];
+  let i = 0;
+
+  while (bytes.gte(1024) && i < sizes.length - 1) {
+    bytes = bytes.div(1024);
+    i++;
+  }
+
+  return bytes.toFixed(2) + ' ' + sizes[i];
+}
+
+function FCS(hertz) {
+  hertz = new Decimal(hertz)
+  if (hertz.eq(0)) return '0 Hertz';
+
+  const sizes = ['Hertz', 'kHz', 'MHz', 'GHz', 'THz'];
+  let i = 0;
+
+  while (hertz.gte(1000) && i < sizes.length - 1) {
+    hertz = hertz.div(1000);
+    i++;
+  }
+
+  return hertz.toFixed(2) + ' ' + sizes[i];
+}
+
 
 function heightComp(s) {
 	s = new Decimal(s)

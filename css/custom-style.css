@@ -1,6 +1,12 @@
-.main.treeNode {
+.ST.treeNode {
   border: 0px;
   border-radius: 5px;
+}
+
+.T.treeNode {
+  border: 0px;
+  border-radius: 5px;
+  background: linear-gradient(0deg, rgba(224,224,224,1) 0%, rgba(215,210,209,1) 100%);
 }
 
 .main.longUpg {
@@ -16,12 +22,12 @@
   border-radius: 5px;
 }
 
-.ach.treeNode {
+.TK.treeNode {
   font-size: 20px;
   border: 0px;
   border-radius: 5px;
   
-  animation: Energy-Own 2s infinite;
+  animation: pulseTK 2s infinite;
 }
 
 .ach.achievement { 
@@ -29,11 +35,6 @@
   border: 0px;
   border-radius: 5px;
 }
-
-
-
-
-
 
 
 @keyframes Afford-Smooth {
@@ -91,6 +92,21 @@
 		box-shadow: 0 0 0 0 rgba(103, 37, 161, 0);
 	}
 }
+
+@keyframes pulseTK {
+	0% {
+		box-shadow: 0 0 0 0 rgba(235, 134, 52, 0.7);
+	}
+
+	70% {
+		box-shadow: 0 0 3.5px 5px rgba(235, 107, 52, 0);
+	}
+
+	100% {
+		box-shadow: 0 0 0 0 rgba(235, 107, 52, 0);
+	}
+}
+
 
 
 
