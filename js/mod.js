@@ -2,50 +2,36 @@ let modInfo = {
 	name: "Lumen Stellar",
 	id: "CTAG455",
 	author: "Niko_ | ( Citrine )",
-	pointsName: "points",
+	pointsName: "Bits",
 	modFiles: [
-	"GameData/SetOne/main.js", 
-	"GameData/SetOne/LayerAchievement.js",
+	"GameData/Stellar.js",
+	"GameData/Tier.js", 
+	"GameData/Tokens.js",
 	"tree.js"],
 
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 2400,  // In hours
+	offlineLimit() {
+	  let lim = new Decimal(1)
+	  return lim
+	},
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0.73-1",
-	name: "Era of Eras",
+	num: "0.0.1",
+	name: "",
 }
 
-let changelog = `<h1>Changelog:</h1><br>
-  <h3>v0.0.0.3 // Tuesday-Wednesday , 16th-17th May</h3><br>
-    - Added Tether as 2nd Reset layer currency.<br>
-    - Added 3 Tether buyables.<br>
-    - Changed formula of Bitcoin gain to be ^0.1 instead of ^0.05.<br>
-    - More stat breakdowns and debugs.
-    <br>
-    <br>
-  <h3>v0.0.0.21 // Sunday , 14th May</h3><br>
-    - Fixed Point Generation.<br>
-    - Made scaling and game bit harder I guess.
-   <br>
-   <br>
-	<h3>v0.0.0.2 // Sunday , 14th May</h3><br>
-		- Added Stellar tree node a text as ST.<br>
-		- Fixed 'Improved CPU Clock Speed' buyable background color when you couldn't buy it.<br>
-		- Fixed Notation setting begin broken and added 'Prism SQ' notation.<br>
-		- Added some CSS variables for no reason...<br>
-		- Added 1 new buyable and 1 new currency that boosts Stellar.<br>
-		- Few Debug texts and breakdowm texts were added.`
+let changelog = `<h1>UPDATE LOG:</h1><br>
+v0.0.1 - Start`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "tierUp", "btcReset", "tehReset", "t1Reset", "factoryInvestment", "type1reset", "hardfork", "HardReset", "MultiplierReset", "RebirthReset", "SRebirthReset", "URebirthReset", "fixBitcoin"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -62,23 +48,8 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let Production = new Decimal(1)
-	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
-	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
-	Production = Production.mul(buyableEffect("main", "Oreo Point Production"))
-	Production = Production.mul(buyableEffect("main", "Bitcoin Point Production"))
-	Production = Production.mul(tmp.main.AccelerantBonus)
-	Production = Production.mul(tmp.main.OreoPointBoost)
-	/*
-	let TM1Boost = new Decimal(1.25)
-	TM1Boost = TM1Boost.mul(hasMilestone("main", "TM5") ? 1.25 : 1)
-	Production = Production.mul(buyableEffect("main", "Stellar Point Production"))
-	Production = Production.mul(buyableEffect("main", "Ethereum Point Production"))
-	Production = Production.mul(buyableEffect("main", "Bitcoin Point Production"))
-	Production = Production.mul(buyableEffect("main", "Tether Point Production"))
-	Production = Production.pow(buyableEffect("main", "Time Point Production"))
-	Production = Production.mul(player.main.tier.gte(1) ? new Decimal.pow(TM1Boost, player.main.tier) : 1)*/
-	Production = Production.pow(tmp.ach.achivementPow)
-	Production= Production.add(1)
+	Production = Production.add(buyableEffect("ST", "T0-ST-1"))
+	Production = Production.mul(buyableEffect("TK", "T0-TK-1"))
 	return Production
 }
 

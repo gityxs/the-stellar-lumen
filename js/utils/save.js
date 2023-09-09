@@ -21,7 +21,8 @@ function startPlayerBase() {
 		points: modInfo.initialStartPoints,
 		subtabs: {},
 		lastSafeTab: (readData(layoutInfo.showTree) ? "none" : layoutInfo.startTab),
-		notation: "Standard"
+		notation: "Standard",
+		rate: 50
 	};
 }
 function getStartPlayer() {
